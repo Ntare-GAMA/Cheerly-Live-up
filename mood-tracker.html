@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Tracker - Cheerly Live Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #fbbf24;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f0fdf4;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #f9fafb;
+        }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(16, 185, 129, 0.1);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            margin-top: 90px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2rem 5%;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header-section h1 {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .header-section .highlight {
+            color: var(--primary);
+        }
+
+        .header-section p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+
+        .mood-selector {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        .mood-selector h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .mood-options {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .mood-option {
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 3px solid transparent;
+            min-width: 120px;
+        }
+
+        .mood-option:hover {
+            background: var(--bg-light);
+            transform: scale(1.1);
+        }
+
+        .mood-option.selected {
+            background: var(--bg-light);
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .mood-emoji {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .mood-label {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+        }
+
+        .mood-note {
+            margin-top: 2rem;
+        }
+
+        .mood-note label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .mood-note textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .mood-note textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .save-button {
+            display: block;
+            margin: 2rem auto 0;
+            padding: 1rem 3rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .save-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        .success-message {
+            display: none;
+            background: var(--bg-light);
+            border: 2px solid var(--primary);
+            padding: 1rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stats-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        .stats-section h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .history-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .history-section h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .history-timeline {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .history-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f9fafb;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .history-date {
+            font-weight: 600;
+            color: var(--text-dark);
+            min-width: 100px;
+        }
+
+        .history-mood {
+            font-size: 2rem;
+        }
+
+        .history-details {
+            flex-grow: 1;
+        }
+
+        .history-note {
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+
+        .info-box {
+            background: #fef3c7;
+            border: 2px solid var(--secondary);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+        }
+
+        .info-box h3 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .mood-options {
+                gap: 1rem;
+            }
+            .mood-option {
+                min-width: 90px;
+                padding: 1rem;
+            }
+            .mood-emoji {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span style="font-size: inherit;">🌟</span>
+            <span>Cheerly Live Up</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="chat.html">Chat</a></li>
+            <li><a href="analytics.html">Analytics</a></li>
+            <li><a href="resources.html">Resources</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="header-section">
+            <h1>Track Your <span class="highlight">Mood</span></h1>
+            <p>Understanding your emotions is the first step to managing them</p>
+        </div>
+
+        <div class="info-box">
+            <h3>
+                <span style="font-size: inherit;">💡</span>
+                Why Track Your Mood?
+            </h3>
+            <p>Daily mood tracking helps you identify patterns, triggers, and progress over time. It's a powerful tool for self-awareness and emotional growth. Your entries are completely private and can help you communicate better with mental health professionals if needed.</p>
+        </div>
+
+        <div class="mood-selector">
+            <h2>How are you feeling today?</h2>
+            <div class="mood-options">
+                <div class="mood-option" data-mood="amazing">
+                    <span class="mood-emoji">😊</span>
+                    <div class="mood-label">Amazing</div>
+                </div>
+                <div class="mood-option" data-mood="good">
+                    <span class="mood-emoji">🙂</span>
+                    <div class="mood-label">Good</div>
+                </div>
+                <div class="mood-option" data-mood="okay">
+                    <span class="mood-emoji">😐</span>
+                    <div class="mood-label">Okay</div>
+                </div>
+                <div class="mood-option" data-mood="down">
+                    <span class="mood-emoji">😔</span>
+                    <div class="mood-label">Down</div>
+                </div>
+                <div class="mood-option" data-mood="struggling">
+                    <span class="mood-emoji">😢</span>
+                    <div class="mood-label">Struggling</div>
+                </div>
+            </div>
+
+            <div class="mood-note">
+                <label for="moodNote">What's on your mind? (Optional)</label>
+                <textarea id="moodNote" placeholder="Share what contributed to your mood today..."></textarea>
+            </div>
+
+            <button class="save-button" onclick="saveMood()">
+                💚
+                Save My Mood
+            </button>
+            <div class="success-message" id="successMessage">
+                ✓
+                Mood saved successfully!
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <h2>Your Mood Insights</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-emoji">
+                        <span style="font-size: inherit;">📅</span>
+                    </div>
+                    <div class="stat-value" id="streakCount">0</div>
+                    <div class="stat-label">Day Streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-emoji">
+                        <span style="font-size: inherit;">📊</span>
+                    </div>
+                    <div class="stat-value" id="totalEntries">0</div>
+                    <div class="stat-label">Total Check-ins</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-emoji">
+                        <span style="font-size: inherit;">🌟</span>
+                    </div>
+                    <div class="stat-value" id="mostFrequent">-</div>
+                    <div class="stat-label">Most Common Mood</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-section">
+            <h2>Recent Mood History</h2>
+            <div class="history-timeline" id="historyTimeline">
+                <p style="text-align: center; color: var(--text-light); padding: 2rem;">
+                    No mood entries yet. Start tracking your mood today!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedMood = null;
+        const moodOptions = document.querySelectorAll('.mood-option');
+
+        // Handle mood selection
+        moodOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                moodOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedMood = this.getAttribute('data-mood');
+            });
+        });
+
+        // Load existing mood data
+        function loadMoodData() {
+            const moodHistory = JSON.parse(localStorage.getItem('moodHistory') || '[]');
+            
+            // Update stats
+            document.getElementById('totalEntries').textContent = moodHistory.length;
+            document.getElementById('streakCount').textContent = calculateStreak(moodHistory);
+            document.getElementById('mostFrequent').textContent = getMostFrequentMood(moodHistory);
+
+            // Display history
+            displayHistory(moodHistory);
+        }
+
+        function saveMood() {
+            if (!selectedMood) {
+                alert('Please select a mood first!');
+                return;
+            }
+
+            const moodNote = document.getElementById('moodNote').value;
+            const moodHistory = JSON.parse(localStorage.getItem('moodHistory') || '[]');
+            
+            const newEntry = {
+                mood: selectedMood,
+                note: moodNote,
+                date: new Date().toISOString(),
+                timestamp: Date.now()
+            };
+
+            moodHistory.unshift(newEntry);
+            localStorage.setItem('moodHistory', JSON.stringify(moodHistory));
+
+            // Show success message
+            const successMsg = document.getElementById('successMessage');
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+
+            // Reset form
+            moodOptions.forEach(opt => opt.classList.remove('selected'));
+            document.getElementById('moodNote').value = '';
+            selectedMood = null;
+
+            // Reload data
+            loadMoodData();
+        }
+
+        function displayHistory(history) {
+            const timeline = document.getElementById('historyTimeline');
+            
+            if (history.length === 0) {
+                timeline.innerHTML = '<p style="text-align: center; color: var(--text-light); padding: 2rem;">No mood entries yet. Start tracking your mood today!</p>';
+                return;
+            }
+
+            const moodEmojis = {
+                amazing: 'mood-happy',
+                good: 'mood-good',
+                okay: 'mood-okay',
+                down: 'mood-down',
+                struggling: 'mood-struggling'
+            };
+
+            timeline.innerHTML = history.slice(0, 10).map(entry => {
+                const date = new Date(entry.date);
+                const formattedDate = date.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+                
+                const moodColors = {
+                    amazing: '#10b981',
+                    good: '#34d399',
+                    okay: '#fbbf24',
+                    down: '#fb923c',
+                    struggling: '#ef4444'
+                };
+                
+                return `
+                    <div class="history-item">
+                        <div class="history-date">${formattedDate}</div>
+                        <div class="history-mood">
+                            <span style="font-size: inherit;">❓</span>
+                        </div>
+                        <div class="history-details">
+                            <div style="font-weight: 600; text-transform: capitalize;">${entry.mood}</div>
+                            ${entry.note ? `<div class="history-note">"${entry.note}"</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function calculateStreak(history) {
+            if (history.length === 0) return 0;
+            
+            let streak = 1;
+            const today = new Date().setHours(0, 0, 0, 0);
+            
+            for (let i = 0; i < history.length - 1; i++) {
+                const currentDate = new Date(history[i].date).setHours(0, 0, 0, 0);
+                const nextDate = new Date(history[i + 1].date).setHours(0, 0, 0, 0);
+                
+                const dayDiff = (currentDate - nextDate) / (1000 * 60 * 60 * 24);
+                
+                if (dayDiff === 1) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            
+            return streak;
+        }
+
+        function getMostFrequentMood(history) {
+            if (history.length === 0) return '-';
+            
+            const moodCounts = {};
+            history.forEach(entry => {
+                moodCounts[entry.mood] = (moodCounts[entry.mood] || 0) + 1;
+            });
+            
+            const mostFrequent = Object.keys(moodCounts).reduce((a, b) => 
+                moodCounts[a] > moodCounts[b] ? a : b
+            );
+            
+            return mostFrequent.charAt(0).toUpperCase() + mostFrequent.slice(1);
+        }
+
+        // Load data on page load
+        loadMoodData();
+    </script>
+</body>
+</html>

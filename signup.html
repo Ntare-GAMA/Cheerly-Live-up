@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started Free - Cheerly Live Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #fbbf24;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f0fdf4;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, var(--bg-light) 0%, #fef3c7 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(16, 185, 129, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .signup-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 5%;
+        }
+
+        .signup-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .signup-info {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .signup-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .signup-info p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .benefits-list li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        .benefits-list li::before {
+            content: '✓';
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .signup-form-section {
+            padding: 4rem;
+        }
+
+        .signup-form-section h2 {
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .signup-form-section .subtitle {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            transition: all 0.3s;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: start;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 0.25rem;
+            width: auto;
+        }
+
+        .checkbox-group label {
+            font-weight: normal;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        .checkbox-group a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 1rem;
+        }
+
+        .signup-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--text-light);
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: #e5e7eb;
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .social-signup {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-button {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .social-button:hover {
+            border-color: var(--primary);
+            background: var(--bg-light);
+        }
+
+        .login-link {
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .success-message {
+            display: none;
+            background: var(--bg-light);
+            border: 2px solid var(--primary);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 968px) {
+            .signup-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .signup-info {
+                padding: 3rem 2rem;
+            }
+            .signup-form-section {
+                padding: 3rem 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .signup-info h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG Icon Sprite Library -->
+    <svg style="display: none;" aria-hidden="true">
+        <defs>
+            <symbol id="icon-star" viewBox="0 0 24 24">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </symbol>
+            <symbol id="icon-rocket" viewBox="0 0 24 24">
+                <path d="M9.19 6.35c-2.04 2.29-3.44 5.58-3.57 5.89L2 10.69l4.05-4.05c.47-.47 1.15-.68 1.81-.55l1.33 1.33zM11.17 17s3.74-1.55 5.89-3.7c5.4-5.4 4.5-9.62 4.21-10.57-.95-.3-5.17-1.19-10.57 4.21C8.55 9.09 7 12.83 7 12.83l-1.98 1.98 1.42 1.42 3.31-3.31c-.5-1.25-.23-2.7.79-3.71 1.6-1.6 4.2-1.6 5.8 0s1.6 4.2 0 5.8c-1.02 1.02-2.46 1.29-3.71.79l-3.31 3.31 1.42 1.42 1.98-1.98z"/>
+            </symbol>
+            <symbol id="icon-lock" viewBox="0 0 24 24">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+            </symbol>
+            <symbol id="icon-check" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span style="font-size: inherit;">🌟</span>
+            <span>Cheerly Live Up</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="signup-container">
+        <div class="signup-wrapper">
+            <div class="signup-info">
+                <h1>Start Your Wellbeing Journey Today <span style="font-size: inherit;">🌟</span></h1>
+                <p>Join thousands of young people taking control of their mental health with Cheerly Live Up.</p>
+                
+                <ul class="benefits-list">
+                    <li>24/7 AI companion for mental health support</li>
+                    <li>Track your mood and emotional patterns</li>
+                    <li>Access proven coping strategies and resources</li>
+                    <li>100% private and confidential</li>
+                    <li>Completely free - no credit card required</li>
+                    <li>Connect with a supportive community</li>
+                </ul>
+
+                <p style="font-size: 0.95rem; opacity: 0.8;">
+                    🔒 Your privacy matters. All data is encrypted and never shared without your consent.
+                </p>
+            </div>
+
+            <div class="signup-form-section">
+                <h2>Create Your Account</h2>
+                <p class="subtitle">It takes less than 2 minutes to get started</p>
+
+                <div class="success-message" id="successMessage">
+                    ✓ Account created successfully! Redirecting to dashboard...
+                </div>
+
+                <form id="signupForm" onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" id="password" name="password" required placeholder="Create a strong password" oninput="checkPasswordStrength()">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strengthFill"></div>
+                        </div>
+                        <div class="password-strength" id="passwordStrength"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password *</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Re-enter your password">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Age *</label>
+                        <input type="number" id="age" name="age" required placeholder="Your age" min="13" max="120">
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">I agree to the <a href="privacy.html">Privacy Policy</a> and Terms of Service</label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="newsletter" name="newsletter">
+                        <label for="newsletter">Send me mental health tips and updates (optional)</label>
+                    </div>
+
+                    <button type="submit" class="signup-button">Create My Free Account 🚀</button>
+                </form>
+
+                <div class="divider">or</div>
+
+                <div class="social-signup">
+                    <button class="social-button" onclick="socialSignup('google')">
+                        🔵 Google
+                    </button>
+                    <button class="social-button" onclick="socialSignup('facebook')">
+                        📘 Facebook
+                    </button>
+                </div>
+
+                <div class="login-link">
+                    Already have an account? <a href="login.html">Login here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthText = document.getElementById('passwordStrength');
+            
+            let strength = 0;
+            
+            if (password.length >= 8) strength += 25;
+            if (password.match(/[a-z]+/)) strength += 25;
+            if (password.match(/[A-Z]+/)) strength += 25;
+            if (password.match(/[0-9]+/)) strength += 12.5;
+            if (password.match(/[$@#&!]+/)) strength += 12.5;
+            
+            strengthFill.style.width = strength + '%';
+            
+            if (strength < 40) {
+                strengthFill.style.background = '#ef4444';
+                strengthText.textContent = 'Weak password';
+                strengthText.style.color = '#ef4444';
+            } else if (strength < 70) {
+                strengthFill.style.background = '#fbbf24';
+                strengthText.textContent = 'Medium strength';
+                strengthText.style.color = '#fbbf24';
+            } else {
+                strengthFill.style.background = '#10b981';
+                strengthText.innerHTML = 'Strong password ✓';
+                strengthText.style.color = '#10b981';
+            }
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match. Please try again.');
+                return;
+            }
+            
+            const age = parseInt(document.getElementById('age').value);
+            if (age < 13) {
+                alert('You must be at least 13 years old to create an account. Please contact us with a parent or guardian.');
+                return;
+            }
+            
+            // In a real application, this would send data to a server
+            // For now, we'll store basic info in localStorage and redirect
+            const userData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                age: age,
+                newsletter: document.getElementById('newsletter').checked,
+                signupDate: new Date().toISOString()
+            };
+            
+            localStorage.setItem('cheerlyUser', JSON.stringify(userData));
+            localStorage.setItem('isLoggedIn', 'true');
+            
+            // Show success message
+            const successMessage = document.getElementById('successMessage');
+            successMessage.classList.add('show');
+            
+            // Redirect to dashboard after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 2000);
+        }
+
+        function socialSignup(provider) {
+            // In a real application, this would initiate OAuth flow
+            alert(`${provider.charAt(0).toUpperCase() + provider.slice(1)} signup coming soon! For now, please use email signup.`);
+        }
+    </script>
+</body>
+</html>

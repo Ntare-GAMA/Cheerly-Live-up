@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheerly Live Up - AI Companion for Youth Wellbeing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #fbbf24;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f0fdf4;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(16, 185, 129, 0.1);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            margin-top: 70px;
+            min-height: 90vh;
+            background: linear-gradient(135deg, var(--bg-light) 0%, #fef3c7 100%);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 3rem;
+            padding: 2rem 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 500px;
+        }
+
+        .phone-mockup {
+            width: 300px;
+            height: 600px;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            border: 12px solid #1f2937;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-interface {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-bubble {
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 80%;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .chat-bubble.user {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bubble.ai {
+            background: white;
+            color: var(--text-dark);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 18px;
+            width: fit-content;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .floating-icon {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.15;
+            animation: floatRandom 6s ease-in-out infinite;
+        }
+
+        .floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 60%; right: 15%; animation-delay: 1s; }
+        .floating-icon:nth-child(3) { bottom: 20%; left: 20%; animation-delay: 2s; }
+
+        @keyframes floatRandom {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(10px, -10px); }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        .hero h1 .highlight {
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            color: var(--text-light);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2.5rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .cta-button.secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        section {
+            padding: 5rem 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .demo-section {
+            background: white;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 3rem auto;
+            align-items: center;
+        }
+
+        .affirmation-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3);
+            text-align: center;
+            animation: cardGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes cardGlow {
+            0%, 100% { box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3); }
+            50% { box-shadow: 0 20px 60px rgba(16, 185, 129, 0.6); }
+        }
+
+        .affirmation-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .affirmation-text {
+            font-size: 1.8rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .mood-tracker {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .mood-options {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .mood-option {
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 1rem;
+            border-radius: 15px;
+        }
+
+        .mood-option:hover {
+            background: var(--bg-light);
+            transform: scale(1.1);
+        }
+
+        .mood-emoji {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .mood-option:nth-child(2) .mood-emoji { animation-delay: 0.2s; }
+        .mood-option:nth-child(3) .mood-emoji { animation-delay: 0.4s; }
+        .mood-option:nth-child(4) .mood-emoji { animation-delay: 0.6s; }
+        .mood-option:nth-child(5) .mood-emoji { animation-delay: 0.8s; }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: all 0.4s;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.2);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .feature-card h3 {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .impact {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .impact .section-title {
+            color: white;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .stat-box:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-label {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--text-dark) 0%, #374151 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-section .section-title {
+            color: white;
+        }
+
+        footer {
+            background: var(--text-dark);
+            color: white;
+            text-align: center;
+            padding: 3rem 5%;
+        }
+
+        .footer-values {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 968px) {
+            .hero, .demo-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-visual, .demo-grid > div:first-child {
+                order: -1;
+            }
+            .cta-buttons {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .nav-links {
+                display: none;
+            }
+            .phone-mockup {
+                width: 250px;
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon" style="color: var(--secondary);">🌟</span>
+            <span>Cheerly Live Up</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#demo">See Demo</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#impact">Impact</a></li>
+            <li><a href="signup.html">Get Started</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                🌍 Empowering African Youth
+            </div>
+            <h1>Your Journey to <span class="highlight">Wellbeing</span> Starts Here</h1>
+            <p>Meet Cheerly Live Up—your personal AI companion for mental health support. Available 24/7, private, and designed with you in mind.</p>
+            <div class="cta-buttons">
+                <a href="signup.html" class="cta-button">
+                    🚀 Start Free Today
+                </a>
+                <a href="#demo" class="cta-button secondary">
+                    💡 See Demo
+                </a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-elements">
+                <div class="floating-icon" style="color: var(--primary);">
+                    🌟
+                </div>
+                <div class="floating-icon" style="color: var(--primary);">
+                    💚
+                </div>
+                <div class="floating-icon" style="color: var(--secondary);">
+                    🌟
+                </div>
+            </div>
+            <div class="phone-mockup">
+                <div class="phone-screen">
+                    <div class="chat-interface">
+                        <div class="chat-bubble ai">Hi there! 👋 How are you feeling today?</div>
+                        <div class="chat-bubble user">I'm feeling overwhelmed with school</div>
+                        <div class="chat-bubble ai">I hear you. School can be challenging. Would you like to talk about what's overwhelming you, or would you prefer some stress management tips? 🌟</div>
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo" class="demo-section">
+        <h2 class="section-title">Experience Cheerly Live Up</h2>
+        <p class="section-subtitle">See how we support you every day</p>
+        
+        <div class="demo-grid">
+            <div>
+                <h3 style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;">Daily Affirmations</h3>
+                <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 2rem;">Start your day with personalized messages that uplift and inspire you.</p>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 0.8rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: var(--primary); font-size: 1.5rem;">✓</span>
+                        <span>Personalized to your journey</span>
+                    </li>
+                    <li style="padding: 0.8rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: var(--primary); font-size: 1.5rem;">✓</span>
+                        <span>Culturally relevant content</span>
+                    </li>
+                    <li style="padding: 0.8rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: var(--primary); font-size: 1.5rem;">✓</span>
+                        <span>Fresh messages every day</span>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <div class="affirmation-card">
+                    <div class="affirmation-icon">
+                        🌟
+                    </div>
+                    <div class="affirmation-text">"You are stronger than you think, braver than you believe"</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-grid">
+            <div>
+                <div class="mood-tracker">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; text-align: center;">How are you feeling?</h3>
+                    <div class="mood-options">
+                        <div class="mood-option">
+                            <span class="mood-emoji">😊</span>
+                            <div>Great</div>
+                        </div>
+                        <div class="mood-option">
+                            <span class="mood-emoji">🙂</span>
+                            <div>Good</div>
+                        </div>
+                        <div class="mood-option">
+                            <span class="mood-emoji">😐</span>
+                            <div>Okay</div>
+                        </div>
+                        <div class="mood-option">
+                            <span class="mood-emoji">😔</span>
+                            <div>Down</div>
+                        </div>
+                        <div class="mood-option">
+                            <span class="mood-emoji">😢</span>
+                            <div>Struggling</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;">Track Your Mood</h3>
+                <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 2rem;">Understanding your emotions is the first step to managing them. Track patterns and celebrate progress.</p>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 0.8rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: var(--primary);">✓</span>
+                        <span>Daily emotional check-ins</span>
+                    </li>
+                    <li style="padding: 0.8rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: var(--primary);">✓</span>
+                        <span>Identify patterns over time</span>
+                    </li>
+                    <li style="padding: 0.8rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="color: var(--primary);">✓</span>
+                        <span>Private and secure</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" style="background: var(--bg-light);">
+        <h2 class="section-title">Your Complete Mental Health Toolkit</h2>
+        <p class="section-subtitle">Everything you need to support your emotional wellbeing</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    💬
+                </div>
+                <h3>24/7 AI Chat Support</h3>
+                <p>Never feel alone. Chat anytime you need someone to listen—day or night.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    📅
+                </div>
+                <h3>Day Planner</h3>
+                <p>Organize your schedule, set goals, and receive friendly reminders throughout the day.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    🌟
+                </div>
+                <h3>Daily Affirmations</h3>
+                <p>Wake up to personalized, uplifting messages that boost your confidence.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    📊
+                </div>
+                <h3>Mood Check-ins</h3>
+                <p>Track your feelings over time and gain insights into your emotional patterns.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    💚
+                </div>
+                <h3>Mental Health Toolkit</h3>
+                <p>Access stress management techniques and coping strategies whenever needed.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    💡
+                </div>
+                <h3>Life Navigation Support</h3>
+                <p>Get guidance on career, education, relationships, and life challenges.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    🛡️
+                </div>
+                <h3>Safe Crisis Support</h3>
+                <p>Immediate connection to professional help and emergency resources.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="impact" class="impact">
+        <h2 class="section-title">Creating Lasting Change</h2>
+        <p class="section-subtitle">Transforming mental health for young people across Africa</p>
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-icon">
+                    🌟
+                </div>
+                <div class="stat-label">Short-term Impact</div>
+                <p>Improve daily mood, build emotional resilience, and develop healthy coping strategies.</p>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon">
+                    🌍
+                </div>
+                <div class="stat-label">Long-term Vision</div>
+                <p>Reduce mental health stigma and create a generation that talks openly about wellbeing.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="cta-section">
+        <h2 class="section-title">Ready to Live Up?</h2>
+        <p class="section-subtitle">Join thousands of young people choosing hope, healing, and mental strength</p>
+        <a href="signup.html" class="cta-button">
+            🌟
+            Get Started Free
+        </a>
+    </section>
+
+    <footer>
+        <div>
+            <p style="font-size: 1.1rem; margin-bottom: 0.5rem;"><strong>Cheerly Live Up</strong></p>
+            <p>Empowering African youth, one conversation at a time.</p>
+            <div class="footer-values">
+                <span>
+                    🌍
+                    Afrocentric
+                </span>
+                <span>
+                    💚
+                    Youth-Focused
+                </span>
+                <span>
+                    🔒
+                    Private
+                </span>
+                <span>
+                    ✓
+                    Accessible
+                </span>
+            </div>
+            <p style="margin-top: 2rem; opacity: 0.7;">&copy; 2024 Cheerly Live Up. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

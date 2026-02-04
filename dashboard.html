@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard - Cheerly Live Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #fbbf24;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f0fdf4;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #f9fafb;
+        }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(16, 185, 129, 0.1);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-light);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            border: 2px solid var(--primary);
+            transition: all 0.3s;
+        }
+
+        .user-button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            min-width: 200px;
+            overflow: hidden;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .dropdown-item:hover {
+            background: var(--bg-light);
+        }
+
+        .container {
+            margin-top: 80px;
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .welcome-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-content p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .welcome-emoji {
+            font-size: 5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.15);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .action-button {
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.5rem;
+        }
+
+        .action-button:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-label {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .recent-moods {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mood-entry {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .mood-emoji-display {
+            font-size: 2rem;
+        }
+
+        .mood-info {
+            flex-grow: 1;
+        }
+
+        .mood-date {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .mood-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            text-transform: capitalize;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .affirmation-widget {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .affirmation-widget h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .affirmation-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .refresh-affirmation {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .refresh-affirmation:hover {
+            background: white;
+            color: var(--primary);
+        }
+
+        .resources-widget {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .resources-widget h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .resource-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-light);
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s;
+        }
+
+        .resource-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .welcome-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            .welcome-content h1 {
+                font-size: 2rem;
+            }
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span style="font-size: 2rem; color: var(--secondary);">🌟</span>
+            <span>Cheerly Live Up</span>
+        </a>
+        <div class="nav-right">
+            <div class="user-menu">
+                <div class="user-button" onclick="toggleDropdown()">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                    <span>▼</span>
+                </div>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="settings.html" class="dropdown-item">
+                        ⚙️
+                        Settings
+                    </a>
+                    <a href="analytics.html" class="dropdown-item">
+                        📊
+                        Analytics
+                    </a>
+                    <a href="privacy.html" class="dropdown-item">
+                        🔒
+                        Privacy
+                    </a>
+                    <a href="terms.html" class="dropdown-item">
+                        📄
+                        Terms
+                    </a>
+                    <a href="#" class="dropdown-item" onclick="logout()">
+                        🚪
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="welcome-section">
+            <div class="welcome-content">
+                <h1>Welcome back, <span id="welcomeName">Friend</span>!</h1>
+                <p>Ready to continue your wellbeing journey?</p>
+            </div>
+            <div class="welcome-emoji">
+                🌟
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value" id="moodStreak">0</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                    <div class="stat-icon">
+                        <span style="font-size: inherit;">🔥</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value" id="totalCheckins">0</div>
+                        <div class="stat-label">Mood Check-ins</div>
+                    </div>
+                    <div class="stat-icon">
+                        <span style="font-size: inherit;">📊</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value" id="chatSessions">12</div>
+                        <div class="stat-label">Chat Sessions</div>
+                    </div>
+                    <div class="stat-icon">
+                        <span style="font-size: inherit;">💬</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value" id="memberDays">1</div>
+                        <div class="stat-label">Days as Member</div>
+                    </div>
+                    <div class="stat-icon">
+                        <span style="font-size: inherit;">📅</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="main-content">
+                <div class="card">
+                    <h2>
+                        <span style="font-size: inherit;">🌟</span>
+                        Quick Actions
+                    </h2>
+                    <div class="quick-actions">
+                        <a href="chat.html" class="action-button">
+                            <div class="action-icon">
+                                <span style="font-size: inherit;">💬</span>
+                            </div>
+                            <div class="action-label">Start Chat</div>
+                        </a>
+                        <a href="mood-tracker.html" class="action-button">
+                            <div class="action-icon">
+                                <span style="font-size: inherit;">😊</span>
+                            </div>
+                            <div class="action-label">Log Mood</div>
+                        </a>
+                        <a href="day-planner.html" class="action-button">
+                            <div class="action-icon">
+                                <span style="font-size: inherit;">📅</span>
+                            </div>
+                            <div class="action-label">Day Planner</div>
+                        </a>
+                        <a href="analytics.html" class="action-button">
+                            <div class="action-icon">
+                                <span style="font-size: inherit;">📊</span>
+                            </div>
+                            <div class="action-label">View Analytics</div>
+                        </a>
+                        <a href="resources.html" class="action-button">
+                            <div class="action-icon">
+                                <span style="font-size: inherit;">📚</span>
+                            </div>
+                            <div class="action-label">Explore Resources</div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>
+                        <span style="font-size: inherit;">📊</span>
+                        Recent Mood Entries
+                    </h2>
+                    <div class="recent-moods" id="recentMoods">
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                📄
+                            </div>
+                            <p>No mood entries yet. Start tracking your mood today!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="affirmation-widget">
+                    <h3>
+                        <span style="font-size: inherit;">🌟</span>
+                        Daily Affirmation
+                    </h3>
+                    <div class="affirmation-text" id="affirmationText">
+                        "You are stronger than you think, braver than you believe, and more capable than you imagine."
+                    </div>
+                    <button class="refresh-affirmation" onclick="refreshAffirmation()">
+                        🌟
+                        New Affirmation
+                    </button>
+                </div>
+
+                <div class="resources-widget">
+                    <h3>
+                        <span style="font-size: inherit;">🌟</span>
+                        Quick Links
+                    </h3>
+                    <a href="about.html" class="resource-link">
+                        ℹ️
+                        About Cheerly
+                    </a>
+                    <a href="resources.html" class="resource-link">
+                        📚
+                        Mental Health Resources
+                    </a>
+                    <a href="privacy.html" class="resource-link">
+                        🔒
+                        Privacy & Security
+                    </a>
+                    <a href="contact.html" class="resource-link">
+                        💬
+                        Get Support
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+
+        // Load user data
+        const userData = JSON.parse(localStorage.getItem('cheerlyUser') || '{}');
+        const userName = userData.fullName || userData.email?.split('@')[0] || 'Friend';
+        
+        document.getElementById('userName').textContent = userName;
+        document.getElementById('welcomeName').textContent = userName.split(' ')[0];
+        document.getElementById('userAvatar').textContent = userName.charAt(0).toUpperCase();
+
+        // Calculate member days
+        if (userData.signupDate) {
+            const signupDate = new Date(userData.signupDate);
+            const today = new Date();
+            const daysDiff = Math.floor((today - signupDate) / (1000 * 60 * 60 * 24));
+            document.getElementById('memberDays').textContent = daysDiff || 1;
+        }
+
+        // Load mood data
+        function loadMoodData() {
+            const moodHistory = JSON.parse(localStorage.getItem('moodHistory') || '[]');
+            
+            // Update stats
+            document.getElementById('totalCheckins').textContent = moodHistory.length;
+            document.getElementById('moodStreak').textContent = calculateStreak(moodHistory);
+
+            // Display recent moods
+            displayRecentMoods(moodHistory);
+        }
+
+        function calculateStreak(history) {
+            if (history.length === 0) return 0;
+            
+            let streak = 1;
+            for (let i = 0; i < history.length - 1; i++) {
+                const currentDate = new Date(history[i].date).setHours(0, 0, 0, 0);
+                const nextDate = new Date(history[i + 1].date).setHours(0, 0, 0, 0);
+                const dayDiff = (currentDate - nextDate) / (1000 * 60 * 60 * 24);
+                
+                if (dayDiff === 1) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            return streak;
+        }
+
+        function displayRecentMoods(history) {
+            const container = document.getElementById('recentMoods');
+            
+            if (history.length === 0) {
+                return;
+            }
+
+            const moodEmojis = {
+                amazing: '😊',
+                good: '🙂',
+                okay: '😐',
+                down: '😔',
+                struggling: '😢'
+            };
+
+            container.innerHTML = history.slice(0, 5).map(entry => {
+                const date = new Date(entry.date);
+                const formattedDate = date.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric'
+                });
+                
+                return `
+                    <div class="mood-entry">
+                        <div class="mood-emoji-display">${moodEmojis[entry.mood]}</div>
+                        <div class="mood-info">
+                            <div class="mood-label">${entry.mood}</div>
+                            <div class="mood-date">${formattedDate}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Affirmations
+        const affirmations = [
+            "You are stronger than you think, braver than you believe, and more capable than you imagine.",
+            "Every day is a new opportunity to grow and become the best version of yourself.",
+            "Your mental health matters. Taking care of yourself is not selfish—it's essential.",
+            "You are worthy of love, happiness, and all the good things life has to offer.",
+            "It's okay to not be okay. Healing is not linear, and you're doing great.",
+            "You have survived 100% of your worst days. You're stronger than you know.",
+            "Your story isn't over yet. Keep going, keep growing, keep shining.",
+            "You are enough, exactly as you are. You don't need to prove your worth.",
+            "Small steps forward are still progress. Be patient with yourself.",
+            "You are not alone in this journey. Support is always available when you need it."
+        ];
+
+        function refreshAffirmation() {
+            const randomIndex = Math.floor(Math.random() * affirmations.length);
+            document.getElementById('affirmationText').textContent = affirmations[randomIndex];
+        }
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdownMenu');
+            dropdown.classList.toggle('show');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function(e) {
+            if (!e.target.matches('.user-button') && !e.target.closest('.user-button')) {
+                const dropdown = document.getElementById('dropdownMenu');
+                if (dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
+                }
+            }
+        });
+
+        // Load data on page load
+        loadMoodData();
+    </script>
+</body>
+</html>

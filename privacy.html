@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Cheerly Live Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #fbbf24;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f0fdf4;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #f9fafb;
+        }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(16, 185, 129, 0.1);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            margin-top: 90px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2rem 5%;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-section p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            font-style: italic;
+        }
+
+        .content-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .content-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .content-section h3 {
+            color: var(--text-dark);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .content-section p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .content-section ul {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-section ul li {
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            line-height: 1.8;
+        }
+
+        .highlight-box {
+            background: var(--bg-light);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box strong {
+            color: var(--primary-dark);
+        }
+
+        .contact-box {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #fef3c7 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .contact-box h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .contact-box p {
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .contact-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+            .content-section {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG Icon Sprite Library -->
+    <svg style="display: none;" aria-hidden="true">
+        <defs>
+            <symbol id="icon-star" viewBox="0 0 24 24">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </symbol>
+            <symbol id="icon-lock" viewBox="0 0 24 24">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span style="font-size: inherit;">🌟</span>
+            <span>Cheerly Live Up</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="terms.html">Terms</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="hero-section">
+            <h1><span style="font-size: inherit;">🔒</span> Privacy Policy</h1>
+            <p>Your privacy and trust are fundamental to everything we do</p>
+        </div>
+
+        <div class="last-updated">
+            Last Updated: January 8, 2026
+        </div>
+
+        <div class="content-section">
+            <h2>🌟 Our Commitment to Your Privacy</h2>
+            <p>At Cheerly Live Up, we understand that seeking mental health support requires trust. Your privacy is not just important to us—it's essential. This Privacy Policy explains how we collect, use, protect, and respect your personal information.</p>
+            
+            <div class="highlight-box">
+                <strong>Core Principle:</strong> Your conversations, mood data, and personal information are confidential and will never be shared without your explicit consent, except in cases of immediate danger where we have a legal duty to protect life.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>📊 Information We Collect</h2>
+            
+            <h3>Information You Provide Directly</h3>
+            <ul>
+                <li><strong>Chat Conversations:</strong> Messages you send to our AI companion</li>
+                <li><strong>Mood Data:</strong> Your daily mood check-ins and related notes</li>
+                <li><strong>Account Information:</strong> Email address, username (if you create an account)</li>
+                <li><strong>Feedback:</strong> Any feedback or support requests you submit</li>
+            </ul>
+
+            <h3>Information Collected Automatically</h3>
+            <ul>
+                <li><strong>Usage Data:</strong> How you interact with our platform (pages visited, features used)</li>
+                <li><strong>Device Information:</strong> Browser type, operating system, IP address</li>
+                <li><strong>Cookies:</strong> Small data files to improve your experience and remember your preferences</li>
+            </ul>
+
+            <div class="highlight-box">
+                <strong>Important:</strong> We do NOT collect your real name, physical address, phone number, or any personally identifiable information unless you voluntarily provide it.
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>🎯 How We Use Your Information</h2>
+            <p>We use your information solely to provide and improve our mental health support services:</p>
+            
+            <ul>
+                <li><strong>Provide Support:</strong> Deliver personalized AI chat responses and mental health resources</li>
+                <li><strong>Track Progress:</strong> Help you monitor your mood patterns and emotional wellbeing over time</li>
+                <li><strong>Improve Services:</strong> Analyze aggregate data to enhance our platform and add new features</li>
+                <li><strong>Communication:</strong> Send important updates about our service (with your permission)</li>
+                <li><strong>Safety:</strong> Identify crisis situations and provide appropriate emergency resources</li>
+            </ul>
+
+            <p><strong>We will NEVER:</strong></p>
+            <ul>
+                <li>Sell your personal information to third parties</li>
+                <li>Share your conversations or mood data without your consent</li>
+                <li>Use your data for targeted advertising</li>
+                <li>Contact you for marketing purposes without permission</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>🔐 How We Protect Your Information</h2>
+            
+            <h3>Security Measures</h3>
+            <ul>
+                <li><strong>Encryption:</strong> All data is encrypted in transit (HTTPS) and at rest</li>
+                <li><strong>Access Controls:</strong> Strict limits on who can access user data (only authorized personnel)</li>
+                <li><strong>Anonymization:</strong> Personal identifiers are removed when analyzing aggregate data</li>
+                <li><strong>Regular Audits:</strong> Ongoing security assessments and updates</li>
+                <li><strong>Secure Storage:</strong> Data stored on secure, industry-standard servers</li>
+            </ul>
+
+            <h3>Your Data Rights</h3>
+            <p>You have complete control over your information:</p>
+            <ul>
+                <li><strong>Access:</strong> Request a copy of all data we have about you</li>
+                <li><strong>Correction:</strong> Update or correct any inaccurate information</li>
+                <li><strong>Deletion:</strong> Request deletion of your account and all associated data</li>
+                <li><strong>Export:</strong> Download your mood tracking data and conversation history</li>
+                <li><strong>Opt-Out:</strong> Unsubscribe from communications at any time</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>🚨 When We May Share Information</h2>
+            
+            <p>We take confidentiality seriously, but there are limited circumstances where we may need to share information:</p>
+            
+            <h3>Safety Situations</h3>
+            <p>If we believe there is an immediate risk of harm to you or others, we may contact emergency services or appropriate authorities. This is done only to protect life and safety.</p>
+
+            <h3>Legal Requirements</h3>
+            <p>We may disclose information if required by law, such as in response to a valid court order or to comply with legal obligations.</p>
+
+            <h3>Service Providers</h3>
+            <p>We work with trusted third-party service providers (e.g., cloud hosting, analytics) who help us operate our platform. These providers:</p>
+            <ul>
+                <li>Are contractually obligated to protect your data</li>
+                <li>Can only use data to provide services to us</li>
+                <li>Cannot share your information with others</li>
+                <li>Must meet our security and privacy standards</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>🍪 Cookies and Tracking</h2>
+            
+            <p>We use cookies and similar technologies to:</p>
+            <ul>
+                <li>Remember your preferences and settings</li>
+                <li>Understand how you use our platform</li>
+                <li>Improve user experience and functionality</li>
+                <li>Analyze platform performance</li>
+            </ul>
+
+            <p>You can control cookies through your browser settings. Note that disabling cookies may affect some platform features.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>👶 Age and Consent</h2>
+            
+            <p>Cheerly Live Up is designed for young people, but we respect age-appropriate consent laws:</p>
+            <ul>
+                <li>Users under 13 require parental/guardian consent to use our services</li>
+                <li>Users aged 13-17 can use the platform, but we encourage involving a trusted adult</li>
+                <li>We do not knowingly collect data from children under 13 without consent</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>🌍 International Users</h2>
+            
+            <p>Cheerly Live Up serves users across Africa and potentially other regions. Your data may be processed in different countries, but we ensure:</p>
+            <ul>
+                <li>Consistent privacy protection regardless of location</li>
+                <li>Compliance with applicable data protection laws</li>
+                <li>Appropriate safeguards for international data transfers</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>📝 Changes to This Policy</h2>
+            
+            <p>We may update this Privacy Policy from time to time to reflect changes in our practices or legal requirements. When we make significant changes:</p>
+            <ul>
+                <li>We'll update the "Last Updated" date at the top</li>
+                <li>We'll notify you via email or platform notification</li>
+                <li>We'll give you an opportunity to review the changes</li>
+                <li>Continued use of the platform means acceptance of the updated policy</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>💡 Tips for Protecting Your Privacy</h2>
+            
+            <ul>
+                <li>Don't share your account password with anyone</li>
+                <li>Use a strong, unique password for your account</li>
+                <li>Log out when using shared devices</li>
+                <li>Be mindful of what personal details you share in conversations</li>
+                <li>Review your privacy settings regularly</li>
+                <li>Contact us immediately if you suspect unauthorized access</li>
+            </ul>
+        </div>
+
+        <div class="contact-box">
+            <h3>Questions About Privacy?</h3>
+            <p>We're here to help. If you have questions about this policy or how we handle your data, please reach out.</p>
+            <a href="contact.html" class="contact-button">Contact Us</a>
+        </div>
+
+        <div class="content-section" style="margin-top: 2rem;">
+            <h2>📧 Contact Information</h2>
+            <p>For privacy-related questions, data requests, or concerns:</p>
+            <ul>
+                <li><strong>Email:</strong> privacy@cheerlyliveup.org</li>
+                <li><strong>Data Protection Officer:</strong> dpo@cheerlyliveup.org</li>
+                <li><strong>General Inquiries:</strong> <a href="contact.html" style="color: var(--primary);">Contact Form</a></li>
+            </ul>
+            
+            <p style="margin-top: 2rem;">We aim to respond to all privacy inquiries within 48 hours.</p>
+        </div>
+    </div>
+</body>
+</html>

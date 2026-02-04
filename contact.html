@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Cheerly Live Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #fbbf24;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f0fdf4;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #f9fafb;
+        }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(16, 185, 129, 0.1);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            margin-top: 90px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2rem 5%;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .hero-section .highlight {
+            color: var(--primary);
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-form-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .contact-form-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        .contact-info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.15);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-card h3 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .contact-card p {
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-card a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-card a:hover {
+            text-decoration: underline;
+        }
+
+        .quick-links {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .quick-links h2 {
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .quick-link-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s;
+            display: block;
+        }
+
+        .quick-link-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .quick-link-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .quick-link-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-message {
+            display: none;
+            background: var(--bg-light);
+            border: 2px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .faq-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            margin-top: 3rem;
+        }
+
+        .faq-section h2 {
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .faq-answer {
+            color: var(--text-light);
+        }
+
+        @media (max-width: 968px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG Icon Sprite Library -->
+    <svg style="display: none;" aria-hidden="true">
+        <defs>
+            <symbol id="icon-star" viewBox="0 0 24 24">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </symbol>
+            <symbol id="icon-phone" viewBox="0 0 24 24">
+                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+            </symbol>
+            <symbol id="icon-email" viewBox="0 0 24 24">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </symbol>
+            <symbol id="icon-location" viewBox="0 0 24 24">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </symbol>
+            <symbol id="icon-chat" viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+            </symbol>
+            <symbol id="icon-mood" viewBox="0 0 24 24">
+                <circle cx="15.5" cy="9.5" r="1.5"/>
+                <circle cx="8.5" cy="9.5" r="1.5"/>
+                <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-4c-1.48 0-2.75-.81-3.45-2H6.88c.8 2.05 2.79 3.5 5.12 3.5s4.32-1.45 5.12-3.5h-1.67c-.7 1.19-1.97 2-3.45 2z"/>
+            </symbol>
+            <symbol id="icon-book" viewBox="0 0 24 24">
+                <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/>
+            </symbol>
+            <symbol id="icon-info" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+            </symbol>
+            <symbol id="icon-check" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+            </symbol>
+            <symbol id="icon-lock" viewBox="0 0 24 24">
+                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+            </symbol>
+            <symbol id="icon-handshake" viewBox="0 0 24 24">
+                <path d="M12 2C9.24 2 7 4.24 7 7l5 7-5 7c0 2.76 2.24 5 5 5s5-2.24 5-5l-5-7 5-7c0-2.76-2.24-5-5-5z"/>
+            </symbol>
+            <symbol id="icon-analytics" viewBox="0 0 24 24">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+            </symbol>
+            <symbol id="icon-sos" viewBox="0 0 24 24">
+                <path d="M15.5 1h-8l-1.5 1.5v17l1.5 1.5h8l1.5-1.5v-17L15.5 1zm-4 18c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67-1.5-1.5-1.5zM15 14H9V4h6v10z"/>
+            </symbol>
+            <symbol id="icon-question" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+            </symbol>
+            <symbol id="icon-money" viewBox="0 0 24 24">
+                <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+            </symbol>
+            <symbol id="icon-robot" viewBox="0 0 24 24">
+                <path d="M12 2c-1.1 0-2 .9-2 2v2H7c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-3V4c0-1.1-.9-2-2-2zm-2 9c0-.55.45-1 1-1s1 .45 1 1-.45 1-1 1-1-.45-1-1zm4 0c0-.55.45-1 1-1s1 .45 1 1-.45 1-1 1-1-.45-1-1zm-5 4h6v1H9v-1z"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span style="font-size: inherit;">🌟</span>
+            <span>Cheerly Live Up</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="chat.html">Chat</a></li>
+            <li><a href="mood-tracker.html">Mood Tracker</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="signup.html" style="background: var(--primary); color: white; padding: 0.5rem 1.5rem; border-radius: 50px;">Get Started</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="hero-section">
+            <h1>Get in <span class="highlight">Touch</span></h1>
+            <p>We're here to help. Reach out anytime with questions, feedback, or support needs.</p>
+        </div>
+
+        <div class="content-grid">
+            <div class="contact-form-section">
+                <h2>Send Us a Message</h2>
+                <form id="contactForm" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Your Name *</label>
+                        <input type="text" id="name" name="name" required placeholder="Enter your name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="feedback">Feedback & Suggestions</option>
+                            <option value="partnership">Partnership Opportunity</option>
+                            <option value="privacy">Privacy & Data Question</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Your Message *</label>
+                        <textarea id="message" name="message" required placeholder="Tell us how we can help..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-button">Send Message 📧</button>
+                    <div class="success-message" id="successMessage">
+                        ✓ Thank you! Your message has been sent. We'll respond within 24-48 hours.
+                    </div>
+                </form>
+            </div>
+
+            <div class="contact-info-section">
+                <div class="contact-card">
+                    <div class="contact-icon"><span style="font-size: inherit;">💬</span></div>
+                    <h3>Live Chat Support</h3>
+                    <p>Need immediate help? Chat with Cheerly AI 24/7</p>
+                    <a href="chat.html">Start Chatting →</a>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-icon"><span style="font-size: inherit;">📧</span></div>
+                    <h3>Email Support</h3>
+                    <p>For general inquiries and support</p>
+                    <a href="mailto:support@cheerlyliveup.org">support@cheerlyliveup.org</a>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-icon"><span style="font-size: inherit;">🔒</span></div>
+                    <h3>Privacy & Data</h3>
+                    <p>Questions about your data or privacy</p>
+                    <a href="mailto:privacy@cheerlyliveup.org">privacy@cheerlyliveup.org</a>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-icon"><span style="font-size: inherit;">❓</span></div>
+                    <h3>Partnerships</h3>
+                    <p>Collaborate with us to support youth wellbeing</p>
+                    <a href="mailto:partnerships@cheerlyliveup.org">partnerships@cheerlyliveup.org</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-links">
+            <h2>Quick Access</h2>
+            <div class="links-grid">
+                <a href="chat.html" class="quick-link-card">
+                    <div class="quick-link-icon">💬</div>
+                    <h3>Chat Now</h3>
+                    <p>Talk to Cheerly AI</p>
+                </a>
+                <a href="mood-tracker.html" class="quick-link-card">
+                    <div class="quick-link-icon">❓</div>
+                    <h3>Track Mood</h3>
+                    <p>Log your feelings</p>
+                </a>
+                <a href="resources.html" class="quick-link-card">
+                    <div class="quick-link-icon">📚</div>
+                    <h3>Resources</h3>
+                    <p>Mental health tools</p>
+                </a>
+                <a href="resources.html#crisis" class="quick-link-card">
+                    <div class="quick-link-icon">❓</div>
+                    <h3>Crisis Help</h3>
+                    <p>Immediate support</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">❓ How do I get started with Cheerly Live Up?</div>
+                <div class="faq-answer">Simply visit our <a href="chat.html" style="color: var(--primary); font-weight: 600;">Chat page</a> and start talking! No signup required for basic chat. You can create an account later to save your mood history and preferences.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">❓ Is Cheerly Live Up really free?</div>
+                <div class="faq-answer">Yes! Our core services (AI chat support, mood tracking, and resources) are completely free. We believe mental health support should be accessible to everyone.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">🔒 Are my conversations private?</div>
+                <div class="faq-answer">Absolutely. Your conversations are confidential and encrypted. We will never share your data without consent, except in rare cases of immediate danger. Read our <a href="privacy.html" style="color: var(--primary); font-weight: 600;">Privacy Policy</a> for details.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">❓ Is this a real therapist or AI?</div>
+                <div class="faq-answer">Cheerly is an AI-powered companion designed to provide supportive conversations and mental health resources. While not a replacement for professional therapy, we offer 24/7 support and can help you find professional help when needed.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">❓ What if I'm in crisis?</div>
+                <div class="faq-answer">If you're in immediate danger, please call emergency services (112/911) or visit our <a href="resources.html#crisis" style="color: var(--primary); font-weight: 600;">Crisis Resources page</a> for helplines and professional support available 24/7.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">📱 Do you have a mobile app?</div>
+                <div class="faq-answer">We're currently web-based and work great on mobile browsers! A dedicated mobile app is in our roadmap. For now, you can add our website to your phone's home screen for app-like access.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">💬 How quickly will I get a response to my message?</div>
+                <div class="faq-answer">AI chat responses are instant! For email inquiries sent through our contact form, we typically respond within 24-48 hours during business days.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">🌍 What languages do you support?</div>
+                <div class="faq-answer">Currently, we primarily support English. We're working on adding more African languages to better serve our diverse community. Stay tuned for updates!</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            // In a real application, this would send the form data to a server
+            // For now, we'll just show the success message
+            
+            const form = document.getElementById('contactForm');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Show success message
+            successMessage.classList.add('show');
+            
+            // Reset form
+            form.reset();
+            
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
