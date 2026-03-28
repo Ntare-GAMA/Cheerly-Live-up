@@ -1,557 +1,412 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get Started Free - Cheerly Live Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #10b981;
-            --primary-dark: #059669;
-            --secondary: #fbbf24;
-            --text-dark: #1f2937;
-            --text-light: #6b7280;
-            --bg-light: #f0fdf4;
+            --primary: #10b981; --primary-dark: #059669; --primary-glow: rgba(16,185,129,0.15);
+            --secondary: #fbbf24; --accent: #8b5cf6;
+            --text-dark: #1f2937; --text-light: #6b7280; --bg-light: #f0fdf4;
+            --card-shadow: 0 25px 60px rgba(0,0,0,0.12);
         }
-
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background: linear-gradient(135deg, var(--bg-light) 0%, #fef3c7 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            font-family: 'Inter','Segoe UI',system-ui,sans-serif;
+            line-height: 1.6; color: var(--text-dark);
+            min-height: 100vh; overflow-x: hidden; background: #f8fafc;
         }
 
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 20px rgba(16, 185, 129, 0.1);
-        }
+        /* Animated BG */
+        .bg-animation { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0;
+            background: linear-gradient(135deg, #ecfdf5 0%, #fef9c3 50%, #ede9fe 100%); overflow: hidden; }
+        .bg-animation .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5;
+            animation: blobFloat 8s ease-in-out infinite alternate; }
+        .blob-1 { width:500px; height:500px; background:var(--primary-glow); top:-100px; right:-100px; }
+        .blob-2 { width:400px; height:400px; background:rgba(251,191,36,0.15); bottom:-50px; left:-50px; animation-delay:2s; }
+        .blob-3 { width:300px; height:300px; background:rgba(139,92,246,0.1); top:50%; left:30%; animation-delay:4s; }
+        @keyframes blobFloat { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(-30px,30px) scale(1.1)} }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
+        /* Navbar */
+        .navbar { position:relative; z-index:10; background:rgba(255,255,255,0.8); backdrop-filter:blur(20px);
+            padding:1rem 5%; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(16,185,129,0.08); }
+        .logo { font-size:1.4rem; font-weight:800; color:var(--primary); display:flex; align-items:center; gap:0.5rem; text-decoration:none; }
+        .logo-dot { width:10px; height:10px; background:var(--secondary); border-radius:50%; display:inline-block; animation:pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.3);opacity:0.7} }
+        .nav-links { display:flex; gap:2rem; list-style:none; align-items:center; }
+        .nav-links a { text-decoration:none; color:var(--text-light); font-weight:600; font-size:0.95rem; transition:color 0.3s; }
+        .nav-links a:hover { color:var(--primary); }
+        .nav-cta { padding:0.6rem 1.5rem; background:var(--primary); color:white!important; border-radius:50px;
+            transition:all 0.3s!important; box-shadow:0 4px 15px rgba(16,185,129,0.3); }
+        .nav-cta:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(16,185,129,0.4); }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-            align-items: center;
-        }
+        /* Main Layout */
+        .signup-wrapper { position:relative; z-index:5; display:grid; grid-template-columns:1fr 1.1fr;
+            min-height:calc(100vh - 65px); max-width:1400px; margin:0 auto; padding:2rem 5%; align-items:center; gap:3rem; }
 
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 500;
-            transition: color 0.3s;
-        }
+        /* Left - Info Panel */
+        .signup-info { animation: slideInLeft 0.8s ease-out; }
+        @keyframes slideInLeft { from{opacity:0;transform:translateX(-40px)} to{opacity:1;transform:translateX(0)} }
 
-        .nav-links a:hover {
-            color: var(--primary);
-        }
+        .info-badge { display:inline-flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; background:rgba(16,185,129,0.1);
+            color:var(--primary-dark); border-radius:50px; font-weight:700; font-size:0.85rem; margin-bottom:1.5rem; }
+        .info-badge .dot { width:8px; height:8px; border-radius:50%; background:var(--primary); animation:pulse 2s ease-in-out infinite; }
 
-        .signup-container {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 5%;
+        .signup-info h1 { font-size:2.8rem; font-weight:800; line-height:1.15; margin-bottom:1rem; }
+        .signup-info h1 .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
+        .signup-info > p { font-size:1.1rem; color:var(--text-light); margin-bottom:2rem; max-width:480px; }
 
-        .signup-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            max-width: 1200px;
-            width: 100%;
-            background: white;
-            border-radius: 30px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        /* Benefit cards */
+        .benefit-cards { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:2rem; }
+        .benefit-card { background:rgba(255,255,255,0.7); backdrop-filter:blur(10px); padding:1.25rem;
+            border-radius:16px; border:1px solid rgba(255,255,255,0.8); transition:all 0.3s; }
+        .benefit-card:hover { transform:translateY(-4px); box-shadow:0 10px 30px rgba(16,185,129,0.12); }
+        .benefit-icon { width:42px; height:42px; border-radius:12px;
+            display:flex; align-items:center; justify-content:center; font-size:1.3rem; margin-bottom:0.75rem; }
+        .benefit-card:nth-child(1) .benefit-icon { background:rgba(16,185,129,0.1); }
+        .benefit-card:nth-child(2) .benefit-icon { background:rgba(251,191,36,0.15); }
+        .benefit-card:nth-child(3) .benefit-icon { background:rgba(139,92,246,0.1); }
+        .benefit-card:nth-child(4) .benefit-icon { background:rgba(244,114,182,0.1); }
+        .benefit-card h3 { font-size:0.95rem; font-weight:700; margin-bottom:0.25rem; }
+        .benefit-card p { font-size:0.8rem; color:var(--text-light); line-height:1.4; }
+
+        /* Animated illustration under benefits */
+        .mini-illustration { text-align:center; margin-top:1rem; }
+        .mini-illustration svg { width:280px; height:auto; }
+        .plant-leaf { fill:var(--primary); animation:leafSway 3s ease-in-out infinite; transform-origin:bottom center; }
+        .plant-leaf-2 { fill:#059669; animation:leafSway 3s ease-in-out infinite 0.4s; transform-origin:bottom center; }
+        .plant-pot { fill:#92400e; }
+        .plant-sparkle { fill:var(--secondary); animation:sparkle 2s ease-in-out infinite; }
+        .plant-sparkle:nth-child(2) { animation-delay:0.5s; }
+        .plant-sparkle:nth-child(3) { animation-delay:1s; }
+        @keyframes leafSway { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(3deg)} }
+        @keyframes sparkle { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.5)} }
+
+        /* Right - Form */
+        .signup-form-section { animation:slideInRight 0.8s ease-out; }
+        @keyframes slideInRight { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
+
+        .signup-card { background:rgba(255,255,255,0.85); backdrop-filter:blur(20px); padding:2.5rem;
+            border-radius:24px; box-shadow:var(--card-shadow); border:1px solid rgba(255,255,255,0.8);
+            max-width:480px; width:100%; transition:box-shadow 0.4s; }
+        .signup-card:hover { box-shadow:0 30px 80px rgba(16,185,129,0.15); }
+
+        .form-header { text-align:center; margin-bottom:1.5rem; }
+        .form-header h2 { font-size:1.6rem; font-weight:800; }
+        .form-header p { color:var(--text-light); font-size:0.9rem; margin-top:0.25rem; }
+
+        /* Stepped progress */
+        .step-progress { display:flex; justify-content:center; gap:0.5rem; margin-bottom:1.5rem; }
+        .step-dot { width:40px; height:4px; border-radius:2px; background:#e5e7eb; transition:all 0.4s; }
+        .step-dot.active { background:var(--primary); width:60px; }
+        .step-dot.done { background:var(--primary); }
+
+        .form-row { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+        .form-group { margin-bottom:1rem; position:relative; }
+        .form-group label { display:block; margin-bottom:0.35rem; font-weight:600; font-size:0.85rem; color:var(--text-dark); }
+        .form-group input { width:100%; padding:0.8rem 1rem; border:2px solid #e5e7eb; border-radius:12px;
+            font-family:inherit; font-size:0.9rem; transition:all 0.3s; background:rgba(255,255,255,0.7); }
+        .form-group input:focus { outline:none; border-color:var(--primary); background:white; box-shadow:0 0 0 4px var(--primary-glow); }
+
+        .strength-bar { height:4px; background:#e5e7eb; border-radius:2px; margin-top:0.4rem; overflow:hidden; }
+        .strength-fill { height:100%; width:0%; transition:all 0.3s; border-radius:2px; }
+        .strength-text { font-size:0.8rem; margin-top:0.2rem; }
+
+        .checkbox-group { display:flex; align-items:start; gap:0.5rem; margin-bottom:1rem; }
+        .checkbox-group input[type="checkbox"] { margin-top:0.2rem; width:auto; accent-color:var(--primary); }
+        .checkbox-group label { font-weight:normal; font-size:0.85rem; color:var(--text-light); }
+        .checkbox-group a { color:var(--primary); text-decoration:none; font-weight:600; }
+
+        .signup-button { width:100%; padding:0.95rem; background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+            color:white; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer;
+            transition:all 0.3s; position:relative; overflow:hidden; }
+        .signup-button:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(16,185,129,0.4); }
+        .signup-button.loading { pointer-events:none; opacity:0.8; }
+        .btn-spinner { display:none; width:20px; height:20px; border:3px solid rgba(255,255,255,0.3);
+            border-top:3px solid white; border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto; }
+        .signup-button.loading .btn-text { display:none; }
+        .signup-button.loading .btn-spinner { display:block; }
+        @keyframes spin { to{transform:rotate(360deg)} }
+
+        .divider { text-align:center; margin:1.25rem 0; color:var(--text-light); position:relative; font-size:0.85rem; }
+        .divider::before,.divider::after { content:''; position:absolute; top:50%; width:40%; height:1px; background:#e5e7eb; }
+        .divider::before { left:0; } .divider::after { right:0; }
+
+        .social-signup { display:flex; gap:0.75rem; margin-bottom:1.25rem; }
+        .social-button { flex:1; padding:0.7rem; border:2px solid #e5e7eb; background:white; border-radius:12px;
+            cursor:pointer; font-size:0.9rem; font-weight:600; color:var(--text-dark); transition:all 0.3s;
+            display:flex; align-items:center; justify-content:center; gap:0.5rem; }
+        .social-button:hover { border-color:var(--primary); background:var(--bg-light); transform:translateY(-2px); }
+
+        .login-link { text-align:center; color:var(--text-light); font-size:0.9rem; }
+        .login-link a { color:var(--primary); text-decoration:none; font-weight:700; }
+        .login-link a:hover { text-decoration:underline; }
+
+        /* Toast */
+        .toast { position:fixed; top:80px; right:20px; padding:1rem 1.5rem; border-radius:12px; font-weight:600;
+            font-size:0.9rem; z-index:100; transform:translateX(120%); transition:transform 0.4s cubic-bezier(0.68,-0.55,0.27,1.55);
+            box-shadow:0 10px 30px rgba(0,0,0,0.15); }
+        .toast.show { transform:translateX(0); }
+        .toast.error { background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; }
+        .toast.success { background:#ecfdf5; color:#059669; border:1px solid #6ee7b7; }
+
+        @media (max-width:968px) {
+            .signup-wrapper { grid-template-columns:1fr; }
+            .signup-info { text-align:center; }
+            .signup-info > p { margin-left:auto; margin-right:auto; }
+            .benefit-cards { max-width:500px; margin-left:auto; margin-right:auto; }
+            .signup-form-section { display:flex; justify-content:center; }
+            .mini-illustration { display:none; }
         }
-
-        .signup-info {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 4rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .signup-info h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-        }
-
-        .signup-info p {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
-        }
-
-        .benefits-list {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .benefits-list li {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            font-size: 1.05rem;
-        }
-
-        .benefits-list li::before {
-            content: '✓';
-            width: 30px;
-            height: 30px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .signup-form-section {
-            padding: 4rem;
-        }
-
-        .signup-form-section h2 {
-            font-size: 2rem;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .signup-form-section .subtitle {
-            color: var(--text-light);
-            margin-bottom: 2rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .password-strength {
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-
-        .strength-bar {
-            height: 4px;
-            background: #e5e7eb;
-            border-radius: 2px;
-            margin-top: 0.5rem;
-            overflow: hidden;
-        }
-
-        .strength-fill {
-            height: 100%;
-            width: 0%;
-            background: var(--primary);
-            transition: all 0.3s;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: start;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            margin-top: 0.25rem;
-            width: auto;
-        }
-
-        .checkbox-group label {
-            font-weight: normal;
-            font-size: 0.95rem;
-            color: var(--text-light);
-        }
-
-        .checkbox-group a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .signup-button {
-            width: 100%;
-            padding: 1rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 1rem;
-        }
-
-        .signup-button:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
-        }
-
-        .divider {
-            text-align: center;
-            margin: 1.5rem 0;
-            color: var(--text-light);
-            position: relative;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 40%;
-            height: 1px;
-            background: #e5e7eb;
-        }
-
-        .divider::before {
-            left: 0;
-        }
-
-        .divider::after {
-            right: 0;
-        }
-
-        .social-signup {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .social-button {
-            flex: 1;
-            padding: 0.75rem;
-            border: 2px solid #e5e7eb;
-            background: white;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .social-button:hover {
-            border-color: var(--primary);
-            background: var(--bg-light);
-        }
-
-        .login-link {
-            text-align: center;
-            color: var(--text-light);
-        }
-
-        .login-link a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .login-link a:hover {
-            text-decoration: underline;
-        }
-
-        .success-message {
-            display: none;
-            background: var(--bg-light);
-            border: 2px solid var(--primary);
-            padding: 1rem;
-            border-radius: 10px;
-            text-align: center;
-            margin-bottom: 1rem;
-            color: var(--primary-dark);
-            font-weight: 600;
-        }
-
-        .success-message.show {
-            display: block;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 968px) {
-            .signup-wrapper {
-                grid-template-columns: 1fr;
-            }
-            .signup-info {
-                padding: 3rem 2rem;
-            }
-            .signup-form-section {
-                padding: 3rem 2rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            .signup-info h1 {
-                font-size: 2rem;
-            }
+        @media (max-width:768px) {
+            .nav-links { display:none; }
+            .signup-info h1 { font-size:2rem; }
+            .signup-card { padding:2rem 1.5rem; }
+            .benefit-cards { grid-template-columns:1fr; }
+            .form-row { grid-template-columns:1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- SVG Icon Sprite Library -->
-    <svg style="display: none;" aria-hidden="true">
-        <defs>
-            <symbol id="icon-star" viewBox="0 0 24 24">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-            </symbol>
-            <symbol id="icon-rocket" viewBox="0 0 24 24">
-                <path d="M9.19 6.35c-2.04 2.29-3.44 5.58-3.57 5.89L2 10.69l4.05-4.05c.47-.47 1.15-.68 1.81-.55l1.33 1.33zM11.17 17s3.74-1.55 5.89-3.7c5.4-5.4 4.5-9.62 4.21-10.57-.95-.3-5.17-1.19-10.57 4.21C8.55 9.09 7 12.83 7 12.83l-1.98 1.98 1.42 1.42 3.31-3.31c-.5-1.25-.23-2.7.79-3.71 1.6-1.6 4.2-1.6 5.8 0s1.6 4.2 0 5.8c-1.02 1.02-2.46 1.29-3.71.79l-3.31 3.31 1.42 1.42 1.98-1.98z"/>
-            </symbol>
-            <symbol id="icon-lock" viewBox="0 0 24 24">
-                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
-            </symbol>
-            <symbol id="icon-check" viewBox="0 0 24 24">
-                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-            </symbol>
-        </defs>
-    </svg>
+    <div class="bg-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
 
     <nav class="navbar">
-        <a href="index.html" class="logo">
-            <span style="font-size: inherit;">🌟</span>
-            <span>Cheerly Live Up</span>
-        </a>
+        <a href="index.html" class="logo"><span class="logo-dot"></span> Cheerly Live Up</a>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
-            <li><a href="login.html">Login</a></li>
+            <li><a href="login.html" class="nav-cta">Login</a></li>
         </ul>
     </nav>
 
-    <div class="signup-container">
-        <div class="signup-wrapper">
-            <div class="signup-info">
-                <h1>Start Your Wellbeing Journey Today <span style="font-size: inherit;">🌟</span></h1>
-                <p>Join thousands of young people taking control of their mental health with Cheerly Live Up.</p>
-                
-                <ul class="benefits-list">
-                    <li>24/7 AI companion for mental health support</li>
-                    <li>Track your mood and emotional patterns</li>
-                    <li>Access proven coping strategies and resources</li>
-                    <li>100% private and confidential</li>
-                    <li>Completely free - no credit card required</li>
-                    <li>Connect with a supportive community</li>
-                </ul>
+    <div class="toast" id="toast"></div>
 
-                <p style="font-size: 0.95rem; opacity: 0.8;">
-                    🔒 Your privacy matters. All data is encrypted and never shared without your consent.
-                </p>
+    <div class="signup-wrapper">
+        <!-- Left: Info & Benefits -->
+        <div class="signup-info">
+            <div class="info-badge"><span class="dot"></span> 100% Free Forever</div>
+            <h1>Start Your <span class="gradient-text">Wellbeing</span> Journey Today</h1>
+            <p>Join thousands of young people taking control of their mental health. Private, supportive, and designed for you.</p>
+
+            <div class="benefit-cards">
+                <div class="benefit-card">
+                    <div class="benefit-icon">ðŸ’¬</div>
+                    <h3>24/7 Chat Support</h3>
+                    <p>Supportive conversations whenever you need them</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">ðŸ“Š</div>
+                    <h3>Mood Tracking</h3>
+                    <p>Understand your emotional patterns over time</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">ðŸ§˜</div>
+                    <h3>Wellness Tools</h3>
+                    <p>Breathing exercises, gratitude journal & more</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">ðŸ”’</div>
+                    <h3>100% Private</h3>
+                    <p>Encrypted data â€” never shared with anyone</p>
+                </div>
             </div>
 
-            <div class="signup-form-section">
-                <h2>Create Your Account</h2>
-                <p class="subtitle">It takes less than 2 minutes to get started</p>
+            <!-- Growing plant illustration -->
+            <div class="mini-illustration">
+                <svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Pot -->
+                    <path class="plant-pot" d="M110,140 L105,175 L175,175 L170,140 Z" rx="5"/>
+                    <rect class="plant-pot" x="100" y="132" width="80" height="12" rx="6" fill="#b45309"/>
+                    <!-- Soil -->
+                    <ellipse cx="140" cy="142" rx="32" ry="6" fill="#78350f"/>
+                    <!-- Stem -->
+                    <path d="M140,140 Q138,110 140,80" fill="none" stroke="#059669" stroke-width="4" stroke-linecap="round"/>
+                    <!-- Leaves -->
+                    <ellipse class="plant-leaf" cx="155" cy="110" rx="25" ry="10" transform="rotate(-25,155,110)"/>
+                    <ellipse class="plant-leaf-2" cx="122" cy="95" rx="22" ry="9" transform="rotate(20,122,95)"/>
+                    <ellipse class="plant-leaf" cx="152" cy="85" rx="20" ry="8" transform="rotate(-35,152,85)" style="animation-delay:0.8s"/>
+                    <!-- Sparkles -->
+                    <polygon class="plant-sparkle" points="180,75 182,80 187,80 183,83 184,88 180,85 176,88 177,83 173,80 178,80"/>
+                    <polygon class="plant-sparkle" points="105,70 107,74 111,74 108,76 109,80 105,78 101,80 102,76 99,74 103,74"/>
+                    <polygon class="plant-sparkle" points="160,55 162,59 166,59 163,61 164,65 160,63 156,65 157,61 154,59 158,59"/>
+                    <!-- Heart at top -->
+                    <g transform="translate(137,60)">
+                        <path d="M0,-5 C0,-10 7,-10 7,-5 C7,0 0,8 0,8 C0,8 -7,0 -7,-5 C-7,-10 0,-10 0,-5Z" fill="#f472b6" opacity="0.8">
+                            <animate attributeName="opacity" values="0.8;0.4;0.8" dur="2s" repeatCount="indefinite"/>
+                        </path>
+                    </g>
+                </svg>
+            </div>
+        </div>
 
-                <div class="success-message" id="successMessage">
-                    ✓ Account created successfully! Redirecting to dashboard...
+        <!-- Right: Signup Form -->
+        <div class="signup-form-section">
+            <div class="signup-card">
+                <div class="form-header">
+                    <h2>Create Your Account</h2>
+                    <p>Takes less than 2 minutes</p>
                 </div>
 
-                <form id="signupForm" onsubmit="handleSignup(event)">
-                    <div class="form-group">
-                        <label for="fullName">Full Name *</label>
-                        <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
-                    </div>
+                <div class="step-progress">
+                    <div class="step-dot active" id="step1"></div>
+                    <div class="step-dot" id="step2"></div>
+                    <div class="step-dot" id="step3"></div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="email">Email Address *</label>
-                        <input type="email" id="email" name="email" required placeholder="your.email@example.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">Password *</label>
-                        <input type="password" id="password" name="password" required placeholder="Create a strong password" oninput="checkPasswordStrength()">
-                        <div class="strength-bar">
-                            <div class="strength-fill" id="strengthFill"></div>
+                <form id="signupForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" required placeholder="Your name">
                         </div>
-                        <div class="password-strength" id="passwordStrength"></div>
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" required placeholder="Your age" min="13" max="120">
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="confirmPassword">Confirm Password *</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Re-enter your password">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" required placeholder="you@example.com" autocomplete="email">
                     </div>
 
                     <div class="form-group">
-                        <label for="age">Age *</label>
-                        <input type="number" id="age" name="age" required placeholder="Your age" min="13" max="120">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required placeholder="Create a strong password" oninput="checkStrength()">
+                        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+                        <div class="strength-text" id="strengthText"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" required placeholder="Re-enter password">
                     </div>
 
                     <div class="checkbox-group">
-                        <input type="checkbox" id="terms" name="terms" required>
-                        <label for="terms">I agree to the <a href="privacy.html">Privacy Policy</a> and Terms of Service</label>
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">I agree to the <a href="privacy.html">Privacy Policy</a> & Terms</label>
                     </div>
 
                     <div class="checkbox-group">
-                        <input type="checkbox" id="newsletter" name="newsletter">
-                        <label for="newsletter">Send me mental health tips and updates (optional)</label>
+                        <input type="checkbox" id="newsletter">
+                        <label for="newsletter">Send me wellbeing tips & updates (optional)</label>
                     </div>
 
-                    <button type="submit" class="signup-button">Create My Free Account 🚀</button>
+                    <button type="submit" class="signup-button" id="signupBtn">
+                        <span class="btn-text">Create My Free Account</span>
+                        <div class="btn-spinner"></div>
+                    </button>
                 </form>
 
                 <div class="divider">or</div>
 
                 <div class="social-signup">
                     <button class="social-button" onclick="socialSignup('google')">
-                        🔵 Google
+                        <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                        Google
                     </button>
                     <button class="social-button" onclick="socialSignup('facebook')">
-                        📘 Facebook
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        Facebook
                     </button>
                 </div>
 
                 <div class="login-link">
-                    Already have an account? <a href="login.html">Login here</a>
+                    Already have an account? <a href="login.html">Log in</a>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        function checkPasswordStrength() {
-            const password = document.getElementById('password').value;
-            const strengthFill = document.getElementById('strengthFill');
-            const strengthText = document.getElementById('passwordStrength');
-            
-            let strength = 0;
-            
-            if (password.length >= 8) strength += 25;
-            if (password.match(/[a-z]+/)) strength += 25;
-            if (password.match(/[A-Z]+/)) strength += 25;
-            if (password.match(/[0-9]+/)) strength += 12.5;
-            if (password.match(/[$@#&!]+/)) strength += 12.5;
-            
-            strengthFill.style.width = strength + '%';
-            
-            if (strength < 40) {
-                strengthFill.style.background = '#ef4444';
-                strengthText.textContent = 'Weak password';
-                strengthText.style.color = '#ef4444';
-            } else if (strength < 70) {
-                strengthFill.style.background = '#fbbf24';
-                strengthText.textContent = 'Medium strength';
-                strengthText.style.color = '#fbbf24';
-            } else {
-                strengthFill.style.background = '#10b981';
-                strengthText.innerHTML = 'Strong password ✓';
-                strengthText.style.color = '#10b981';
-            }
+        const API_BASE = window.location.origin + '/api';
+
+        function showToast(message, type = 'error') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => toast.classList.remove('show'), 4000);
         }
 
-        function handleSignup(event) {
-            event.preventDefault();
-            
+        // Step progress animation on focus
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmInput = document.getElementById('confirmPassword');
+        emailInput.addEventListener('focus', () => { document.getElementById('step1').classList.add('done'); document.getElementById('step2').classList.add('active'); });
+        passwordInput.addEventListener('focus', () => { document.getElementById('step2').classList.add('done'); document.getElementById('step3').classList.add('active'); });
+
+        function checkStrength() {
+            const pw = document.getElementById('password').value;
+            const fill = document.getElementById('strengthFill');
+            const txt = document.getElementById('strengthText');
+            let s = 0;
+            if (pw.length >= 8) s += 25;
+            if (/[a-z]/.test(pw)) s += 25;
+            if (/[A-Z]/.test(pw)) s += 25;
+            if (/[0-9]/.test(pw)) s += 12.5;
+            if (/[$@#&!]/.test(pw)) s += 12.5;
+            fill.style.width = s + '%';
+            if (s < 40) { fill.style.background = '#ef4444'; txt.textContent = 'Weak'; txt.style.color = '#ef4444'; }
+            else if (s < 70) { fill.style.background = '#fbbf24'; txt.textContent = 'Medium'; txt.style.color = '#fbbf24'; }
+            else { fill.style.background = '#10b981'; txt.textContent = 'Strong'; txt.style.color = '#10b981'; }
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('signupBtn');
+            btn.classList.add('loading');
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            if (password !== confirmPassword) {
-                alert('Passwords do not match. Please try again.');
-                return;
-            }
-            
             const age = parseInt(document.getElementById('age').value);
-            if (age < 13) {
-                alert('You must be at least 13 years old to create an account. Please contact us with a parent or guardian.');
-                return;
+
+            if (password !== confirmPassword) { showToast('Passwords do not match.'); btn.classList.remove('loading'); return; }
+            if (age < 13) { showToast('You must be at least 13 years old.'); btn.classList.remove('loading'); return; }
+            if (password.length < 6) { showToast('Password must be at least 6 characters.'); btn.classList.remove('loading'); return; }
+
+            try {
+                const res = await fetch(API_BASE + '/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fullName, email, password, age })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.token) {
+                    localStorage.setItem('cheerlyToken', data.token);
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('cheerlyUser', JSON.stringify({ fullName, email, age }));
+                    showToast('Account created! Redirecting...', 'success');
+                    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
+                } else {
+                    showToast(data.error || 'Registration failed. Try again.', 'error');
+                    btn.classList.remove('loading');
+                }
+            } catch (err) {
+                // Fallback demo mode
+                console.warn('Server unavailable, demo signup:', err);
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('cheerlyUser', JSON.stringify({ fullName, email, age, signupDate: new Date().toISOString() }));
+                showToast('Demo mode â€” welcome aboard!', 'success');
+                setTimeout(() => { window.location.href = 'dashboard.html'; }, 1200);
             }
-            
-            // In a real application, this would send data to a server
-            // For now, we'll store basic info in localStorage and redirect
-            const userData = {
-                fullName: document.getElementById('fullName').value,
-                email: document.getElementById('email').value,
-                age: age,
-                newsletter: document.getElementById('newsletter').checked,
-                signupDate: new Date().toISOString()
-            };
-            
-            localStorage.setItem('cheerlyUser', JSON.stringify(userData));
-            localStorage.setItem('isLoggedIn', 'true');
-            
-            // Show success message
-            const successMessage = document.getElementById('successMessage');
-            successMessage.classList.add('show');
-            
-            // Redirect to dashboard after 2 seconds
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 2000);
-        }
+        });
 
         function socialSignup(provider) {
-            // In a real application, this would initiate OAuth flow
-            alert(`${provider.charAt(0).toUpperCase() + provider.slice(1)} signup coming soon! For now, please use email signup.`);
+            showToast(provider.charAt(0).toUpperCase() + provider.slice(1) + ' signup coming soon!', 'error');
         }
     </script>
 </body>

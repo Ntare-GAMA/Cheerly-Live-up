@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { promisePool } = require('../config/database');
+const { db, admin } = require('../config/database');
 
 const router = express.Router();
 
@@ -10,39 +10,45 @@ router.post('/register', async (req, res) => {
     try {
         const { email, password, fullName, dateOfBirth, country } = req.body;
 
-        // Validate input
         if (!email || !password || !fullName) {
             return res.status(400).json({ error: 'Email, password, and full name are required' });
         }
 
         // Check if user already exists
-        const [existing] = await promisePool.query(
-            'SELECT id FROM users WHERE email = ?',
-            [email]
-        );
-
-        if (existing.length > 0) {
+        const existingSnap = await db.collection('users').where('email', '==', email).limit(1).get();
+        if (!existingSnap.empty) {
             return res.status(409).json({ error: 'Email already registered' });
         }
 
         // Hash password
         const passwordHash = await bcrypt.hash(password, 10);
 
-        // Insert new user
-        const [result] = await promisePool.query(
-            'INSERT INTO users (email, password_hash, full_name, date_of_birth, country) VALUES (?, ?, ?, ?, ?)',
-            [email, passwordHash, fullName, dateOfBirth || null, country || null]
-        );
+        // Create user document
+        const userRef = await db.collection('users').add({
+            email,
+            password_hash: passwordHash,
+            full_name: fullName,
+            date_of_birth: dateOfBirth || null,
+            country: country || null,
+            signup_date: admin.firestore.FieldValue.serverTimestamp(),
+            last_login: null,
+            is_active: true,
+            profile_picture_url: null
+        });
 
-        // Create default settings for user
-        await promisePool.query(
-            'INSERT INTO user_settings (user_id) VALUES (?)',
-            [result.insertId]
-        );
+        // Create default settings
+        await db.collection('user_settings').doc(userRef.id).set({
+            user_id: userRef.id,
+            theme: 'light',
+            notifications_enabled: true,
+            email_notifications: true,
+            daily_reminder_time: '09:00:00',
+            data_sharing: false
+        });
 
         // Generate JWT token
         const token = jwt.sign(
-            { userId: result.insertId, email },
+            { userId: userRef.id, email },
             process.env.JWT_SECRET,
             { expiresIn: '7d' }
         );
@@ -51,7 +57,7 @@ router.post('/register', async (req, res) => {
             message: 'User registered successfully',
             token,
             user: {
-                id: result.insertId,
+                id: userRef.id,
                 email,
                 fullName,
                 signupDate: new Date()
@@ -72,17 +78,19 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ error: 'Email and password are required' });
         }
 
-        // Find user
-        const [users] = await promisePool.query(
-            'SELECT id, email, password_hash, full_name, signup_date FROM users WHERE email = ? AND is_active = TRUE',
-            [email]
-        );
+        // Find user by email
+        const usersSnap = await db.collection('users')
+            .where('email', '==', email)
+            .where('is_active', '==', true)
+            .limit(1)
+            .get();
 
-        if (users.length === 0) {
+        if (usersSnap.empty) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        const user = users[0];
+        const userDoc = usersSnap.docs[0];
+        const user = userDoc.data();
 
         // Verify password
         const validPassword = await bcrypt.compare(password, user.password_hash);
@@ -91,14 +99,11 @@ router.post('/login', async (req, res) => {
         }
 
         // Update last login
-        await promisePool.query(
-            'UPDATE users SET last_login = NOW() WHERE id = ?',
-            [user.id]
-        );
+        await userDoc.ref.update({ last_login: admin.firestore.FieldValue.serverTimestamp() });
 
         // Generate JWT token
         const token = jwt.sign(
-            { userId: user.id, email: user.email },
+            { userId: userDoc.id, email: user.email },
             process.env.JWT_SECRET,
             { expiresIn: '7d' }
         );
@@ -107,10 +112,10 @@ router.post('/login', async (req, res) => {
             message: 'Login successful',
             token,
             user: {
-                id: user.id,
+                id: userDoc.id,
                 email: user.email,
                 fullName: user.full_name,
-                signupDate: user.signup_date
+                signupDate: user.signup_date?.toDate?.() || user.signup_date
             }
         });
     } catch (error) {
@@ -119,7 +124,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Verify token (for checking if user is logged in)
+// Verify token
 router.get('/verify', async (req, res) => {
     try {
         const token = req.headers.authorization?.split(' ')[1];
@@ -129,23 +134,22 @@ router.get('/verify', async (req, res) => {
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        
-        const [users] = await promisePool.query(
-            'SELECT id, email, full_name, signup_date FROM users WHERE id = ? AND is_active = TRUE',
-            [decoded.userId]
-        );
 
-        if (users.length === 0) {
+        const userDoc = await db.collection('users').doc(decoded.userId).get();
+
+        if (!userDoc.exists || !userDoc.data().is_active) {
             return res.status(401).json({ error: 'Invalid token' });
         }
 
-        res.json({ 
-            valid: true, 
+        const user = userDoc.data();
+
+        res.json({
+            valid: true,
             user: {
-                id: users[0].id,
-                email: users[0].email,
-                fullName: users[0].full_name,
-                signupDate: users[0].signup_date
+                id: userDoc.id,
+                email: user.email,
+                fullName: user.full_name,
+                signupDate: user.signup_date?.toDate?.() || user.signup_date
             }
         });
     } catch (error) {

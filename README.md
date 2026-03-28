@@ -1,13 +1,13 @@
 # 🌟 Cheerly Live Up - Mental Health Support Platform
 
-A comprehensive web-based mental health support platform designed specifically for African youth, providing 24/7 AI chat support, mood tracking, resources, and community tools.
+A comprehensive web-based mental health support platform designed specifically for African youth, providing 24/7 chat support, mood tracking, resources, and community tools.
 
 ## 📋 Project Overview
 
 **Cheerly Live Up** is a pure front-end mental health web application built with HTML5, CSS3, and vanilla JavaScript. It empowers young people to take control of their mental wellbeing through accessible, culturally-sensitive tools and resources.
 
 ### Key Features
-- 🤖 **AI Chatbot** - 24/7 conversational support with demo responses
+- 💬 **Chat Support** - 24/7 conversational support with demo responses
 - 😊 **Mood Tracking** - Daily emotional check-ins with analytics
 - 📊 **Analytics Dashboard** - Visual insights into mood patterns and trends
 - 📚 **Resource Library** - Mental health tools, coping techniques, and educational content
@@ -25,7 +25,7 @@ Cheerly Live-up/
 │
 ├── index.html              # Landing page
 ├── about.html              # About us, mission, values
-├── chat.html               # AI chatbot interface
+├── chat.html               # Chat interface
 ├── mood-tracker.html       # Daily mood logging
 ├── analytics.html          # Mood analytics & insights
 ├── resources.html          # Mental health resources
@@ -90,7 +90,7 @@ Cheerly Live-up/
 3. **Dashboard** (`dashboard.html`) - Your personalized hub
 4. **Log Mood** (`mood-tracker.html`) - Start tracking your emotions
 5. **View Analytics** (`analytics.html`) - See your mood patterns
-6. **Chat** (`chat.html`) - Get support from the AI chatbot
+6. **Chat** (`chat.html`) - Get support from the chat companion
 
 ### For Returning Users
 1. **Login** (`login.html`) - Access your account
@@ -147,10 +147,10 @@ localStorage.userPreferences // User settings
 - **Time filters**: Last 7/30/90/365 days
 - **Mood distribution**: Bar charts showing mood frequency
 - **Timeline chart**: Visual mood trends over time
-- **Smart insights**: AI-generated observations about your patterns
+- **Smart insights**: Generated observations about your patterns
 - **Statistics**: Total check-ins, most common mood, current streak
 
-### 3. AI Chatbot
+### 3. Chat Support
 - **Demo responses**: Predefined helpful responses
 - **Quick actions**: Common questions as buttons
 - **Typing indicator**: Realistic conversation feel
@@ -323,7 +323,7 @@ See `SITE-MAP.md` for complete navigation details.
 - [ ] Video sessions support
 - [ ] Peer support groups
 - [ ] Mobile apps (React Native)
-- [ ] AI improvement (real NLP model)
+- [ ] Enhanced chat (real NLP model)
 
 ---
 
@@ -354,7 +354,7 @@ This is a prototype/demo project. If you'd like to enhance it:
 **Cheerly Live Up is NOT a substitute for professional mental health care.**
 
 - This is a **demo/prototype** application
-- The AI chatbot uses **pre-programmed responses**, not real AI
+- The chat uses **pre-programmed responses**
 - For serious mental health concerns, please consult a licensed professional
 - In case of emergency, contact local emergency services immediately
 

@@ -3,783 +3,806 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cheerly Live Up - AI Companion for Youth Wellbeing</title>
+    <title>Cheerly Live Up - Youth Mental Wellbeing Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #10b981;
-            --primary-dark: #059669;
-            --secondary: #fbbf24;
-            --text-dark: #1f2937;
-            --text-light: #6b7280;
-            --bg-light: #f0fdf4;
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            overflow-x: hidden;
-        }
-
-        .navbar {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 20px rgba(16, 185, 129, 0.1);
-            z-index: 1000;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo-icon {
-            font-size: 2rem;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        .hero {
-            margin-top: 70px;
-            min-height: 90vh;
-            background: linear-gradient(135deg, var(--bg-light) 0%, #fef3c7 100%);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            align-items: center;
-            gap: 3rem;
-            padding: 2rem 5%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 600px;
-        }
-
-        .hero-visual {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 500px;
-        }
-
-        .phone-mockup {
-            width: 300px;
-            height: 600px;
-            background: white;
-            border-radius: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-            border: 12px solid #1f2937;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .phone-screen {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .chat-interface {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .chat-bubble {
-            padding: 12px 16px;
-            border-radius: 18px;
-            max-width: 80%;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .chat-bubble.user {
-            background: var(--primary);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-
-        .chat-bubble.ai {
-            background: white;
-            color: var(--text-dark);
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .typing-indicator {
-            display: flex;
-            gap: 4px;
-            padding: 12px 16px;
-            background: white;
-            border-radius: 18px;
-            width: fit-content;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--primary);
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
-        }
-
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-10px); }
-        }
-
-        .floating-elements {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .floating-icon {
-            position: absolute;
-            font-size: 3rem;
-            opacity: 0.15;
-            animation: floatRandom 6s ease-in-out infinite;
-        }
-
-        .floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
-        .floating-icon:nth-child(2) { top: 60%; right: 15%; animation-delay: 1s; }
-        .floating-icon:nth-child(3) { bottom: 20%; left: 20%; animation-delay: 2s; }
-
-        @keyframes floatRandom {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(10px, -10px); }
-        }
-
-        .hero-badge {
-            display: inline-block;
-            padding: 0.5rem 1.5rem;
-            background: var(--primary);
-            color: white;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-dark);
-            line-height: 1.2;
-        }
-
-        .hero h1 .highlight {
-            color: var(--primary);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2.5rem;
-            color: var(--text-light);
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 1rem 2.5rem;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
-        }
-
-        .cta-button:hover {
-            background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 30px rgba(16, 185, 129, 0.4);
-        }
-
-        .cta-button.secondary {
-            background: white;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-
-        section {
-            padding: 5rem 5%;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.8rem;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.2rem;
-            color: var(--text-light);
-            margin-bottom: 3rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .demo-section {
-            background: white;
-        }
-
-        .demo-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            max-width: 1200px;
-            margin: 3rem auto;
-            align-items: center;
-        }
-
-        .affirmation-card {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 3rem;
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3);
-            text-align: center;
-            animation: cardGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes cardGlow {
-            0%, 100% { box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3); }
-            50% { box-shadow: 0 20px 60px rgba(16, 185, 129, 0.6); }
-        }
-
-        .affirmation-icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .affirmation-text {
-            font-size: 1.8rem;
-            font-weight: 600;
-            line-height: 1.4;
-        }
-
-        .mood-tracker {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .mood-options {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .mood-option {
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            padding: 1rem;
-            border-radius: 15px;
-        }
-
-        .mood-option:hover {
-            background: var(--bg-light);
-            transform: scale(1.1);
-        }
-
-        .mood-emoji {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-            display: block;
-            animation: bounce 2s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .mood-option:nth-child(2) .mood-emoji { animation-delay: 0.2s; }
-        .mood-option:nth-child(3) .mood-emoji { animation-delay: 0.4s; }
-        .mood-option:nth-child(4) .mood-emoji { animation-delay: 0.6s; }
-        .mood-option:nth-child(5) .mood-emoji { animation-delay: 0.8s; }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-            transition: all 0.4s;
-            border: 2px solid transparent;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.2);
-            border-color: var(--primary);
-        }
-
-        .feature-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-        }
-
-        .feature-card h3 {
-            color: var(--text-dark);
-            margin-bottom: 1rem;
-            font-size: 1.4rem;
-        }
-
-        .impact {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-        }
-
-        .impact .section-title {
-            color: white;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 3rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .stat-box {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 2.5rem;
-            border-radius: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s;
-        }
-
-        .stat-box:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-5px);
-        }
-
-        .stat-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .stat-label {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
-        }
-
-        .cta-section {
-            background: linear-gradient(135deg, var(--text-dark) 0%, #374151 100%);
-            color: white;
-            text-align: center;
-        }
-
-        .cta-section .section-title {
-            color: white;
-        }
-
-        footer {
-            background: var(--text-dark);
-            color: white;
-            text-align: center;
-            padding: 3rem 5%;
-        }
-
-        .footer-values {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-            opacity: 0.8;
-        }
-
-        @media (max-width: 968px) {
-            .hero, .demo-grid {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            .hero-visual, .demo-grid > div:first-child {
-                order: -1;
-            }
-            .cta-buttons {
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .nav-links {
-                display: none;
-            }
-            .phone-mockup {
-                width: 250px;
-                height: 500px;
-            }
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        :root{
+            --primary:#10b981;--primary-dark:#059669;--primary-glow:rgba(16,185,129,0.15);
+            --secondary:#fbbf24;--accent:#8b5cf6;--pink:#f472b6;
+            --text-dark:#1f2937;--text-light:#6b7280;--bg-light:#f0fdf4;
+        }
+        body{font-family:'Inter','Segoe UI',system-ui,sans-serif;line-height:1.6;color:var(--text-dark);overflow-x:hidden;background:#f8fafc}
+
+        /* ─── NAVBAR ─── */
+        .navbar{position:fixed;width:100%;top:0;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);padding:0.9rem 5%;display:flex;justify-content:space-between;align-items:center;z-index:1000;border-bottom:1px solid rgba(16,185,129,0.08);transition:all 0.3s}
+        .navbar.scrolled{box-shadow:0 4px 30px rgba(0,0,0,0.08);padding:0.7rem 5%}
+        .logo{font-size:1.4rem;font-weight:800;color:var(--primary);display:flex;align-items:center;gap:0.5rem;text-decoration:none}
+        .logo-dot{width:10px;height:10px;background:var(--secondary);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+        @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:0.6}}
+        .nav-links{display:flex;gap:1.8rem;list-style:none;align-items:center}
+        .nav-links a{text-decoration:none;color:var(--text-light);font-weight:600;font-size:0.92rem;transition:color 0.3s;position:relative}
+        .nav-links a:hover{color:var(--primary)}
+        .nav-cta{padding:0.6rem 1.5rem;background:var(--primary);color:white!important;border-radius:50px;box-shadow:0 4px 15px rgba(16,185,129,0.3);transition:all 0.3s!important}
+        .nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(16,185,129,0.4)}
+        .mobile-menu{display:none;background:none;border:none;cursor:pointer;padding:4px}
+        .mobile-menu svg{width:28px;height:28px;fill:var(--text-dark)}
+
+        /* ─── HERO WITH VIDEO ─── */
+        .hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;margin-top:60px}
+        .hero-video-wrap{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;overflow:hidden}
+        .hero-video-wrap video{width:100%;height:100%;object-fit:cover;filter:brightness(0.35) saturate(1.2)}
+        .hero-video-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,rgba(16,185,129,0.25)0%,rgba(139,92,246,0.15)50%,rgba(251,191,36,0.1)100%);z-index:1}
+
+        /* Animated particles */
+        .particles{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none}
+        .particle{position:absolute;border-radius:50%;animation:floatUp linear infinite;opacity:0}
+        @keyframes floatUp{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1}90%{opacity:0.8}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+
+        .hero-content{position:relative;z-index:3;max-width:700px;padding:0 5%;color:white}
+        .hero-badge{display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 1.2rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:50px;font-size:0.85rem;font-weight:600;margin-bottom:1.5rem;animation:fadeInUp 0.8s ease-out}
+        .badge-dot{width:8px;height:8px;background:var(--secondary);border-radius:50%;animation:pulse 1.5s infinite}
+        .hero h1{font-size:4rem;font-weight:900;line-height:1.1;margin-bottom:1.5rem;animation:fadeInUp 0.8s ease-out 0.15s both}
+        .hero h1 .gradient-text{background:linear-gradient(135deg,var(--secondary),var(--pink),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .hero p{font-size:1.25rem;opacity:0.9;margin-bottom:2.5rem;line-height:1.7;animation:fadeInUp 0.8s ease-out 0.3s both}
+        .hero-buttons{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeInUp 0.8s ease-out 0.45s both}
+        .btn-primary{display:inline-flex;align-items:center;gap:0.6rem;padding:1rem 2.2rem;background:var(--primary);color:white;text-decoration:none;border-radius:14px;font-weight:700;font-size:1.05rem;transition:all 0.3s;box-shadow:0 8px 30px rgba(16,185,129,0.4)}
+        .btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(16,185,129,0.5)}
+        .btn-secondary{display:inline-flex;align-items:center;gap:0.5rem;padding:1rem 2.2rem;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,0.3);color:white;text-decoration:none;border-radius:14px;font-weight:700;font-size:1.05rem;transition:all 0.3s}
+        .btn-secondary:hover{background:rgba(255,255,255,0.2);transform:translateY(-3px)}
+
+        /* Hero floating cartoon elements */
+        .hero-floats{position:absolute;top:0;right:0;width:50%;height:100%;z-index:2;pointer-events:none}
+        .hero-float{position:absolute;animation:heroFloat 6s ease-in-out infinite}
+        @keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+        /* ─── SOCIAL PROOF ─── */
+        .social-proof{background:white;padding:2rem 5%;border-bottom:1px solid #f1f5f9}
+        .proof-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap}
+        .proof-stat{text-align:center}
+        .proof-stat .number{font-size:2rem;font-weight:900;color:var(--primary)}
+        .proof-stat .label{font-size:0.85rem;color:var(--text-light);font-weight:600}
+        .proof-divider{width:1px;height:40px;background:#e5e7eb}
+
+        /* ─── SCROLL ANIMATIONS ─── */
+        .reveal{opacity:0;transform:translateY(40px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1)}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+        .reveal-left{opacity:0;transform:translateX(-40px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1)}
+        .reveal-left.visible{opacity:1;transform:translateX(0)}
+        .reveal-right{opacity:0;transform:translateX(40px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1)}
+        .reveal-right.visible{opacity:1;transform:translateX(0)}
+        .reveal-scale{opacity:0;transform:scale(0.9);transition:all 0.8s cubic-bezier(0.16,1,0.3,1)}
+        .reveal-scale.visible{opacity:1;transform:scale(1)}
+
+        /* ─── DEMO SECTION ─── */
+        section{padding:6rem 5%}
+        .section-label{display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 1rem;background:var(--primary-glow);color:var(--primary);border-radius:50px;font-size:0.85rem;font-weight:700;margin-bottom:1rem}
+        .section-title{font-size:3rem;font-weight:900;color:var(--text-dark);margin-bottom:0.75rem;line-height:1.15}
+        .section-subtitle{font-size:1.15rem;color:var(--text-light);max-width:600px;margin-bottom:3rem}
+        .section-center{text-align:center}
+        .section-center .section-subtitle{margin-left:auto;margin-right:auto}
+
+        .demo-section{background:white}
+        .demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;max-width:1200px;margin:0 auto;align-items:center}
+
+        /* Phone mockup with cartoon chat */
+        .phone-wrapper{position:relative;display:flex;justify-content:center}
+        .phone-mockup{width:280px;height:560px;background:#1f2937;border-radius:36px;padding:12px;box-shadow:0 30px 80px rgba(0,0,0,0.2);animation:phoneFloat 4s ease-in-out infinite}
+        @keyframes phoneFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-15px) rotate(0deg)}}
+        .phone-screen{width:100%;height:100%;background:linear-gradient(180deg,#ecfdf5 0%,#fff 100%);border-radius:26px;overflow:hidden;padding:1.5rem 1rem;display:flex;flex-direction:column;gap:0.8rem}
+        .phone-notch{width:80px;height:6px;background:#1f2937;border-radius:3px;margin:0 auto 1rem}
+        .chat-bubble{padding:0.7rem 1rem;border-radius:16px;font-size:0.78rem;line-height:1.5;max-width:85%;animation:bubbleIn 0.5s ease-out both}
+        .chat-bubble.bot{background:white;color:var(--text-dark);align-self:flex-start;border-bottom-left-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+        .chat-bubble.user{background:var(--primary);color:white;align-self:flex-end;border-bottom-right-radius:4px}
+        @keyframes bubbleIn{from{opacity:0;transform:scale(0.8) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+        .chat-bubble:nth-child(2){animation-delay:0.8s}
+        .chat-bubble:nth-child(3){animation-delay:1.6s}
+        .chat-bubble:nth-child(4){animation-delay:2.4s}
+        .typing-dots{display:flex;gap:4px;padding:0.7rem 1rem;background:white;border-radius:16px;width:fit-content;box-shadow:0 2px 8px rgba(0,0,0,0.06);animation:bubbleIn 0.5s ease-out 3s both}
+        .dot{width:7px;height:7px;background:var(--primary);border-radius:50%;animation:dotBounce 1.4s infinite}
+        .dot:nth-child(2){animation-delay:0.2s}.dot:nth-child(3){animation-delay:0.4s}
+        @keyframes dotBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
+
+        /* Floating emojis around phone */
+        .float-emoji{position:absolute;font-size:2rem;animation:emojiFloat 3s ease-in-out infinite;opacity:0.7}
+        .float-emoji:nth-child(1){top:10%;left:0;animation-delay:0s}
+        .float-emoji:nth-child(2){top:30%;right:0;animation-delay:1s}
+        .float-emoji:nth-child(3){bottom:20%;left:5%;animation-delay:2s}
+        .float-emoji:nth-child(4){bottom:10%;right:5%;animation-delay:0.5s}
+        @keyframes emojiFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(10deg)}}
+
+        /* Mood tracker demo */
+        .mood-demo{background:white;border-radius:24px;padding:2rem;box-shadow:0 10px 40px rgba(0,0,0,0.08);border:1px solid #f1f5f9}
+        .mood-demo h3{text-align:center;color:var(--primary);margin-bottom:1.5rem;font-size:1.2rem}
+        .mood-grid{display:flex;justify-content:space-around;flex-wrap:wrap;gap:0.5rem}
+        .mood-btn{text-align:center;padding:0.8rem;border-radius:16px;cursor:pointer;transition:all 0.3s;border:2px solid transparent}
+        .mood-btn:hover{background:var(--bg-light);border-color:var(--primary);transform:scale(1.1)}
+        .mood-btn.selected{background:var(--bg-light);border-color:var(--primary);transform:scale(1.15)}
+        .mood-emoji{font-size:2.5rem;display:block;margin-bottom:0.3rem;animation:moodBounce 2s ease-in-out infinite}
+        .mood-btn:nth-child(1) .mood-emoji{animation-delay:0s}
+        .mood-btn:nth-child(2) .mood-emoji{animation-delay:0.15s}
+        .mood-btn:nth-child(3) .mood-emoji{animation-delay:0.3s}
+        .mood-btn:nth-child(4) .mood-emoji{animation-delay:0.45s}
+        .mood-btn:nth-child(5) .mood-emoji{animation-delay:0.6s}
+        @keyframes moodBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+        .mood-label{font-size:0.8rem;font-weight:600;color:var(--text-light)}
+
+        /* ─── FEATURES ─── */
+        .features-section{background:linear-gradient(180deg,#f8fafc 0%,white 100%)}
+        .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto}
+        .feature-card{background:white;padding:2rem;border-radius:20px;border:1px solid #f1f5f9;transition:all 0.4s;position:relative;overflow:hidden}
+        .feature-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent));transform:scaleX(0);transition:transform 0.4s;transform-origin:left}
+        .feature-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(16,185,129,0.12);border-color:var(--primary)}
+        .feature-card:hover::before{transform:scaleX(1)}
+        .feature-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1.2rem}
+        .feature-icon.green{background:linear-gradient(135deg,#ecfdf5,#d1fae5)}
+        .feature-icon.purple{background:linear-gradient(135deg,#ede9fe,#ddd6fe)}
+        .feature-icon.amber{background:linear-gradient(135deg,#fef3c7,#fde68a)}
+        .feature-icon.pink{background:linear-gradient(135deg,#fce7f3,#fbcfe8)}
+        .feature-icon.blue{background:linear-gradient(135deg,#dbeafe,#bfdbfe)}
+        .feature-card h3{font-size:1.15rem;font-weight:700;margin-bottom:0.5rem;color:var(--text-dark)}
+        .feature-card p{color:var(--text-light);font-size:0.92rem;line-height:1.6}
+
+        /* ─── VIDEO / DEMO SHOWCASE SECTION ─── */
+        .video-section{background:var(--text-dark);color:white;position:relative;overflow:hidden}
+        .video-section .section-title{color:white}
+        .video-section .section-subtitle{color:rgba(255,255,255,0.7)}
+        .video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2rem;max-width:1200px;margin:0 auto}
+        .demo-card{border-radius:20px;overflow:hidden;position:relative;aspect-ratio:16/9;cursor:pointer;transition:transform 0.4s,box-shadow 0.4s;box-shadow:0 8px 30px rgba(0,0,0,0.3)}
+        .demo-card:hover{transform:scale(1.04) translateY(-4px);box-shadow:0 16px 50px rgba(0,0,0,0.5)}
+        .demo-card-bg{width:100%;height:100%;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+        .demo-card .demo-overlay{position:absolute;bottom:0;left:0;width:100%;padding:1.2rem 1.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.85));display:flex;align-items:center;justify-content:space-between;z-index:3}
+        .demo-overlay-label{font-size:1rem;font-weight:700;display:flex;align-items:center;gap:0.5rem}
+        .demo-overlay-cta{font-size:0.8rem;font-weight:600;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);padding:0.35rem 1rem;border-radius:50px;transition:all 0.3s}
+        .demo-card:hover .demo-overlay-cta{background:var(--primary);border-color:var(--primary);color:white}
+
+        /* Mood Tracking Card */
+        .mood-demo-bg{background:linear-gradient(135deg,#059669,#10b981,#34d399)}
+        .mood-mini{position:absolute;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.8rem;padding:1rem}
+        .mood-emoji-row{display:flex;gap:1rem;z-index:2}
+        .mood-emoji-item{width:48px;height:48px;background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;animation:bubbleIn 0.6s ease forwards;opacity:0;border:2px solid rgba(255,255,255,0.3);transition:transform 0.3s}
+        .mood-emoji-item:nth-child(1){animation-delay:0.1s}.mood-emoji-item:nth-child(2){animation-delay:0.3s}.mood-emoji-item:nth-child(3){animation-delay:0.5s}.mood-emoji-item:nth-child(4){animation-delay:0.7s}.mood-emoji-item:nth-child(5){animation-delay:0.9s}
+        .demo-card:hover .mood-emoji-item{transform:scale(1.15)}
+        .mood-mini-chart{display:flex;align-items:flex-end;gap:6px;height:60px;z-index:2;margin-top:0.5rem}
+        .mood-bar{width:20px;border-radius:6px 6px 0 0;background:rgba(255,255,255,0.4);animation:barGrow 1s ease forwards;transform-origin:bottom}
+        @keyframes barGrow{0%{height:0}100%{height:var(--h)}}
+        .mood-mini-title{color:white;font-size:0.85rem;font-weight:600;opacity:0.8;z-index:2;letter-spacing:0.05em;text-transform:uppercase}
+        .mood-floating-circle{position:absolute;border-radius:50%;background:rgba(255,255,255,0.08);animation:floatUp 6s ease-in-out infinite}
+
+        /* Eco Therapy Card */
+        .eco-demo-bg{background:linear-gradient(135deg,#065f46,#047857,#059669)}
+        .eco-scene{position:absolute;width:100%;height:100%;overflow:hidden}
+        .eco-sun{position:absolute;top:15%;right:15%;width:50px;height:50px;background:radial-gradient(circle,#fbbf24 40%,rgba(251,191,36,0.2) 70%,transparent 100%);border-radius:50%;animation:anim-pulse 3s ease-in-out infinite}
+        .eco-cloud{position:absolute;background:rgba(255,255,255,0.15);border-radius:50px;height:18px;animation:cloudDrift 12s linear infinite}
+        .eco-cloud:nth-child(2){top:12%;left:-60px;width:80px;animation-duration:14s;animation-delay:2s}
+        .eco-cloud:nth-child(3){top:25%;left:-40px;width:60px;animation-duration:10s;animation-delay:5s}
+        @keyframes cloudDrift{0%{transform:translateX(-100px)}100%{transform:translateX(calc(100vw + 100px))}}
+        .eco-tree{position:absolute;bottom:0;display:flex;flex-direction:column;align-items:center}
+        .eco-trunk{width:8px;height:40px;background:#92400e;border-radius:4px}
+        .eco-leaves{width:50px;height:50px;background:radial-gradient(circle,#34d399 30%,#059669 100%);border-radius:50%;position:relative;top:5px;animation:treeWave 4s ease-in-out infinite}
+        @keyframes treeWave{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+        .eco-leaf-floating{position:absolute;font-size:1rem;animation:leafFall 5s ease-in-out infinite;opacity:0.7}
+        @keyframes leafFall{0%{transform:translateY(-20px) rotate(0deg);opacity:0}20%{opacity:0.7}100%{transform:translateY(200px) rotate(360deg);opacity:0}}
+        .eco-person{position:absolute;bottom:20%;left:50%;transform:translateX(-50%)}
+        .eco-mini-title{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;font-size:0.85rem;font-weight:600;opacity:0.8;z-index:2;letter-spacing:0.05em;text-transform:uppercase;text-align:center;line-height:1.6}
+
+        /* Community Card */
+        .community-demo-bg{background:linear-gradient(135deg,#92400e,#f59e0b,#fbbf24)}
+        .community-scene{position:absolute;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.6rem;padding:1.5rem}
+        .community-chat{display:flex;align-items:flex-start;gap:0.6rem;max-width:85%;animation:chatSlide 0.5s ease forwards;opacity:0;transform:translateY(10px)}
+        .community-chat:nth-child(1){animation-delay:0.3s}.community-chat:nth-child(2){animation-delay:1s;align-self:flex-end}.community-chat:nth-child(3){animation-delay:1.7s}.community-chat:nth-child(4){animation-delay:2.4s;align-self:flex-end}
+        @keyframes chatSlide{to{opacity:1;transform:translateY(0)}}
+        .community-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;border:2px solid rgba(255,255,255,0.3)}
+        .community-bubble{background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);border-radius:12px 12px 12px 4px;padding:0.5rem 0.9rem;font-size:0.78rem;line-height:1.4;color:white;border:1px solid rgba(255,255,255,0.1)}
+        .community-chat:nth-child(even) .community-bubble{border-radius:12px 12px 4px 12px}
+        .community-hearts{position:absolute;bottom:15%;right:10%;display:flex;gap:4px}
+        .community-heart{font-size:1rem;animation:heartFloat 2s ease-in-out infinite;opacity:0.6}
+        .community-heart:nth-child(2){animation-delay:0.4s}.community-heart:nth-child(3){animation-delay:0.8s}
+        @keyframes heartFloat{0%,100%{transform:translateY(0);opacity:0.6}50%{transform:translateY(-10px);opacity:1}}
+
+        /* ─── CARTOON ILLUSTRATION SECTION ─── */
+        .illustration-section{background:linear-gradient(135deg,#ecfdf5 0%,#fef9c3 50%,#ede9fe 100%);position:relative}
+        .illustration-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;max-width:1200px;margin:0 auto;align-items:center}
+        .illustration-svg{width:100%;max-width:500px;margin:0 auto}
+
+        /* ─── IMPACT / STATS ─── */
+        .impact-section{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 50%,#065f46 100%);color:white;position:relative;overflow:hidden}
+        .impact-section::before{content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;background:rgba(255,255,255,0.05);border-radius:50%;animation:driftOrb 12s ease-in-out infinite}
+        .impact-section::after{content:'';position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;background:rgba(255,255,255,0.05);border-radius:50%;animation:driftOrb 10s ease-in-out infinite reverse}
+        @keyframes driftOrb{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-30px)}}
+        .impact-section .section-title{color:white}
+        .impact-section .section-subtitle{color:rgba(255,255,255,0.8)}
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;max-width:1000px;margin:0 auto;position:relative;z-index:2}
+        .stat-card{background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:2rem;text-align:center;transition:all 0.3s}
+        .stat-card:hover{background:rgba(255,255,255,0.15);transform:translateY(-5px)}
+        .stat-icon{font-size:2.5rem;margin-bottom:0.75rem}
+        .stat-number{font-size:2.2rem;font-weight:900;color:var(--secondary);margin-bottom:0.25rem}
+        .stat-desc{font-size:0.9rem;opacity:0.85;line-height:1.5}
+
+        /* ─── TESTIMONIALS ─── */
+        .testimonials-section{background:white}
+        .testimonials-track{display:flex;gap:2rem;overflow-x:auto;scroll-snap-type:x mandatory;padding:1rem 0 2rem;max-width:1200px;margin:0 auto;-ms-overflow-style:none;scrollbar-width:none}
+        .testimonials-track::-webkit-scrollbar{display:none}
+        .testimonial-card{min-width:350px;max-width:380px;flex-shrink:0;scroll-snap-align:start;background:#f8fafc;border-radius:20px;padding:2rem;border:1px solid #f1f5f9;transition:all 0.3s}
+        .testimonial-card:hover{box-shadow:0 10px 40px rgba(0,0,0,0.08);border-color:var(--primary)}
+        .testimonial-stars{color:var(--secondary);font-size:1.1rem;margin-bottom:0.75rem}
+        .testimonial-text{font-size:0.95rem;color:var(--text-dark);line-height:1.7;margin-bottom:1.2rem;font-style:italic}
+        .testimonial-author{display:flex;align-items:center;gap:0.75rem}
+        .testimonial-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:0.9rem}
+        .testimonial-name{font-weight:700;font-size:0.9rem}
+        .testimonial-role{font-size:0.8rem;color:var(--text-light)}
+
+        /* ─── CTA ─── */
+        .cta-section{background:linear-gradient(135deg,var(--text-dark) 0%,#374151 100%);color:white;text-align:center;position:relative;overflow:hidden}
+        .cta-section::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+        .cta-section .section-title{color:white;margin-bottom:1rem}
+        .cta-section p{color:rgba(255,255,255,0.8);font-size:1.15rem;margin-bottom:2.5rem;max-width:600px;margin-left:auto;margin-right:auto}
+
+        /* ─── FOOTER ─── */
+        footer{background:var(--text-dark);color:white;padding:4rem 5% 2rem}
+        .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;max-width:1200px;margin:0 auto;margin-bottom:3rem}
+        .footer-brand p{color:rgba(255,255,255,0.6);font-size:0.9rem;margin-top:0.75rem;line-height:1.6}
+        .footer-col h4{font-size:0.9rem;font-weight:700;margin-bottom:1rem;color:var(--secondary)}
+        .footer-col a{display:block;color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.88rem;padding:0.3rem 0;transition:color 0.3s}
+        .footer-col a:hover{color:white}
+        .footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:2rem;text-align:center;color:rgba(255,255,255,0.4);font-size:0.85rem}
+        .footer-values{display:flex;justify-content:center;gap:2rem;margin-top:1rem;flex-wrap:wrap;font-size:0.85rem}
+        .footer-values span{display:flex;align-items:center;gap:0.3rem;color:rgba(255,255,255,0.6)}
+
+        /* ─── RESPONSIVE ─── */
+        @media(max-width:968px){
+            .hero h1{font-size:2.8rem}
+            .demo-grid,.illustration-grid{grid-template-columns:1fr;text-align:center}
+            .phone-wrapper{order:-1}
+            .hero-floats{display:none}
+            .footer-grid{grid-template-columns:1fr 1fr}
+        }
+        @media(max-width:768px){
+            .nav-links{display:none}
+            .mobile-menu{display:block}
+            .hero h1{font-size:2.2rem}
+            .section-title{font-size:2.2rem}
+            .proof-divider{display:none}
+            .features-grid{grid-template-columns:1fr}
+            .footer-grid{grid-template-columns:1fr}
+            .testimonial-card{min-width:280px}
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">
-            <span class="logo-icon" style="color: var(--secondary);">🌟</span>
-            <span>Cheerly Live Up</span>
-        </div>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#demo">See Demo</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#impact">Impact</a></li>
-            <li><a href="signup.html">Get Started</a></li>
-        </ul>
-    </nav>
 
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <div class="hero-badge">
-                🌍 Empowering African Youth
-            </div>
-            <h1>Your Journey to <span class="highlight">Wellbeing</span> Starts Here</h1>
-            <p>Meet Cheerly Live Up—your personal AI companion for mental health support. Available 24/7, private, and designed with you in mind.</p>
-            <div class="cta-buttons">
-                <a href="signup.html" class="cta-button">
-                    🚀 Start Free Today
-                </a>
-                <a href="#demo" class="cta-button secondary">
-                    💡 See Demo
-                </a>
-            </div>
+<!-- ─── NAVBAR ─── -->
+<nav class="navbar" id="navbar">
+    <a href="index.html" class="logo"><span class="logo-dot"></span> Cheerly Live Up</a>
+    <ul class="nav-links">
+        <li><a href="#demo">Demo</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#impact">Impact</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="upgrade.html">Upgrade</a></li>
+        <li><a href="payment.html">Payment</a></li>
+        <li><a href="login.html">Log In</a></li>
+        <li><a href="signup.html" class="nav-cta">Get Started Free</a></li>
+    </ul>
+    <button class="mobile-menu" onclick="document.querySelector('.nav-links').classList.toggle('show-mobile')">
+        <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+    </button>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero" id="home">
+    <div class="hero-video-wrap">
+        <!-- Free nature wellness video (Pexels license) -->
+        <video autoplay muted loop playsinline poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'%3E%3Crect fill='%23065f46' width='1920' height='1080'/%3E%3C/svg%3E">
+            <source src="https://videos.pexels.com/video-files/3571264/3571264-uhd_2560_1440_30fps.mp4" type="video/mp4">
+        </video>
+        <div class="hero-video-overlay"></div>
+    </div>
+
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Floating cartoon SVGs -->
+    <div class="hero-floats">
+        <!-- Floating heart -->
+        <svg class="hero-float" style="top:15%;right:20%;width:60px" viewBox="0 0 100 100">
+            <path d="M50 88 L15 50 Q0 30 20 18 Q40 6 50 26 Q60 6 80 18 Q100 30 85 50 Z" fill="rgba(244,114,182,0.6)"/>
+        </svg>
+        <!-- Floating star -->
+        <svg class="hero-float" style="top:40%;right:8%;width:50px;animation-delay:1.5s" viewBox="0 0 100 100">
+            <polygon points="50,5 63,38 98,38 70,60 80,95 50,73 20,95 30,60 2,38 37,38" fill="rgba(251,191,36,0.6)"/>
+        </svg>
+        <!-- Floating leaf -->
+        <svg class="hero-float" style="top:65%;right:25%;width:45px;animation-delay:3s" viewBox="0 0 100 100">
+            <path d="M50 10 Q80 30 70 60 Q60 85 50 90 Q40 85 30 60 Q20 30 50 10Z" fill="rgba(16,185,129,0.5)"/>
+            <line x1="50" y1="30" x2="50" y2="90" stroke="rgba(5,150,105,0.5)" stroke-width="2"/>
+        </svg>
+        <!-- Floating chat bubble -->
+        <svg class="hero-float" style="top:25%;right:40%;width:55px;animation-delay:2s" viewBox="0 0 100 80">
+            <rect width="100" height="60" rx="20" fill="rgba(255,255,255,0.3)"/>
+            <polygon points="25,60 40,60 30,78" fill="rgba(255,255,255,0.3)"/>
+            <circle cx="35" cy="30" r="5" fill="rgba(16,185,129,0.5)"/>
+            <circle cx="50" cy="30" r="5" fill="rgba(16,185,129,0.5)"/>
+            <circle cx="65" cy="30" r="5" fill="rgba(16,185,129,0.5)"/>
+        </svg>
+    </div>
+
+    <div class="hero-content">
+        <div class="hero-badge">
+            <span class="badge-dot"></span>
+            Empowering African Youth
         </div>
-        <div class="hero-visual">
-            <div class="floating-elements">
-                <div class="floating-icon" style="color: var(--primary);">
-                    🌟
-                </div>
-                <div class="floating-icon" style="color: var(--primary);">
-                    💚
-                </div>
-                <div class="floating-icon" style="color: var(--secondary);">
-                    🌟
-                </div>
-            </div>
+        <h1>Your Journey to <span class="gradient-text">Wellbeing</span> Starts Here</h1>
+        <p>Meet Cheerly Live Up — your personal wellness companion for mental health support. Private, always available, and designed with you in mind.</p>
+        <div class="hero-buttons">
+            <a href="signup.html" class="btn-primary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                Start Free Today
+            </a>
+            <a href="#showcase" class="btn-secondary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+                See It In Action
+            </a>
+        </div>
+    </div>
+</section>
+<!-- ...existing code... -->
+
+<!-- ─── SOCIAL PROOF BAR ─── -->
+<div class="social-proof">
+    <div class="proof-inner">
+        <div class="proof-stat"><div class="number" data-count="10000">0</div><div class="label">Active Users</div></div>
+        <div class="proof-divider"></div>
+        <div class="proof-stat"><div class="number" data-count="50000">0</div><div class="label">Mood Check-ins</div></div>
+        <div class="proof-divider"></div>
+        <div class="proof-stat"><div class="number" data-count="98">0</div><div class="label">% Satisfaction</div></div>
+        <div class="proof-divider"></div>
+        <div class="proof-stat"><div class="number" data-count="24">0</div><div class="label">/7 Available</div></div>
+    </div>
+</div>
+
+<!-- ─── DEMO SECTION ─── -->
+<section id="demo" class="demo-section">
+    <div class="demo-grid">
+        <div class="phone-wrapper reveal-left">
+            <span class="float-emoji">💚</span>
+            <span class="float-emoji">🌟</span>
+            <span class="float-emoji">🦋</span>
+            <span class="float-emoji">🌿</span>
             <div class="phone-mockup">
                 <div class="phone-screen">
-                    <div class="chat-interface">
-                        <div class="chat-bubble ai">Hi there! 👋 How are you feeling today?</div>
-                        <div class="chat-bubble user">I'm feeling overwhelmed with school</div>
-                        <div class="chat-bubble ai">I hear you. School can be challenging. Would you like to talk about what's overwhelming you, or would you prefer some stress management tips? 🌟</div>
-                        <div class="typing-indicator">
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot"></div>
-                        </div>
-                    </div>
+                    <div class="phone-notch"></div>
+                    <div class="chat-bubble bot">Hi there! 👋 How are you feeling today?</div>
+                    <div class="chat-bubble user">I'm feeling overwhelmed with school</div>
+                    <div class="chat-bubble bot">I hear you. School can be tough. Would you like to talk about it, or try a quick breathing exercise? 🌟</div>
+                    <div class="chat-bubble user">Let's try breathing first</div>
+                    <div class="typing-dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <section id="demo" class="demo-section">
-        <h2 class="section-title">Experience Cheerly Live Up</h2>
-        <p class="section-subtitle">See how we support you every day</p>
-        
-        <div class="demo-grid">
-            <div>
-                <h3 style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;">Daily Affirmations</h3>
-                <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 2rem;">Start your day with personalized messages that uplift and inspire you.</p>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="padding: 0.8rem 0; display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="color: var(--primary); font-size: 1.5rem;">✓</span>
-                        <span>Personalized to your journey</span>
-                    </li>
-                    <li style="padding: 0.8rem 0; display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="color: var(--primary); font-size: 1.5rem;">✓</span>
-                        <span>Culturally relevant content</span>
-                    </li>
-                    <li style="padding: 0.8rem 0; display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="color: var(--primary); font-size: 1.5rem;">✓</span>
-                        <span>Fresh messages every day</span>
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <div class="affirmation-card">
-                    <div class="affirmation-icon">
-                        🌟
-                    </div>
-                    <div class="affirmation-text">"You are stronger than you think, braver than you believe"</div>
+        <div class="reveal-right">
+            <div class="section-label">✨ Live Demo</div>
+            <h2 class="section-title">Chat Support That Actually Gets It</h2>
+            <p class="section-subtitle">24/7 conversation support designed for young Africans. Talk about school, relationships, anxiety, or anything on your mind.</p>
+            <div class="mood-demo">
+                <h3>How are you feeling right now?</h3>
+                <div class="mood-grid">
+                    <div class="mood-btn" onclick="selectMood(this)"><span class="mood-emoji">😊</span><span class="mood-label">Great</span></div>
+                    <div class="mood-btn" onclick="selectMood(this)"><span class="mood-emoji">🙂</span><span class="mood-label">Good</span></div>
+                    <div class="mood-btn" onclick="selectMood(this)"><span class="mood-emoji">😐</span><span class="mood-label">Okay</span></div>
+                    <div class="mood-btn" onclick="selectMood(this)"><span class="mood-emoji">😔</span><span class="mood-label">Down</span></div>
+                    <div class="mood-btn" onclick="selectMood(this)"><span class="mood-emoji">😢</span><span class="mood-label">Struggling</span></div>
                 </div>
             </div>
         </div>
+    </div>
+</section>
 
-        <div class="demo-grid">
-            <div>
-                <div class="mood-tracker">
-                    <h3 style="color: var(--primary); margin-bottom: 1rem; text-align: center;">How are you feeling?</h3>
-                    <div class="mood-options">
-                        <div class="mood-option">
-                            <span class="mood-emoji">😊</span>
-                            <div>Great</div>
-                        </div>
-                        <div class="mood-option">
-                            <span class="mood-emoji">🙂</span>
-                            <div>Good</div>
-                        </div>
-                        <div class="mood-option">
-                            <span class="mood-emoji">😐</span>
-                            <div>Okay</div>
-                        </div>
-                        <div class="mood-option">
-                            <span class="mood-emoji">😔</span>
-                            <div>Down</div>
-                        </div>
-                        <div class="mood-option">
-                            <span class="mood-emoji">😢</span>
-                            <div>Struggling</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <h3 style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;">Track Your Mood</h3>
-                <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 2rem;">Understanding your emotions is the first step to managing them. Track patterns and celebrate progress.</p>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="padding: 0.8rem 0; display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="color: var(--primary);">✓</span>
-                        <span>Daily emotional check-ins</span>
-                    </li>
-                    <li style="padding: 0.8rem 0; display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="color: var(--primary);">✓</span>
-                        <span>Identify patterns over time</span>
-                    </li>
-                    <li style="padding: 0.8rem 0; display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="color: var(--primary);">✓</span>
-                        <span>Private and secure</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <section id="features" style="background: var(--bg-light);">
+<!-- ─── FEATURES ─── -->
+<section id="features" class="features-section">
+    <div class="section-center">
+        <div class="section-label">🛠 Features</div>
         <h2 class="section-title">Your Complete Mental Health Toolkit</h2>
-        <p class="section-subtitle">Everything you need to support your emotional wellbeing</p>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    💬
+        <p class="section-subtitle">Everything you need to support your emotional wellbeing — in one place.</p>
+    </div>
+    <div class="features-grid">
+        <div class="feature-card reveal"><div class="feature-icon green">💬</div><h3>24/7 Chat Support</h3><p>Never feel alone. Chat anytime you need someone to listen — day or night.</p></div>
+        <div class="feature-card reveal"><div class="feature-icon purple">📅</div><h3>Day Planner</h3><p>Organize your schedule, set goals, and receive friendly reminders throughout the day.</p></div>
+        <div class="feature-card reveal"><div class="feature-icon amber">🌟</div><h3>Daily Affirmations</h3><p>Wake up to personalized, uplifting messages that boost your confidence.</p></div>
+        <div class="feature-card reveal"><div class="feature-icon pink">📊</div><h3>Mood Check-ins</h3><p>Track your feelings over time and gain insights into your emotional patterns.</p></div>
+        <div class="feature-card reveal"><div class="feature-icon green">🌿</div><h3>Eco-Therapy</h3><p>Nature walks, grounding exercises, and practices rooted in African tradition.</p></div>
+        <div class="feature-card reveal"><div class="feature-icon blue">🌬️</div><h3>Breathing Exercises</h3><p>Guided 4-7-8, box breathing, and more. Takes two minutes and actually works.</p></div>
+        <div class="feature-card reveal"><div class="feature-icon amber">🌻</div><h3>Gratitude Journal</h3><p>Write down 3 things you're grateful for each day. Small habit, big difference.</p></div>
+        <div class="feature-card reveal"><div class="feature-icon purple">🫧</div><h3>Self-Care Checklist</h3><p>Daily checklist for the basics — water, rest, movement, connection.</p></div>
+        <div class="feature-card reveal"><div class="feature-icon pink">🛡️</div><h3>Crisis Support</h3><p>Immediate connection to professional help and emergency resources.</p></div>
+    </div>
+</section>
+
+<!-- ─── DEMO SHOWCASE ─── -->
+<section id="showcase" class="video-section">
+    <div class="section-center">
+        <div class="section-label" style="background:rgba(255,255,255,0.1);color:white">🎬 See It In Action</div>
+        <h2 class="section-title">Experience Cheerly Live Up</h2>
+        <p class="section-subtitle">Interactive previews of our core features — click any card to try it yourself.</p>
+    </div>
+    <div class="video-grid">
+
+        <!-- Mood Tracking Card -->
+        <a href="mood-tracker.html" class="demo-card reveal-scale" style="text-decoration:none;color:white">
+            <div class="demo-card-bg mood-demo-bg">
+                <div class="mood-floating-circle" style="width:120px;height:120px;top:-30px;left:-30px;animation-delay:0s"></div>
+                <div class="mood-floating-circle" style="width:80px;height:80px;bottom:-20px;right:-10px;animation-delay:2s"></div>
+                <div class="mood-mini">
+                    <div class="mood-mini-title">How are you feeling?</div>
+                    <div class="mood-emoji-row">
+                        <div class="mood-emoji-item">😊</div>
+                        <div class="mood-emoji-item">🙂</div>
+                        <div class="mood-emoji-item">😐</div>
+                        <div class="mood-emoji-item">😔</div>
+                        <div class="mood-emoji-item">😢</div>
+                    </div>
+                    <div class="mood-mini-chart">
+                        <div class="mood-bar" style="--h:25px;background:rgba(255,255,255,0.3);animation-delay:0.2s"></div>
+                        <div class="mood-bar" style="--h:40px;background:rgba(255,255,255,0.4);animation-delay:0.4s"></div>
+                        <div class="mood-bar" style="--h:30px;background:rgba(255,255,255,0.35);animation-delay:0.6s"></div>
+                        <div class="mood-bar" style="--h:50px;background:rgba(255,255,255,0.5);animation-delay:0.8s"></div>
+                        <div class="mood-bar" style="--h:35px;background:rgba(255,255,255,0.4);animation-delay:1.0s"></div>
+                        <div class="mood-bar" style="--h:55px;background:rgba(255,255,255,0.6);animation-delay:1.2s"></div>
+                        <div class="mood-bar" style="--h:45px;background:rgba(255,255,255,0.5);animation-delay:1.4s"></div>
+                    </div>
                 </div>
-                <h3>24/7 AI Chat Support</h3>
-                <p>Never feel alone. Chat anytime you need someone to listen—day or night.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    📅
-                </div>
-                <h3>Day Planner</h3>
-                <p>Organize your schedule, set goals, and receive friendly reminders throughout the day.</p>
+            <div class="demo-overlay">
+                <span class="demo-overlay-label">📊 Mood Tracking</span>
+                <span class="demo-overlay-cta">Try It →</span>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    🌟
+        </a>
+
+        <!-- Eco-Therapy Card -->
+        <a href="eco-therapy.html" class="demo-card reveal-scale" style="text-decoration:none;color:white">
+            <div class="demo-card-bg eco-demo-bg">
+                <div class="eco-scene">
+                    <div class="eco-sun"></div>
+                    <div class="eco-cloud"></div>
+                    <div class="eco-cloud"></div>
+                    <div class="eco-leaf-floating" style="left:20%;top:10%;animation-delay:0s">🍃</div>
+                    <div class="eco-leaf-floating" style="left:60%;top:5%;animation-delay:1.5s">🌿</div>
+                    <div class="eco-leaf-floating" style="left:80%;top:15%;animation-delay:3s">🍃</div>
+                    <div class="eco-tree" style="left:15%;bottom:0">
+                        <div class="eco-leaves"></div>
+                        <div class="eco-trunk"></div>
+                    </div>
+                    <div class="eco-tree" style="left:75%;bottom:0">
+                        <div class="eco-leaves" style="width:40px;height:40px;animation-delay:1s"></div>
+                        <div class="eco-trunk" style="height:30px"></div>
+                    </div>
+                    <div class="eco-tree" style="left:50%;bottom:0">
+                        <div class="eco-leaves" style="width:60px;height:60px;animation-delay:2s"></div>
+                        <div class="eco-trunk" style="height:50px;width:10px"></div>
+                    </div>
+                    <!-- Person meditating -->
+                    <div class="eco-person">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                            <circle cx="30" cy="14" r="8" fill="#fbbf24"/>
+                            <ellipse cx="30" cy="38" rx="14" ry="16" fill="#fbbf24" opacity="0.8"/>
+                            <line x1="16" y1="32" x2="8" y2="28" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+                            <line x1="44" y1="32" x2="52" y2="28" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+                            <line x1="22" y1="50" x2="14" y2="56" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+                            <line x1="38" y1="50" x2="46" y2="56" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="eco-mini-title">
+                        🧘 Nature Healing<br><span style="font-size:0.7rem;opacity:0.6">Guided outdoor exercises</span>
+                    </div>
                 </div>
-                <h3>Daily Affirmations</h3>
-                <p>Wake up to personalized, uplifting messages that boost your confidence.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    📊
-                </div>
-                <h3>Mood Check-ins</h3>
-                <p>Track your feelings over time and gain insights into your emotional patterns.</p>
+            <div class="demo-overlay">
+                <span class="demo-overlay-label">🌿 Eco-Therapy</span>
+                <span class="demo-overlay-cta">Explore →</span>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    💚
+        </a>
+
+        <!-- Community Card -->
+        <a href="chat.html" class="demo-card reveal-scale" style="text-decoration:none;color:white">
+            <div class="demo-card-bg community-demo-bg">
+                <div class="community-scene">
+                    <div class="community-chat">
+                        <div class="community-avatar" style="background:#059669">👩🏾</div>
+                        <div class="community-bubble">I just completed my 7-day gratitude streak! 🎉</div>
+                    </div>
+                    <div class="community-chat">
+                        <div class="community-avatar" style="background:#8b5cf6">👨🏿</div>
+                        <div class="community-bubble">That's amazing! The breathing exercises really helped me too 💪</div>
+                    </div>
+                    <div class="community-chat">
+                        <div class="community-avatar" style="background:#f59e0b">👩🏽</div>
+                        <div class="community-bubble">This community makes such a difference 💚</div>
+                    </div>
+                    <div class="community-chat">
+                        <div class="community-avatar" style="background:#ec4899">👦🏾</div>
+                        <div class="community-bubble">Started eco-therapy today — feeling grounded already 🌿</div>
+                    </div>
+                    <div class="community-hearts">
+                        <span class="community-heart">💚</span>
+                        <span class="community-heart">💛</span>
+                        <span class="community-heart">💚</span>
+                    </div>
                 </div>
-                <h3>Mental Health Toolkit</h3>
-                <p>Access stress management techniques and coping strategies whenever needed.</p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    💡
-                </div>
-                <h3>Life Navigation Support</h3>
-                <p>Get guidance on career, education, relationships, and life challenges.</p>
+            <div class="demo-overlay">
+                <span class="demo-overlay-label">💚 Community</span>
+                <span class="demo-overlay-cta">Join →</span>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    🛡️
-                </div>
-                <h3>Safe Crisis Support</h3>
-                <p>Immediate connection to professional help and emergency resources.</p>
+        </a>
+
+    </div>
+</section>
+
+<!-- ─── CARTOON ILLUSTRATION SECTION ─── -->
+<section class="illustration-section">
+    <div class="illustration-grid">
+        <div class="reveal-left">
+            <svg class="illustration-svg" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+                <defs><linearGradient id="skyG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#bae6fd"/><stop offset="100%" style="stop-color:#ecfdf5"/></linearGradient></defs>
+                <rect width="500" height="400" fill="url(#skyG)" rx="24"/>
+                <!-- Sun -->
+                <circle cx="400" cy="70" r="45" fill="rgba(251,191,36,0.3)" class="anim-pulse"/>
+                <circle cx="400" cy="70" r="30" fill="#fbbf24" class="anim-pulse"/>
+                <!-- Clouds -->
+                <g class="anim-cloud"><ellipse cx="80" cy="55" rx="35" ry="15" fill="white"/><ellipse cx="100" cy="47" rx="25" ry="12" fill="white"/><ellipse cx="65" cy="50" rx="20" ry="10" fill="white"/></g>
+                <g class="anim-cloud" style="animation-delay:-5s;animation-duration:18s"><ellipse cx="280" cy="80" rx="30" ry="12" fill="white"/><ellipse cx="295" cy="73" rx="22" ry="10" fill="white"/></g>
+                <!-- Ground -->
+                <ellipse cx="250" cy="360" rx="260" ry="55" fill="#d1fae5"/>
+                <!-- Tree left -->
+                <rect x="55" y="250" width="16" height="75" rx="5" fill="#92400e"/>
+                <ellipse cx="63" cy="235" rx="42" ry="38" fill="#10b981"><animate attributeName="ry" values="38;40;38" dur="4s" repeatCount="indefinite"/></ellipse>
+                <ellipse cx="63" cy="222" rx="32" ry="28" fill="#059669"><animate attributeName="ry" values="28;30;28" dur="4s" begin="0.5s" repeatCount="indefinite"/></ellipse>
+                <!-- Tree right -->
+                <rect x="420" y="260" width="14" height="65" rx="4" fill="#92400e"/>
+                <ellipse cx="427" cy="248" rx="35" ry="32" fill="#10b981"><animate attributeName="ry" values="32;34;32" dur="5s" repeatCount="indefinite"/></ellipse>
+                <!-- People group -->
+                <!-- Person 1 - sitting with laptop -->
+                <circle cx="180" cy="280" r="16" fill="#f5d0a9"/>
+                <path d="M172,275 Q175,264 180,263 Q185,264 188,275" fill="#1f2937"/>
+                <path d="M244,290 Q250,296 256,290" fill="none" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+                <ellipse cx="180" cy="308" rx="18" ry="22" fill="#8b5cf6"/>
+                <rect x="172" y="320" width="10" height="26" rx="4" fill="#1e40af"/>
+                <rect x="186" y="320" width="10" height="26" rx="4" fill="#1e40af"/>
+                <!-- Laptop -->
+                <rect x="195" y="295" width="30" height="20" rx="3" fill="#374151"/>
+                <rect x="197" y="297" width="26" height="16" rx="2" fill="#ecfdf5"/>
+                <rect x="190" y="315" width="40" height="3" rx="1.5" fill="#374151"/>
+                <!-- Person 2 - standing happy -->
+                <circle cx="300" cy="268" r="17" fill="#c68642"/>
+                <path d="M290,262 Q295,252 300,253 Q305,252 310,262" fill="#1f2937"/>
+                <path d="M294,273 Q300,280 306,273" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="295" cy="267" r="2" fill="#1f2937"/><circle cx="305" cy="267" r="2" fill="#1f2937"/>
+                <ellipse cx="300" cy="302" rx="20" ry="24" fill="#10b981"/>
+                <rect x="290" y="316" width="10" height="30" rx="4" fill="#1e40af"/>
+                <rect x="304" y="316" width="10" height="30" rx="4" fill="#1e40af"/>
+                <!-- Raised hand -->
+                <rect x="316" y="278" width="8" height="24" rx="4" fill="#10b981" transform="rotate(-20,320,290)"/>
+                <circle cx="322" cy="274" r="6" fill="#c68642"/>
+                <!-- Person 3 - phone -->
+                <circle cx="380" cy="275" r="15" fill="#f5d0a9"/>
+                <path d="M372,270 Q375,260 380,261 Q385,260 388,270" fill="#4b2e1a"/>
+                <ellipse cx="380" cy="305" rx="17" ry="22" fill="#f472b6"/>
+                <rect x="372" y="318" width="9" height="28" rx="4" fill="#3b0764"/>
+                <rect x="385" y="318" width="9" height="28" rx="4" fill="#3b0764"/>
+                <!-- Phone in hand -->
+                <rect x="390" y="285" width="14" height="24" rx="3" fill="#1f2937"/>
+                <rect x="392" y="288" width="10" height="18" rx="2" fill="#ecfdf5"/>
+                <!-- Hearts floating -->
+                <g><animateTransform attributeName="transform" type="translate" values="0,0;0,-8;0,0" dur="2s" repeatCount="indefinite"/>
+                    <path d="M300,250 l3,-4 Q306,240 310,246 l3,4 L306,256Z" fill="#f472b6" opacity="0.7"/>
+                </g>
+                <g><animateTransform attributeName="transform" type="translate" values="0,0;0,-10;0,0" dur="2.5s" repeatCount="indefinite"/>
+                    <path d="M190,265 l2,-3 Q195,257 198,262 l2,3 L195,270Z" fill="#f472b6" opacity="0.6"/>
+                </g>
+                <!-- Sparkles -->
+                <polygon points="140,150 143,158 151,158 145,163 147,171 140,167 133,171 135,163 129,158 137,158" fill="#fbbf24" opacity="0.7"><animate attributeName="opacity" values="0.7;0.2;0.7" dur="2s" repeatCount="indefinite"/></polygon>
+                <polygon points="350,130 352,136 358,136 354,139 355,145 350,142 345,145 347,139 342,136 348,136" fill="#fbbf24" opacity="0.5"><animate attributeName="opacity" values="0.5;0.1;0.5" dur="2.5s" repeatCount="indefinite"/></polygon>
+                <!-- Birds -->
+                <path d="M120,120 Q125,112 130,120" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><animateTransform attributeName="transform" type="translate" values="0,0;15,-10;30,0" dur="4s" repeatCount="indefinite"/></path>
+                <path d="M155,105 Q160,97 165,105" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><animateTransform attributeName="transform" type="translate" values="0,0;20,-12;40,0" dur="5s" repeatCount="indefinite"/></path>
+            </svg>
+        </div>
+        <div class="reveal-right">
+            <div class="section-label">🌍 Built for Africa</div>
+            <h2 class="section-title">Designed by Youth,<br>For Youth</h2>
+            <p class="section-subtitle">We understand the unique challenges facing young Africans. Cheerly Live Up combines proven wellbeing techniques with African cultural wisdom — Ubuntu, nature connection, and community spirit.</p>
+            <div style="display:flex;flex-direction:column;gap:1rem;margin-top:1rem">
+                <div style="display:flex;align-items:center;gap:0.75rem"><div style="width:40px;height:40px;background:#ecfdf5;border-radius:10px;display:flex;align-items:center;justify-content:center">🌿</div><div><strong>Eco-Therapy</strong><br><span style="color:var(--text-light);font-size:0.9rem">Baobab meditation, Ubuntu nature circles, grounding</span></div></div>
+                <div style="display:flex;align-items:center;gap:0.75rem"><div style="width:40px;height:40px;background:#ede9fe;border-radius:10px;display:flex;align-items:center;justify-content:center">🔒</div><div><strong>100% Private</strong><br><span style="color:var(--text-light);font-size:0.9rem">Your data is encrypted and never shared</span></div></div>
+                <div style="display:flex;align-items:center;gap:0.75rem"><div style="width:40px;height:40px;background:#fef3c7;border-radius:10px;display:flex;align-items:center;justify-content:center">🆓</div><div><strong>Completely Free</strong><br><span style="color:var(--text-light);font-size:0.9rem">No subscriptions, no credit card, no catch</span></div></div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="impact" class="impact">
+<!-- ─── IMPACT ─── -->
+<section id="impact" class="impact-section">
+    <div class="section-center">
+        <div class="section-label" style="background:rgba(255,255,255,0.1);color:white">📈 Impact</div>
         <h2 class="section-title">Creating Lasting Change</h2>
         <p class="section-subtitle">Transforming mental health for young people across Africa</p>
-        <div class="stats">
-            <div class="stat-box">
-                <div class="stat-icon">
-                    🌟
-                </div>
-                <div class="stat-label">Short-term Impact</div>
-                <p>Improve daily mood, build emotional resilience, and develop healthy coping strategies.</p>
-            </div>
-            <div class="stat-box">
-                <div class="stat-icon">
-                    🌍
-                </div>
-                <div class="stat-label">Long-term Vision</div>
-                <p>Reduce mental health stigma and create a generation that talks openly about wellbeing.</p>
-            </div>
+    </div>
+    <div class="stats-grid">
+        <div class="stat-card reveal">
+            <div class="stat-icon">🧠</div>
+            <div class="stat-number">73%</div>
+            <div class="stat-desc">of users report improved mood within 2 weeks</div>
         </div>
-    </section>
-
-    <section id="contact" class="cta-section">
-        <h2 class="section-title">Ready to Live Up?</h2>
-        <p class="section-subtitle">Join thousands of young people choosing hope, healing, and mental strength</p>
-        <a href="signup.html" class="cta-button">
-            🌟
-            Get Started Free
-        </a>
-    </section>
-
-    <footer>
-        <div>
-            <p style="font-size: 1.1rem; margin-bottom: 0.5rem;"><strong>Cheerly Live Up</strong></p>
-            <p>Empowering African youth, one conversation at a time.</p>
-            <div class="footer-values">
-                <span>
-                    🌍
-                    Afrocentric
-                </span>
-                <span>
-                    💚
-                    Youth-Focused
-                </span>
-                <span>
-                    🔒
-                    Private
-                </span>
-                <span>
-                    ✓
-                    Accessible
-                </span>
-            </div>
-            <p style="margin-top: 2rem; opacity: 0.7;">&copy; 2024 Cheerly Live Up. All rights reserved.</p>
+        <div class="stat-card reveal">
+            <div class="stat-icon">🔥</div>
+            <div class="stat-number">4.2x</div>
+            <div class="stat-desc">more likely to build healthy coping habits</div>
         </div>
-    </footer>
+        <div class="stat-card reveal">
+            <div class="stat-icon">🌍</div>
+            <div class="stat-number">12+</div>
+            <div class="stat-desc">African countries with active users</div>
+        </div>
+        <div class="stat-card reveal">
+            <div class="stat-icon">💬</div>
+            <div class="stat-number">50K+</div>
+            <div class="stat-desc">supportive conversations facilitated</div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── TESTIMONIALS ─── -->
+<section class="testimonials-section">
+    <div class="section-center">
+        <div class="section-label">💝 Testimonials</div>
+        <h2 class="section-title">What Our Users Say</h2>
+        <p class="section-subtitle">Real stories from real people whose lives have changed.</p>
+    </div>
+    <div class="testimonials-track">
+        <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"Cheerly helped me through my first year of university. The mood tracker showed me patterns I never noticed. I'm actually managing my stress now."</p>
+            <div class="testimonial-author"><div class="testimonial-avatar" style="background:var(--primary)">A</div><div><div class="testimonial-name">Amara K.</div><div class="testimonial-role">University Student, Kenya</div></div></div>
+        </div>
+        <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"The breathing exercises are a lifesaver before exams. And I love the gratitude journal — it really changed how I see my days. Small but powerful."</p>
+            <div class="testimonial-author"><div class="testimonial-avatar" style="background:var(--accent)">T</div><div><div class="testimonial-name">Tendai M.</div><div class="testimonial-role">High School Senior, Zimbabwe</div></div></div>
+        </div>
+        <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"I was skeptical at first, but the eco-therapy activities genuinely help. The Baobab meditation is my favourite. Finally something that gets our culture."</p>
+            <div class="testimonial-author"><div class="testimonial-avatar" style="background:var(--secondary)">N</div><div><div class="testimonial-name">Nkechi O.</div><div class="testimonial-role">Graduate, Nigeria</div></div></div>
+        </div>
+        <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"As a young professional, I didn't know where to turn for mental health support. This app made it approachable and free. I recommend it to everyone."</p>
+            <div class="testimonial-author"><div class="testimonial-avatar" style="background:var(--pink)">S</div><div><div class="testimonial-name">Sipho D.</div><div class="testimonial-role">Young Professional, South Africa</div></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-section">
+    <h2 class="section-title">Ready to Live Up?</h2>
+    <p>Join thousands of young people choosing hope, healing, and mental strength.</p>
+    <a href="signup.html" class="btn-primary" style="font-size:1.15rem;padding:1.1rem 2.5rem">Get Started Free — It Takes 30 Seconds</a>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <a href="index.html" class="logo" style="margin-bottom:0.5rem"><span class="logo-dot"></span> Cheerly Live Up</a>
+            <p>Empowering African youth, one conversation at a time. Built with love, backed by science.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Platform</h4>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="chat.html">Chat Support</a>
+            <a href="mood-tracker.html">Mood Tracker</a>
+            <a href="day-planner.html">Day Planner</a>
+        </div>
+        <div class="footer-col">
+            <h4>Wellness</h4>
+            <a href="eco-therapy.html">Eco-Therapy</a>
+            <a href="breathe.html">Breathing</a>
+            <a href="gratitude.html">Gratitude</a>
+            <a href="self-care.html">Self-Care</a>
+        </div>
+        <div class="footer-col">
+            <h4>Company</h4>
+            <a href="about.html">About Us</a>
+            <a href="resources.html">Resources</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 Cheerly Live Up. All rights reserved.</p>
+        <div class="footer-values">
+            <span>🌍 Afrocentric</span>
+            <span>💚 Youth-Focused</span>
+            <span>🔒 Private</span>
+            <span>✓ Accessible</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+// ─── Navbar scroll effect ───
+window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ─── Scroll reveal ───
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+            setTimeout(() => e.target.classList.add('visible'), i * 100);
+            revealObs.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.15 });
+revealEls.forEach(el => revealObs.observe(el));
+
+// ─── Animated counters ───
+const counters = document.querySelectorAll('[data-count]');
+const counterObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = parseInt(el.dataset.count);
+            let current = 0;
+            const step = Math.max(1, Math.floor(target / 60));
+            const suffix = target >= 10000 ? 'K+' : target === 24 ? '' : '%';
+            const display = target >= 10000 ? target / 1000 : target;
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= display) { current = display; clearInterval(timer); }
+                el.textContent = (target >= 10000 ? current + 'K+' : current + (suffix));
+            }, 30);
+            counterObs.unobserve(el);
+        }
+    });
+}, { threshold: 0.5 });
+counters.forEach(c => counterObs.observe(c));
+
+// ─── Particles ───
+(function createParticles() {
+    const container = document.getElementById('particles');
+    const colors = ['#10b981', '#fbbf24', '#8b5cf6', '#f472b6', '#ffffff'];
+    for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 8 + 3;
+        p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*8+6}s;animation-delay:${Math.random()*8}s`;
+        container.appendChild(p);
+    }
+})();
+
+// ─── Mood selector ───
+function selectMood(el) {
+    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+}
+
+// ─── Mobile nav ───
+document.querySelector('.mobile-menu').addEventListener('click', () => {
+    const nav = document.querySelector('.nav-links');
+    nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+    nav.style.position = 'fixed'; nav.style.top = '60px'; nav.style.left = '0'; nav.style.right = '0';
+    nav.style.background = 'white'; nav.style.flexDirection = 'column'; nav.style.padding = '1rem';
+    nav.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)'; nav.style.zIndex = '999';
+});
+</script>
 </body>
 </html>

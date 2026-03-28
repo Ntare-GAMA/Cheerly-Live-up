@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco-Therapy - Cheerly Live Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #fbbf24;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f0fdf4;
+            --earth: #92400e;
+            --earth-light: #fef3c7;
+            --sky: #0ea5e9;
+            --sky-light: #e0f2fe;
+            --forest: #166534;
+            --forest-light: #dcfce7;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #f9fafb;
+        }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(16, 185, 129, 0.1);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .container {
+            margin-top: 90px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2rem 5%;
+        }
+
+        /* Hero Section */
+        .eco-hero {
+            background: linear-gradient(135deg, var(--forest) 0%, var(--primary-dark) 40%, var(--sky) 100%);
+            color: white;
+            padding: 4rem 3rem;
+            border-radius: 30px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .eco-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .eco-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .eco-hero p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .eco-hero .nature-icons {
+            font-size: 3rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nature-icon-animated {
+            animation: sway 3s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        .nature-icon-animated:nth-child(2) { animation-delay: 0.5s; }
+        .nature-icon-animated:nth-child(3) { animation-delay: 1s; }
+        .nature-icon-animated:nth-child(4) { animation-delay: 1.5s; }
+        .nature-icon-animated:nth-child(5) { animation-delay: 2s; }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-3deg) translateY(0); }
+            50% { transform: rotate(3deg) translateY(-5px); }
+        }
+
+        /* Info Callout */
+        .eco-callout {
+            background: linear-gradient(135deg, var(--forest-light) 0%, var(--earth-light) 100%);
+            border-left: 5px solid var(--primary);
+            padding: 2rem;
+            border-radius: 0 20px 20px 0;
+            margin-bottom: 3rem;
+        }
+
+        .eco-callout h3 {
+            color: var(--forest);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .eco-callout p {
+            color: var(--text-light);
+            font-size: 1.05rem;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Activities Grid */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .activity-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: all 0.4s;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .activity-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--sky));
+        }
+
+        .activity-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.2);
+            border-color: var(--primary);
+        }
+
+        .activity-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .activity-card h3 {
+            color: var(--text-dark);
+            font-size: 1.4rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .activity-card p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .activity-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag-duration { background: var(--sky-light); color: var(--sky); }
+        .tag-benefit { background: var(--forest-light); color: var(--forest); }
+        .tag-difficulty { background: var(--earth-light); color: var(--earth); }
+
+        .activity-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .activity-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Guided Exercises Section */
+        .guided-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            margin-bottom: 4rem;
+        }
+
+        .exercise-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .exercise-item {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s;
+        }
+
+        .exercise-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.15);
+        }
+
+        .exercise-item h4 {
+            color: var(--forest);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .exercise-item p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .exercise-steps {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .exercise-steps li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            color: var(--text-dark);
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        /* Nature Soundscapes */
+        .soundscapes-section {
+            margin-bottom: 4rem;
+        }
+
+        .soundscapes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .sound-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .sound-card:hover, .sound-card.playing {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+        }
+
+        .sound-card.playing {
+            background: var(--bg-light);
+        }
+
+        .sound-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .sound-card h4 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .sound-card p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .sound-btn {
+            margin-top: 1rem;
+            padding: 0.5rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .sound-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* African Eco-Therapy */
+        .african-eco {
+            background: linear-gradient(135deg, var(--earth) 0%, #78350f 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            margin-bottom: 4rem;
+        }
+
+        .african-eco h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .african-eco > p {
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .african-practices {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .practice-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .practice-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .practice-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .practice-card p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        /* Weekly Challenge */
+        .challenge-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--sky) 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+
+        .challenge-section h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .challenge-section > p {
+            opacity: 0.95;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .challenge-tracker {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .day-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .day-circle.completed {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: white;
+        }
+
+        .day-circle:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .challenge-description {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .challenge-description h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Eco-Anxiety Section */
+        .eco-anxiety-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            margin-bottom: 4rem;
+        }
+
+        .coping-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .coping-card {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .coping-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .coping-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Nature Journal */
+        .journal-section {
+            background: var(--forest-light);
+            padding: 3rem;
+            border-radius: 20px;
+            margin-bottom: 4rem;
+        }
+
+        .journal-section h2 {
+            color: var(--forest);
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .journal-section > p {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .journal-prompts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .prompt-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+        }
+
+        .prompt-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
+        }
+
+        .prompt-card .prompt-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .prompt-card h4 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .prompt-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            font-style: italic;
+        }
+
+        /* Nature Log (Activity Tracker) */
+        .nature-log {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            margin-bottom: 4rem;
+        }
+
+        .log-form {
+            max-width: 600px;
+            margin: 2rem auto 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .save-log-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .save-log-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .success-message {
+            display: none;
+            background: var(--bg-light);
+            border: 2px solid var(--primary);
+            padding: 1rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .log-history {
+            margin-top: 2rem;
+        }
+
+        .log-entry {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .log-entry-icon { font-size: 1.5rem; }
+
+        .log-entry-info { flex-grow: 1; }
+
+        .log-entry-activity {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .log-entry-date {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .log-entry-mood {
+            padding: 0.25rem 0.75rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* CTA Section */
+        .eco-cta {
+            background: linear-gradient(135deg, var(--forest) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .eco-cta h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .eco-cta p {
+            opacity: 0.95;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .eco-cta-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .eco-cta-link {
+            padding: 0.75rem 2rem;
+            background: white;
+            color: var(--primary-dark);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .eco-cta-link:hover {
+            background: var(--bg-light);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 5%;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover { color: white; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .eco-hero h1 { font-size: 2rem; }
+            .activities-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .african-practices { grid-template-columns: 1fr; }
+            .coping-grid { grid-template-columns: 1fr; }
+            .journal-prompts { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span style="font-size: inherit;">🌟</span>
+            <span>Cheerly Live Up</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="mood-tracker.html">Mood</a></li>
+            <li><a href="chat.html">Chat</a></li>
+            <li><a href="eco-therapy.html" class="active">Eco-Therapy</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="day-planner.html">Planner</a></li>
+            <li><a href="breathe.html">Breathe</a></li>
+            <li><a href="gratitude.html">Gratitude</a></li>
+            <li><a href="self-care.html">Self-Care</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Hero -->
+        <div class="eco-hero">
+            <div class="nature-icons">
+                <span class="nature-icon-animated">🌿</span>
+                <span class="nature-icon-animated">🌍</span>
+                <span class="nature-icon-animated">🌳</span>
+                <span class="nature-icon-animated">🦋</span>
+                <span class="nature-icon-animated">🌻</span>
+            </div>
+            <h1>Eco-Therapy &amp; Nature Healing</h1>
+            <p>Sometimes the best thing you can do for your head is step outside. Fresh air, green spaces, even just sitting under a tree — it does more than you'd think.</p>
+        </div>
+
+        <!-- What is Eco-Therapy -->
+        <div class="eco-callout">
+            <h3>🌱 What is Eco-Therapy?</h3>
+            <p>Basically, it's using time in nature as part of looking after your mental health. Walking barefoot on grass, growing a plant, sitting by water — any of that counts. Even 20 minutes outside can bring your stress levels down noticeably. For a lot of us growing up in Africa, there's already a deep connection to the land that our grandparents understood well. This is about tapping back into that.</p>
+        </div>
+
+        <!-- Nature-Based Activities -->
+        <h2 class="section-title">🌿 Things to Try Outside</h2>
+        <p class="section-subtitle">Pick one that sounds good and give it a go this week</p>
+
+        <div class="activities-grid">
+            <div class="activity-card">
+                <div class="activity-icon">🚶‍♂️</div>
+                <h3>Mindful Nature Walk</h3>
+                <p>Go for a slow walk somewhere green. Leave your phone on silent and actually pay attention to what's around you — the sounds, the wind, the colours. It hits different when you're not rushing.</p>
+                <div>
+                    <span class="activity-tag tag-duration">⏱ 20-30 min</span>
+                    <span class="activity-tag tag-benefit">Stress relief</span>
+                    <span class="activity-tag tag-difficulty">Easy</span>
+                </div>
+                <button class="activity-btn" onclick="logActivity('Mindful Nature Walk')">🌿 Log This Activity</button>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-icon">🌳</div>
+                <h3>Forest Bathing (Shinrin-yoku)</h3>
+                <p>Find a spot with lots of trees and just... be there. Breathe deep, touch the bark, listen to leaves. It's a Japanese idea called Shinrin-yoku, and people swear by it for clearing the mind.</p>
+                <div>
+                    <span class="activity-tag tag-duration">⏱ 30-60 min</span>
+                    <span class="activity-tag tag-benefit">Immunity boost</span>
+                    <span class="activity-tag tag-difficulty">Easy</span>
+                </div>
+                <button class="activity-btn" onclick="logActivity('Forest Bathing')">🌿 Log This Activity</button>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-icon">🌱</div>
+                <h3>Garden Therapy</h3>
+                <p>Grow something. Could be a small herb in a cup on your window, doesn't matter. There's something about getting your hands in soil and watching a plant come up that quietly makes things feel a bit more okay.</p>
+                <div>
+                    <span class="activity-tag tag-duration">⏱ 15-45 min</span>
+                    <span class="activity-tag tag-benefit">Purpose & calm</span>
+                    <span class="activity-tag tag-difficulty">Easy</span>
+                </div>
+                <button class="activity-btn" onclick="logActivity('Garden Therapy')">🌿 Log This Activity</button>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-icon">🦶</div>
+                <h3>Earthing / Grounding</h3>
+                <p>Kick off your shoes and walk on grass, sand, or soil. Sounds simple (because it is), but that direct contact with the ground has a way of pulling you out of your head and into the moment.</p>
+                <div>
+                    <span class="activity-tag tag-duration">⏱ 10-20 min</span>
+                    <span class="activity-tag tag-benefit">Better sleep</span>
+                    <span class="activity-tag tag-difficulty">Very Easy</span>
+                </div>
+                <button class="activity-btn" onclick="logActivity('Earthing / Grounding')">🌿 Log This Activity</button>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-icon">🌅</div>
+                <h3>Sunrise / Sunset Watching</h3>
+                <p>Find a spot and actually watch the sun come up or go down. No phone, no photos (okay maybe one). It naturally slows your brain down and gives you a moment to just breathe.</p>
+                <div>
+                    <span class="activity-tag tag-duration">⏱ 15-30 min</span>
+                    <span class="activity-tag tag-benefit">Gratitude</span>
+                    <span class="activity-tag tag-difficulty">Very Easy</span>
+                </div>
+                <button class="activity-btn" onclick="logActivity('Sunrise/Sunset Watching')">🌿 Log This Activity</button>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-icon">💧</div>
+                <h3>Water Therapy (Blue Mind)</h3>
+                <p>Hang out near water — a river, the ocean, a lake, even a fountain works. Something about being near water just calms the noise in your head. Try it next time you're feeling overwhelmed.</p>
+                <div>
+                    <span class="activity-tag tag-duration">⏱ 20-60 min</span>
+                    <span class="activity-tag tag-benefit">Calm & creativity</span>
+                    <span class="activity-tag tag-difficulty">Easy</span>
+                </div>
+                <button class="activity-btn" onclick="logActivity('Water Therapy')">🌿 Log This Activity</button>
+            </div>
+        </div>
+
+        <!-- Guided Nature Exercises -->
+        <div class="guided-section">
+            <h2 class="section-title">🧘 Guided Exercises</h2>
+            <p class="section-subtitle">Things you can do right now, step by step</p>
+
+            <div class="exercise-list">
+                <div class="exercise-item">
+                    <h4>🌬️ Nature Breathing (5 minutes)</h4>
+                    <p>A simple breathing exercise that works best near a window or outside</p>
+                    <ol class="exercise-steps">
+                        <li><span class="step-number">1</span>Go outside or sit by an open window facing nature</li>
+                        <li><span class="step-number">2</span>Close your eyes. Breathe in slowly for 4 counts — imagine pulling in that fresh green air</li>
+                        <li><span class="step-number">3</span>Hold for 4 counts — feel the quiet</li>
+                        <li><span class="step-number">4</span>Breathe out for 6 counts — let the tension leave with the air</li>
+                        <li><span class="step-number">5</span>Do this 5 times. Each round, you should feel a bit more settled</li>
+                    </ol>
+                </div>
+
+                <div class="exercise-item">
+                    <h4>🌍 Earth Connection Meditation (10 minutes)</h4>
+                    <p>A grounding exercise that works especially well on grass or bare ground</p>
+                    <ol class="exercise-steps">
+                        <li><span class="step-number">1</span>Find a quiet patch of grass or ground. Sit down or stand barefoot</li>
+                        <li><span class="step-number">2</span>Close your eyes. Picture roots growing from your feet into the ground below</li>
+                        <li><span class="step-number">3</span>With each breath, imagine drawing up calm energy from the earth</li>
+                        <li><span class="step-number">4</span>Picture the ground absorbing your stress — like rain soaking into soil</li>
+                        <li><span class="step-number">5</span>Stay like this for a couple of minutes. Just be still</li>
+                        <li><span class="step-number">6</span>Open your eyes slowly. Wiggle your toes. Notice how you feel</li>
+                    </ol>
+                </div>
+
+                <div class="exercise-item">
+                    <h4>🌸 5 Senses Nature Scan (7 minutes)</h4>
+                    <p>The 5-4-3-2-1 grounding trick, but done outside where it works best</p>
+                    <ol class="exercise-steps">
+                        <li><span class="step-number">1</span><strong>SEE:</strong> Spot 5 natural things around you — a leaf shape, cloud, an insect, whatever catches your eye</li>
+                        <li><span class="step-number">2</span><strong>HEAR:</strong> Close your eyes. Pick out 4 different sounds — birds, wind, rustling, water</li>
+                        <li><span class="step-number">3</span><strong>TOUCH:</strong> Feel 3 different textures — tree bark, grass, a stone, whatever's nearby</li>
+                        <li><span class="step-number">4</span><strong>SMELL:</strong> Breathe in and find 2 scents — fresh earth, flowers, rain, anything</li>
+                        <li><span class="step-number">5</span><strong>TASTE:</strong> Notice 1 taste — a mint leaf, the clean air, rainwater on your lips</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nature Soundscapes -->
+        <div class="soundscapes-section">
+            <h2 class="section-title">🎵 Nature Sounds</h2>
+            <p class="section-subtitle">Can't get outside right now? These ambient sounds can help you feel a bit closer to nature</p>
+
+            <div class="soundscapes-grid">
+                <div class="sound-card" id="sound-rain" onclick="toggleSound('rain')">
+                    <span class="sound-icon">🌧️</span>
+                    <h4>Rainfall</h4>
+                    <p>Gentle rain on leaves and rooftops</p>
+                    <button class="sound-btn">▶ Play</button>
+                </div>
+
+                <div class="sound-card" id="sound-forest" onclick="toggleSound('forest')">
+                    <span class="sound-icon">🌲</span>
+                    <h4>Forest Ambience</h4>
+                    <p>Birdsong, rustling leaves, and gentle breeze</p>
+                    <button class="sound-btn">▶ Play</button>
+                </div>
+
+                <div class="sound-card" id="sound-ocean" onclick="toggleSound('ocean')">
+                    <span class="sound-icon">🌊</span>
+                    <h4>Ocean Waves</h4>
+                    <p>Rolling waves on a sandy shore</p>
+                    <button class="sound-btn">▶ Play</button>
+                </div>
+
+                <div class="sound-card" id="sound-river" onclick="toggleSound('river')">
+                    <span class="sound-icon">🏞️</span>
+                    <h4>River Stream</h4>
+                    <p>Flowing water over rocks and pebbles</p>
+                    <button class="sound-btn">▶ Play</button>
+                </div>
+
+                <div class="sound-card" id="sound-savanna" onclick="toggleSound('savanna')">
+                    <span class="sound-icon">🦁</span>
+                    <h4>African Savanna</h4>
+                    <p>Evening insects, distant wildlife, open sky</p>
+                    <button class="sound-btn">▶ Play</button>
+                </div>
+
+                <div class="sound-card" id="sound-night" onclick="toggleSound('night')">
+                    <span class="sound-icon">🌙</span>
+                    <h4>Night Crickets</h4>
+                    <p>Peaceful night chorus of crickets and frogs</p>
+                    <button class="sound-btn">▶ Play</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- African Eco-Therapy -->
+        <div class="african-eco">
+            <h2>🌍 African Nature Wisdom</h2>
+            <p>Our relationship with the land goes way back. These practices draw from what many African communities have always known — that the natural world and our wellbeing are linked.</p>
+
+            <div class="african-practices">
+                <div class="practice-card">
+                    <h4>🌴 Baobab Meditation</h4>
+                    <p>The baobab can live for thousands of years. Sit under one if you can, or just picture it clearly. Think about what makes it last — deep roots, wide branches. You've got more of that in you than you realise.</p>
+                </div>
+
+                <div class="practice-card">
+                    <h4>🌾 Harvest Gratitude Walk</h4>
+                    <p>Walk through any natural space and pick out 5 things you're grateful for. Shade, clean air, the sound of birds — whatever stands out. Our grandparents did this daily without thinking about it.</p>
+                </div>
+
+                <div class="practice-card">
+                    <h4>🔥 Fireside Reflection</h4>
+                    <p>Sitting around fire has always been how we process things together. Light a candle if you can't make a fire. Write down 3 things weighing on you, then 3 things giving you hope. Let the flame stand for change.</p>
+                </div>
+
+                <div class="practice-card">
+                    <h4>🌊 River of Life Journaling</h4>
+                    <p>Draw your life as a river. Where it started, the calm parts, the rough patches, the people who joined along the way. Rivers always figure out which way to go. You will too.</p>
+                </div>
+
+                <div class="practice-card">
+                    <h4>🌙 Star Story Telling</h4>
+                    <p>Go outside at night and look up. Pick a group of stars and make up a story about them. What are they doing up there? What does it remind you of in your own life? People have been doing this across Africa for as long as anyone can remember.</p>
+                </div>
+
+                <div class="practice-card">
+                    <h4>🌿 Ubuntu Nature Circle</h4>
+                    <p>"I am because we are." Get some friends together outside and talk about how nature makes each of you feel. Being outdoors makes it easier to be honest. Every voice counts in the circle.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly Nature Challenge -->
+        <div class="challenge-section">
+            <h2>🏆 Weekly Nature Challenge</h2>
+            <p>Try to do one nature activity each day this week. Tap the days as you go.</p>
+
+            <div class="challenge-tracker" id="challengeTracker">
+                <div class="day-circle" data-day="0" onclick="toggleChallengeDay(0)">
+                    <span>Mon</span>
+                    <span id="dayCheck0"></span>
+                </div>
+                <div class="day-circle" data-day="1" onclick="toggleChallengeDay(1)">
+                    <span>Tue</span>
+                    <span id="dayCheck1"></span>
+                </div>
+                <div class="day-circle" data-day="2" onclick="toggleChallengeDay(2)">
+                    <span>Wed</span>
+                    <span id="dayCheck2"></span>
+                </div>
+                <div class="day-circle" data-day="3" onclick="toggleChallengeDay(3)">
+                    <span>Thu</span>
+                    <span id="dayCheck3"></span>
+                </div>
+                <div class="day-circle" data-day="4" onclick="toggleChallengeDay(4)">
+                    <span>Fri</span>
+                    <span id="dayCheck4"></span>
+                </div>
+                <div class="day-circle" data-day="5" onclick="toggleChallengeDay(5)">
+                    <span>Sat</span>
+                    <span id="dayCheck5"></span>
+                </div>
+                <div class="day-circle" data-day="6" onclick="toggleChallengeDay(6)">
+                    <span>Sun</span>
+                    <span id="dayCheck6"></span>
+                </div>
+            </div>
+
+            <div class="challenge-description">
+                <h3>This Week's Ideas</h3>
+                <p>Mon: Walk barefoot for 10 min · Tue: Go for a nature walk · Wed: Plant something · Thu: Watch the sunrise or sunset · Fri: Spend time near water · Sat: Find some trees · Sun: Look at the stars</p>
+            </div>
+        </div>
+
+        <!-- Eco-Anxiety Support -->
+        <div class="eco-anxiety-section">
+            <h2 class="section-title">💚 When the World Feels Too Heavy</h2>
+            <p class="section-subtitle">Worrying about the planet is normal. Here are some ways to deal with that weight.</p>
+
+            <div class="coping-grid">
+                <div class="coping-card">
+                    <h4>🌬️ Let Yourself Feel It</h4>
+                    <p>You're not overreacting. Feeling stressed about the environment means you care. It's okay to sit with that feeling — just don't let it swallow you whole.</p>
+                </div>
+                <div class="coping-card">
+                    <h4>🤝 Do Something Together</h4>
+                    <p>You can't fix everything alone, and that's fine. Join a cleanup crew, start a community garden at school, or find a local group doing something about it. Moving with other people helps.</p>
+                </div>
+                <div class="coping-card">
+                    <h4>📰 Watch Your Feed</h4>
+                    <p>Doom-scrolling climate news will burn you out fast. Check in on updates at set times, and make sure you're also seeing the good stuff — people actually are making progress out there.</p>
+                </div>
+                <div class="coping-card">
+                    <h4>🌱 Start Where You Are</h4>
+                    <p>Plant a tree. Use less plastic. Save water. Support local farmers. You can't solve climate change yourself, but every small thing adds up more than you'd expect.</p>
+                </div>
+                <div class="coping-card">
+                    <h4>🗣️ Talk About It</h4>
+                    <p>Don't keep it bottled up. Share how you're feeling with someone you trust, or use our chat. Chances are other people feel the exact same way — and just hearing that helps.</p>
+                </div>
+                <div class="coping-card">
+                    <h4>🌍 Know What Africa Is Already Doing</h4>
+                    <p>The Great Green Wall, community-led conservation, the Green Belt Movement — Africa has been leading on this for years. Look into Wangari Maathai's legacy. There's a lot to be proud of.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nature Journal Prompts -->
+        <div class="journal-section">
+            <h2>📝 Nature Journal Prompts</h2>
+            <p>If writing helps you process things, try one of these</p>
+
+            <div class="journal-prompts">
+                <div class="prompt-card">
+                    <div class="prompt-icon">🌅</div>
+                    <h4>Morning Reflection</h4>
+                    <p>"What in nature caught my attention today? How does it connect to how I'm actually feeling?"</p>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-icon">🌿</div>
+                    <h4>Growth Story</h4>
+                    <p>"If I were a plant, what kind? What do I need more of right now — sunlight, water, or better soil?"</p>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-icon">🌊</div>
+                    <h4>Letting Go</h4>
+                    <p>"Picture putting your worries on leaves and watching them float down a river. What does that feel like?"</p>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-icon">🌍</div>
+                    <h4>My Nature Memory</h4>
+                    <p>"Think of a time outside when you felt completely at peace. What was it about that moment? Could you recreate it?"</p>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-icon">🦋</div>
+                    <h4>Transformation</h4>
+                    <p>"A caterpillar has no clue it'll fly one day. What change are you going through right now? What might be on the other side?"</p>
+                </div>
+                <div class="prompt-card">
+                    <div class="prompt-icon">🌙</div>
+                    <h4>Night Wisdom</h4>
+                    <p>"The moon still shines even when it's dark. What light do you still carry on your hardest days?"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nature Activity Log -->
+        <div class="nature-log">
+            <h2 class="section-title">🌿 My Nature Log</h2>
+            <p class="section-subtitle">Keep track of what you've been doing outdoors and how it makes you feel</p>
+
+            <div class="log-form">
+                <div class="form-group">
+                    <label>Activity Type</label>
+                    <select id="logActivity">
+                        <option value="">Select an activity...</option>
+                        <option value="Mindful Nature Walk">🚶 Mindful Nature Walk</option>
+                        <option value="Forest Bathing">🌳 Forest Bathing</option>
+                        <option value="Garden Therapy">🌱 Garden Therapy</option>
+                        <option value="Earthing / Grounding">🦶 Earthing / Grounding</option>
+                        <option value="Sunrise/Sunset Watching">🌅 Sunrise/Sunset Watching</option>
+                        <option value="Water Therapy">💧 Water Therapy</option>
+                        <option value="Nature Meditation">🧘 Nature Meditation</option>
+                        <option value="Baobab Meditation">🌴 Baobab Meditation</option>
+                        <option value="Star Story Telling">🌙 Star Story Telling</option>
+                        <option value="Ubuntu Nature Circle">🌿 Ubuntu Nature Circle</option>
+                        <option value="Other">✨ Other</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Duration (minutes)</label>
+                        <input type="number" id="logDuration" min="1" max="300" placeholder="e.g., 30">
+                    </div>
+                    <div class="form-group">
+                        <label>Mood After</label>
+                        <select id="logMood">
+                            <option value="">How do you feel?</option>
+                            <option value="amazing">😊 Amazing</option>
+                            <option value="good">🙂 Good</option>
+                            <option value="okay">😐 Okay</option>
+                            <option value="down">😔 Down</option>
+                            <option value="struggling">😢 Struggling</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Notes (Optional)</label>
+                    <textarea id="logNotes" rows="3" placeholder="How did this activity make you feel? What did you notice?"></textarea>
+                </div>
+
+                <button class="save-log-btn" onclick="saveNatureLog()">🌿 Save Activity</button>
+                <div class="success-message" id="logSuccess">✅ Saved! Nice work getting outside.</div>
+            </div>
+
+            <div class="log-history" id="logHistory">
+                <!-- History entries will be loaded here -->
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="eco-cta">
+            <h2>🌍 Nature's On Your Side</h2>
+            <p>You don't need to go far or do anything complicated. Even 10 minutes outside can shift your whole day. Start small.</p>
+            <div class="eco-cta-links">
+                <a href="mood-tracker.html" class="eco-cta-link">📊 Track Your Mood</a>
+                <a href="chat.html" class="eco-cta-link">💬 Talk to Cheerly</a>
+                <a href="day-planner.html" class="eco-cta-link">📅 Plan Nature Time</a>
+                <a href="resources.html" class="eco-cta-link">📚 More Resources</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Cheerly Live Up</strong> — For African youth, by African youth.</p>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </footer>
+
+    <script>
+        // ===== Web Audio Ambient Sounds =====
+        let audioCtx = null;
+        let activeNodes = [];
+        let currentlyPlaying = null;
+
+        function getAudioCtx() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            return audioCtx;
+        }
+
+        function makeNoise(ctx, duration) {
+            const buf = ctx.createBuffer(1, duration * ctx.sampleRate, ctx.sampleRate);
+            const data = buf.getChannelData(0);
+            for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+            const src = ctx.createBufferSource();
+            src.buffer = buf;
+            src.loop = true;
+            return src;
+        }
+
+        function buildSound(type) {
+            const ctx = getAudioCtx();
+            const master = ctx.createGain();
+            master.gain.value = 0;
+            master.connect(ctx.destination);
+            const nodes = [];
+
+            if (type === 'rain') {
+                const n = makeNoise(ctx, 2);
+                const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 700;
+                const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 200;
+                n.connect(lp); lp.connect(hp); hp.connect(master);
+                master.gain.setTargetAtTime(0.25, ctx.currentTime, 0.5);
+                n.start(); nodes.push(n);
+            } else if (type === 'forest') {
+                const n = makeNoise(ctx, 2);
+                const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 3000; bp.Q.value = 0.5;
+                const g = ctx.createGain(); g.gain.value = 0.08;
+                n.connect(bp); bp.connect(g); g.connect(master);
+                n.start(); nodes.push(n);
+                // bird-like chirps
+                function chirp() {
+                    if (currentlyPlaying !== 'forest') return;
+                    const o = ctx.createOscillator();
+                    const g2 = ctx.createGain();
+                    o.type = 'sine';
+                    o.frequency.value = 2000 + Math.random() * 2000;
+                    g2.gain.value = 0;
+                    g2.gain.setTargetAtTime(0.06, ctx.currentTime, 0.05);
+                    g2.gain.setTargetAtTime(0, ctx.currentTime + 0.15, 0.05);
+                    o.connect(g2); g2.connect(master);
+                    o.start(); o.stop(ctx.currentTime + 0.3);
+                    setTimeout(chirp, 1500 + Math.random() * 4000);
+                }
+                master.gain.setTargetAtTime(0.3, ctx.currentTime, 0.5);
+                setTimeout(chirp, 800);
+            } else if (type === 'ocean') {
+                const n = makeNoise(ctx, 4);
+                const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 400;
+                const lfo = ctx.createOscillator(); lfo.frequency.value = 0.1;
+                const lfoGain = ctx.createGain(); lfoGain.gain.value = 0.12;
+                const mainGain = ctx.createGain(); mainGain.gain.value = 0.2;
+                lfo.connect(lfoGain); lfoGain.connect(mainGain.gain);
+                n.connect(lp); lp.connect(mainGain); mainGain.connect(master);
+                master.gain.setTargetAtTime(0.35, ctx.currentTime, 0.5);
+                n.start(); lfo.start(); nodes.push(n, lfo);
+            } else if (type === 'river') {
+                const n = makeNoise(ctx, 2);
+                const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1200; bp.Q.value = 0.3;
+                const g = ctx.createGain(); g.gain.value = 0.18;
+                n.connect(bp); bp.connect(g); g.connect(master);
+                master.gain.setTargetAtTime(0.3, ctx.currentTime, 0.5);
+                n.start(); nodes.push(n);
+            } else if (type === 'savanna') {
+                const n = makeNoise(ctx, 2);
+                const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 500;
+                const g = ctx.createGain(); g.gain.value = 0.06;
+                n.connect(lp); lp.connect(g); g.connect(master);
+                n.start(); nodes.push(n);
+                // insect buzz
+                function buzz() {
+                    if (currentlyPlaying !== 'savanna') return;
+                    const o = ctx.createOscillator();
+                    const g2 = ctx.createGain();
+                    o.type = 'sawtooth';
+                    o.frequency.value = 4000 + Math.random() * 1000;
+                    g2.gain.value = 0;
+                    g2.gain.setTargetAtTime(0.015, ctx.currentTime, 0.02);
+                    g2.gain.setTargetAtTime(0, ctx.currentTime + 0.1, 0.03);
+                    o.connect(g2); g2.connect(master);
+                    o.start(); o.stop(ctx.currentTime + 0.2);
+                    setTimeout(buzz, 200 + Math.random() * 600);
+                }
+                master.gain.setTargetAtTime(0.3, ctx.currentTime, 0.5);
+                setTimeout(buzz, 300);
+            } else if (type === 'night') {
+                // cricket pattern
+                function cricket() {
+                    if (currentlyPlaying !== 'night') return;
+                    const o = ctx.createOscillator();
+                    const g = ctx.createGain();
+                    o.type = 'sine';
+                    o.frequency.value = 4500 + Math.random() * 500;
+                    g.gain.value = 0;
+                    for (let i = 0; i < 3; i++) {
+                        g.gain.setTargetAtTime(0.04, ctx.currentTime + i * 0.08, 0.01);
+                        g.gain.setTargetAtTime(0, ctx.currentTime + i * 0.08 + 0.04, 0.01);
+                    }
+                    o.connect(g); g.connect(master);
+                    o.start(); o.stop(ctx.currentTime + 0.3);
+                    setTimeout(cricket, 300 + Math.random() * 700);
+                }
+                const n = makeNoise(ctx, 2);
+                const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 300;
+                const ng = ctx.createGain(); ng.gain.value = 0.04;
+                n.connect(lp); lp.connect(ng); ng.connect(master);
+                n.start(); nodes.push(n);
+                master.gain.setTargetAtTime(0.35, ctx.currentTime, 0.5);
+                setTimeout(cricket, 500);
+            }
+
+            return { master, nodes };
+        }
+
+        function stopAllAudio() {
+            activeNodes.forEach(n => { try { n.stop(); } catch(e) {} });
+            activeNodes = [];
+        }
+
+        function toggleSound(soundName) {
+            const allCards = document.querySelectorAll('.sound-card');
+            const card = document.getElementById('sound-' + soundName);
+            const btn = card.querySelector('.sound-btn');
+
+            if (currentlyPlaying === soundName) {
+                stopAllAudio();
+                card.classList.remove('playing');
+                btn.textContent = '▶ Play';
+                currentlyPlaying = null;
+            } else {
+                stopAllAudio();
+                allCards.forEach(c => {
+                    c.classList.remove('playing');
+                    c.querySelector('.sound-btn').textContent = '▶ Play';
+                });
+                currentlyPlaying = soundName;
+                const sound = buildSound(soundName);
+                activeNodes = sound.nodes;
+                card.classList.add('playing');
+                btn.textContent = '⏸ Stop';
+            }
+        }
+
+        // ===== Nature Activity Log (localStorage) =====
+        function saveNatureLog() {
+            const activity = document.getElementById('logActivity').value;
+            const duration = document.getElementById('logDuration').value;
+            const mood = document.getElementById('logMood').value;
+            const notes = document.getElementById('logNotes').value;
+
+            if (!activity) {
+                alert('Please select an activity.');
+                return;
+            }
+
+            const logs = JSON.parse(localStorage.getItem('ecoTherapyLogs') || '[]');
+            logs.unshift({
+                activity,
+                duration: duration || null,
+                mood: mood || null,
+                notes,
+                date: new Date().toISOString()
+            });
+
+            localStorage.setItem('ecoTherapyLogs', JSON.stringify(logs));
+
+            // Also log to mood history for cross-feature integration
+            if (mood) {
+                const moodHistory = JSON.parse(localStorage.getItem('moodHistory') || '[]');
+                moodHistory.unshift({
+                    mood: mood,
+                    note: `🌿 Eco-therapy: ${activity}${duration ? ` (${duration} min)` : ''}${notes ? ` — ${notes}` : ''}`,
+                    date: new Date().toISOString(),
+                    timestamp: Date.now(),
+                    source: 'eco-therapy'
+                });
+                localStorage.setItem('moodHistory', JSON.stringify(moodHistory));
+            }
+
+            // Show success
+            const msg = document.getElementById('logSuccess');
+            msg.classList.add('show');
+            setTimeout(() => msg.classList.remove('show'), 3000);
+
+            // Reset form
+            document.getElementById('logActivity').value = '';
+            document.getElementById('logDuration').value = '';
+            document.getElementById('logMood').value = '';
+            document.getElementById('logNotes').value = '';
+
+            loadLogHistory();
+        }
+
+        function logActivity(activityName) {
+            document.getElementById('logActivity').value = activityName;
+            document.querySelector('.nature-log').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function loadLogHistory() {
+            const logs = JSON.parse(localStorage.getItem('ecoTherapyLogs') || '[]');
+            const container = document.getElementById('logHistory');
+
+            if (logs.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-light); padding: 2rem;">Nothing logged yet. Try something from the list above! 🌿</p>';
+                return;
+            }
+
+            const activityIcons = {
+                'Mindful Nature Walk': '🚶‍♂️',
+                'Forest Bathing': '🌳',
+                'Garden Therapy': '🌱',
+                'Earthing / Grounding': '🦶',
+                'Sunrise/Sunset Watching': '🌅',
+                'Water Therapy': '💧',
+                'Nature Meditation': '🧘',
+                'Baobab Meditation': '🌴',
+                'Star Story Telling': '🌙',
+                'Ubuntu Nature Circle': '🌿',
+                'Other': '✨'
+            };
+
+            const moodLabels = {
+                'amazing': '😊 Amazing',
+                'good': '🙂 Good',
+                'okay': '😐 Okay',
+                'down': '😔 Down',
+                'struggling': '😢 Struggling'
+            };
+
+            container.innerHTML = '<h3 style="margin-bottom: 1rem; color: var(--primary);">Recent Nature Activities</h3>' +
+                logs.slice(0, 10).map(log => {
+                    const date = new Date(log.date);
+                    const formatted = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    return `
+                        <div class="log-entry">
+                            <div class="log-entry-icon">${activityIcons[log.activity] || '🌿'}</div>
+                            <div class="log-entry-info">
+                                <div class="log-entry-activity">${log.activity}${log.duration ? ` · ${log.duration} min` : ''}</div>
+                                <div class="log-entry-date">${formatted}${log.notes ? ` — "${log.notes}"` : ''}</div>
+                            </div>
+                            ${log.mood ? `<div class="log-entry-mood">${moodLabels[log.mood] || log.mood}</div>` : ''}
+                        </div>
+                    `;
+                }).join('');
+        }
+
+        // ===== Weekly Challenge Tracker =====
+        function loadChallengeData() {
+            const data = JSON.parse(localStorage.getItem('ecoChallenge') || '{}');
+            const weekKey = getWeekKey();
+            const weekData = data[weekKey] || [];
+
+            for (let i = 0; i < 7; i++) {
+                const circle = document.querySelector(`.day-circle[data-day="${i}"]`);
+                const check = document.getElementById(`dayCheck${i}`);
+                if (weekData.includes(i)) {
+                    circle.classList.add('completed');
+                    check.textContent = '✓';
+                } else {
+                    circle.classList.remove('completed');
+                    check.textContent = '';
+                }
+            }
+        }
+
+        function toggleChallengeDay(day) {
+            const data = JSON.parse(localStorage.getItem('ecoChallenge') || '{}');
+            const weekKey = getWeekKey();
+            let weekData = data[weekKey] || [];
+
+            if (weekData.includes(day)) {
+                weekData = weekData.filter(d => d !== day);
+            } else {
+                weekData.push(day);
+            }
+
+            data[weekKey] = weekData;
+            localStorage.setItem('ecoChallenge', JSON.stringify(data));
+            loadChallengeData();
+
+            // Check for completion
+            if (weekData.length === 7) {
+                setTimeout(() => alert('🎉 Amazing! You completed the full week of eco-therapy! Your mind and body thank you! 🌿'), 300);
+            }
+        }
+
+        function getWeekKey() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 1);
+            const weekNum = Math.ceil(((now - start) / 86400000 + start.getDay() + 1) / 7);
+            return `${now.getFullYear()}-W${weekNum}`;
+        }
+
+        // ===== Initialize =====
+        loadLogHistory();
+        loadChallengeData();
+    </script>
+
+    <!-- SOS Crisis Button -->
+    <style>
+        .sos-float { position: fixed; bottom: 2rem; right: 2rem; z-index: 9999; }
+        .sos-btn { width: 56px; height: 56px; border-radius: 50%; background: #ef4444; color: white; border: none; font-size: 1.2rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 20px rgba(239,68,68,0.4); transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+        .sos-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(239,68,68,0.5); }
+        .sos-panel { display: none; position: absolute; bottom: 70px; right: 0; width: 300px; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); padding: 1.5rem; }
+        .sos-panel.open { display: block; animation: sosFade 0.2s ease; }
+        @keyframes sosFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .sos-panel h4 { color: #ef4444; margin-bottom: 0.75rem; font-size: 1.05rem; }
+        .sos-panel .sos-line { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid #f3f4f6; font-size: 0.9rem; color: #1f2937; }
+        .sos-panel .sos-line:last-child { border-bottom: none; }
+        .sos-panel .sos-line a { color: #ef4444; font-weight: 600; text-decoration: none; }
+        .sos-panel .sos-note { font-size: 0.8rem; color: #6b7280; margin-top: 0.75rem; }
+    </style>
+    <div class="sos-float">
+        <div class="sos-panel" id="sosPanel">
+            <h4>Need help right now?</h4>
+            <div class="sos-line">📞 Emergency: <a href="tel:112">112</a> / <a href="tel:911">911</a></div>
+            <div class="sos-line">💬 Crisis Text Line: Text HELLO to your local helpline</div>
+            <div class="sos-line">🌍 WHO: <a href="tel:+41227912111">+41 22 791 21 11</a></div>
+            <div class="sos-line">🔗 <a href="resources.html#crisis">More resources</a></div>
+            <div class="sos-note">You're not alone. Someone is ready to listen.</div>
+        </div>
+        <button class="sos-btn" onclick="document.getElementById('sosPanel').classList.toggle('open')" title="Crisis support">SOS</button>
+    </div>
+</body>
+</html>

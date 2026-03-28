@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Community - Cheerly Live Up</title>
+  <script>
+    document.documentElement.classList.add(location.protocol === 'file:' ? 'is-file-origin' : 'is-http-origin');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --green: #10b981;
+      --green-dark: #047857;
+      --green-soft: #d1fae5;
+      --orange: #f97316;
+      --orange-dark: #ea580c;
+      --amber: #fbbf24;
+      --text: #1c1917;
+      --muted: #57534e;
+      --surface: rgba(255, 252, 248, 0.94);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background: linear-gradient(180deg, #fff7ed 0%, #ecfdf5 35%, #fef3c7 100%);
+    }
+
+    .page-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse 70% 50% at 10% 20%, rgba(249, 115, 22, 0.18), transparent),
+        radial-gradient(ellipse 60% 45% at 90% 30%, rgba(16, 185, 129, 0.2), transparent),
+        radial-gradient(ellipse 50% 40% at 50% 100%, rgba(251, 191, 36, 0.15), transparent);
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
+      padding: 0.8rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid rgba(249, 115, 22, 0.2);
+      box-shadow: 0 4px 24px rgba(234, 88, 12, 0.08);
+    }
+    .logo {
+      font-size: 1.3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--green-dark), var(--orange-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-dot {
+      width: 10px; height: 10px;
+      background: linear-gradient(135deg, var(--amber), var(--orange));
+      border-radius: 50%;
+      -webkit-text-fill-color: initial;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.25); opacity: 0.7; } }
+    .nav-links { display: flex; gap: 1.25rem; list-style: none; flex-wrap: wrap; align-items: center; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+    .nav-links a:hover { color: var(--orange-dark); }
+    .nav-cta {
+      padding: 0.5rem 1.1rem;
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      color: #fff !important;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 16px rgba(249, 115, 22, 0.35);
+    }
+
+    /* Hero — Tom & Jerry style background (official-style WB kids embed) */
+    .hero {
+      position: relative;
+      min-height: 78vh;
+      display: flex;
+      align-items: flex-end;
+      padding: 6.5rem 5% 3.5rem;
+      overflow: hidden;
+    }
+    .file-origin-banner {
+      display: none;
+      margin: 5rem 5% 0;
+      padding: 0.85rem 1.1rem;
+      background: linear-gradient(135deg, #fff7ed, #ffedd5);
+      border: 2px solid var(--orange);
+      border-radius: 14px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--text);
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    html.is-file-origin .file-origin-banner { display: block; }
+    .file-origin-banner code { font-size: 0.8rem; background: #fff; padding: 0.15rem 0.35rem; border-radius: 6px; }
+
+    .hero-mp4-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .hero-mp4-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.55) saturate(1.15);
+    }
+    .hero-yt-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    html.is-file-origin .hero-yt-bg { display: none; }
+    .hero-yt-bg iframe {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 120vw;
+      height: 67.5vw;
+      min-width: 100%;
+      min-height: 100vh;
+      transform: translate(-50%, -50%);
+      border: 0;
+      opacity: 0.95;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        165deg,
+        rgba(12, 74, 31, 0.55) 0%,
+        rgba(154, 52, 18, 0.45) 45%,
+        rgba(255, 247, 237, 0.97) 100%
+      );
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1rem;
+      background: rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.1rem, 4.8vw, 3.4rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.08;
+      margin-bottom: 0.85rem;
+      text-shadow: 0 4px 28px rgba(0, 0, 0, 0.45);
+    }
+    .hero h1 span {
+      color: #ffedd5;
+      text-shadow: 0 2px 0 var(--green-dark);
+    }
+    .hero p {
+      font-size: 1.08rem;
+      color: rgba(255, 255, 255, 0.95);
+      max-width: 540px;
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    }
+    .hero-actions { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.88rem 1.5rem;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      color: #fff;
+      box-shadow: 0 8px 28px rgba(16, 185, 129, 0.45);
+    }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-orange {
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      color: #fff;
+      box-shadow: 0 8px 28px rgba(249, 115, 22, 0.4);
+    }
+    .btn-orange:hover { transform: translateY(-2px); }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      max-width: 1200px;
+      margin: -2rem auto 0;
+      padding: 0 5% 2.5rem;
+      position: relative;
+      z-index: 3;
+    }
+    .stat-card {
+      background: var(--surface);
+      border-radius: 18px;
+      padding: 1.2rem 1.35rem;
+      text-align: center;
+      border: 2px solid rgba(16, 185, 129, 0.2);
+      box-shadow: 0 12px 40px rgba(234, 88, 12, 0.08);
+    }
+    .stat-card strong { display: block; font-size: 1.55rem; font-weight: 900; color: var(--green-dark); }
+    .stat-card span { font-size: 0.82rem; color: var(--muted); font-weight: 700; }
+
+    .main-wrap { max-width: 1200px; margin: 0 auto; padding: 1.5rem 5% 4rem; }
+
+    .section-head { text-align: center; margin-bottom: 2rem; }
+    .section-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 900;
+      color: var(--orange-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.45rem;
+    }
+    .section-head h2 {
+      font-size: clamp(1.65rem, 3vw, 2.15rem);
+      font-weight: 900;
+      color: var(--text);
+    }
+    .section-head p { color: var(--muted); margin-top: 0.5rem; max-width: 560px; margin-left: auto; margin-right: auto; line-height: 1.55; }
+
+    /* Video previews — muted autoplay vibe, compact theatre */
+    .video-showcase {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .video-card {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 2px solid rgba(249, 115, 22, 0.25);
+      box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 48px rgba(16, 185, 129, 0.15);
+    }
+    .video-card .ratio {
+      position: relative;
+      padding-bottom: 55%;
+      height: 0;
+      background: linear-gradient(135deg, #14532d, #9a3412);
+    }
+    .video-card iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .yt-poster-fallback {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #1c1917;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 1rem;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    }
+    .yt-poster-fallback span {
+      background: rgba(249, 115, 22, 0.95);
+      padding: 0.65rem 1rem;
+      border-radius: 999px;
+    }
+    html.is-http-origin .yt-poster-fallback { display: none; }
+    html.is-file-origin .video-card .ratio iframe { display: none; }
+    .preview-ribbon {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 2;
+      background: linear-gradient(135deg, var(--orange), var(--amber));
+      color: #1c1917;
+      font-size: 0.68rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.35rem 0.65rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .video-card figcaption {
+      padding: 1rem 1.15rem 1.15rem;
+      background: linear-gradient(180deg, #fff 0%, #fff7ed 100%);
+    }
+    .video-card figcaption h3 { font-size: 1rem; font-weight: 900; color: var(--green-dark); margin-bottom: 0.3rem; }
+    .video-card figcaption p { font-size: 0.85rem; color: var(--muted); line-height: 1.45; }
+
+    /* How it works */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .how-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 1.35rem;
+      border: 2px dashed rgba(16, 185, 129, 0.35);
+      position: relative;
+    }
+    .how-card .num {
+      position: absolute;
+      top: -12px;
+      left: 1rem;
+      width: 28px;
+      height: 28px;
+      background: var(--orange);
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.85rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .how-card h3 { font-size: 1rem; font-weight: 900; margin-bottom: 0.4rem; color: var(--text); }
+    .how-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.5; }
+
+    /* Premium demo hub — not real access */
+    .hub {
+      background: linear-gradient(145deg, #ecfdf5 0%, #ffedd5 100%);
+      border-radius: 28px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 3px solid rgba(249, 115, 22, 0.35);
+      box-shadow: 0 16px 48px rgba(234, 88, 12, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+    .hub::before {
+      content: 'Premium preview';
+      position: absolute;
+      top: 14px;
+      right: -36px;
+      transform: rotate(45deg);
+      background: var(--green-dark);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      padding: 0.5rem 2.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .premium-banner {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      border-left: 5px solid var(--orange);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: var(--text);
+    }
+    .premium-banner strong { color: var(--orange-dark); }
+
+    .channels-members {
+      display: grid;
+      grid-template-columns: 220px 1fr 200px;
+      gap: 1.25rem;
+      align-items: start;
+    }
+    @media (max-width: 968px) { .channels-members { grid-template-columns: 1fr; } }
+
+    .side-panel, .live-chat {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.25rem;
+      border: 2px solid rgba(16, 185, 129, 0.2);
+    }
+    .side-panel h2, .live-chat h2 {
+      font-size: 0.95rem;
+      margin-bottom: 0.85rem;
+      font-weight: 900;
+      color: var(--green-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .channel-lock { font-size: 0.75rem; color: var(--orange-dark); font-weight: 800; }
+    .side-panel ul { list-style: none; font-size: 0.86rem; line-height: 2; color: var(--text); }
+    .side-panel li { opacity: 0.85; }
+    .side-panel li .ch-name { font-weight: 800; color: var(--green-dark); }
+    .side-panel li.muted { color: var(--muted); font-style: italic; }
+
+    .chat-box {
+      background: linear-gradient(180deg, #f0fdf4 0%, #fff7ed 100%);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      min-height: 200px;
+      max-height: 280px;
+      overflow-y: auto;
+      font-size: 0.86rem;
+      border: 2px solid rgba(251, 191, 36, 0.35);
+    }
+    .chat-line { margin-bottom: 0.65rem; padding: 0.5rem 0.65rem; border-radius: 10px; background: rgba(255, 255, 255, 0.75); border-left: 3px solid var(--green); }
+    .chat-line .who { font-weight: 800; color: var(--orange-dark); font-size: 0.78rem; }
+    .chat-line.sys { border-left-color: var(--amber); background: rgba(254, 243, 199, 0.5); font-size: 0.8rem; color: var(--muted); }
+
+    .chat-fake-inputs { filter: blur(0.35px); opacity: 0.75; pointer-events: none; }
+    .chat-input, .chat-username {
+      width: 100%;
+      padding: 0.65rem 0.9rem;
+      border-radius: 10px;
+      border: 2px solid #e7e5e4;
+      margin-bottom: 0.5rem;
+      font-size: 0.88rem;
+      font-family: inherit;
+      background: #fafaf9;
+    }
+    .chat-send {
+      width: 100%;
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 0.65rem;
+      font-weight: 900;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    .unlock-row {
+      margin-top: 0.75rem;
+      text-align: center;
+    }
+    .unlock-row a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.65rem 1.25rem;
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      color: #fff;
+      text-decoration: none;
+      font-weight: 900;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      box-shadow: 0 6px 20px rgba(249, 115, 22, 0.35);
+    }
+    .unlock-row a:hover { transform: translateY(-1px); }
+
+    .announcement {
+      background: linear-gradient(135deg, var(--green-dark), var(--green));
+      color: #fff;
+      border-radius: 16px;
+      padding: 1rem 1.35rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 32px rgba(16, 185, 129, 0.3);
+    }
+
+    .regions-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+    .regions-toolbar input {
+      flex: 1;
+      min-width: 200px;
+      max-width: 400px;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      border: 2px solid rgba(249, 115, 22, 0.35);
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+    .regions-toolbar .count {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--green-dark);
+    }
+    .flags-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+      gap: 0.75rem;
+      max-height: 70vh;
+      overflow-y: auto;
+      padding: 0.5rem;
+      background: #fff;
+      border-radius: 20px;
+      border: 2px solid rgba(16, 185, 129, 0.2);
+    }
+    .flags-loading { text-align: center; padding: 2rem; color: var(--muted); font-weight: 600; }
+    .flag-card {
+      background: #fffbeb;
+      border-radius: 14px;
+      padding: 0.75rem 0.5rem;
+      text-align: center;
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      transition: box-shadow 0.2s;
+    }
+    .flag-card:hover { box-shadow: 0 6px 18px rgba(249, 115, 22, 0.15); }
+    .flag-card.hidden { display: none; }
+    .flag-img {
+      width: 44px;
+      height: 30px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 0.45rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .country-name { font-weight: 800; font-size: 0.72rem; color: var(--text); line-height: 1.25; }
+    .join-btn {
+      margin-top: 0.45rem;
+      width: 100%;
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 0.4rem 0.5rem;
+      font-weight: 800;
+      font-size: 0.68rem;
+      cursor: pointer;
+    }
+    .join-btn:hover { filter: brightness(1.05); }
+
+    .community-footer {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 2.5rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo"><span class="logo-dot"></span> Cheerly Live Up</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="payment.html" class="nav-cta">Unlock Premium</a></li>
+    </ul>
+  </nav>
+
+  <p class="file-origin-banner" role="status">
+    <strong>Why videos show an error:</strong> This page is opened from your computer as <code>file://…</code>.
+    YouTube’s player needs a normal web address (it sends a <em>referrer</em>). Run <code>npm start</code> in the project folder, then open
+    <code>http://localhost:3000/community.html</code>. Until then, you’ll see a moving background below and thumbnail links for the previews.
+  </p>
+
+  <header class="hero">
+    <div class="hero-mp4-bg" aria-hidden="true">
+      <video autoplay muted loop playsinline poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect fill='%23b45309' width='8' height='8'/%3E%3C/svg%3E">
+        <source src="https://videos.pexels.com/video-files/3571264/3571264-uhd_2560_1440_30fps.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="hero-yt-bg" aria-hidden="true">
+      <!-- Tom & Jerry compilation (WB Kids). Needs http(s) origin — hidden on file://. -->
+      <iframe
+        title="Tom and Jerry style cartoon background"
+        src="https://www.youtube-nocookie.com/embed/5P6UU6m3cqA?autoplay=1&amp;mute=1&amp;controls=0&amp;modestbranding=1&amp;playsinline=1&amp;loop=1&amp;playlist=5P6UU6m3cqA&amp;rel=0"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        loading="eager"></iframe>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-inner">
+      <div class="hero-badge">Chase the blues away · Cheerly community</div>
+      <h1>Chaos, laughs &amp; <span>real support</span></h1>
+      <p>Like a cartoon chase that always lands soft: Cheerly Community is where regions, channels, and live rooms come together—full access ships with Premium so everyone stays safe and moderated.</p>
+      <div class="hero-actions">
+        <a class="btn btn-orange" href="payment.html">Unlock community access</a>
+        <a class="btn btn-primary" href="#preview-hub">See how it works</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat-card"><strong>190+</strong><span>Countries on the map</span></div>
+    <div class="stat-card"><strong>Live</strong><span>Rooms &amp; channels (Premium)</span></div>
+    <div class="stat-card"><strong>Mods</strong><span>Human-reviewed safety</span></div>
+    <div class="stat-card"><strong>Kind</strong><span>House rules first</span></div>
+  </div>
+
+  <div class="main-wrap">
+    <section class="section-head" id="watch">
+      <span class="section-label">Muted previews</span>
+      <h2>Videos in preview mode</h2>
+      <p>On <strong>http://localhost</strong> these embeds play muted as previews. From <code>file://</code>, use the orange <strong>Play on YouTube</strong> tiles instead.</p>
+    </section>
+
+    <div class="video-showcase">
+      <figure class="video-card">
+        <div class="ratio">
+          <span class="preview-ribbon">Preview · tap for sound</span>
+          <a class="yt-poster-fallback" href="https://www.youtube.com/watch?v=inpok4MKVLM" target="_blank" rel="noopener noreferrer"
+            style="background-image:url(https://img.youtube.com/vi/inpok4MKVLM/hqdefault.jpg)"><span>▶ Play on YouTube</span></a>
+          <iframe src="https://www.youtube-nocookie.com/embed/inpok4MKVLM?autoplay=1&amp;mute=1&amp;rel=0&amp;modestbranding=1"
+            title="Meditation preview" referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <figcaption>
+          <h3>5-minute reset</h3>
+          <p>After a heated “Tom &amp; Jerry day,” exhale here.</p>
+        </figcaption>
+      </figure>
+      <figure class="video-card">
+        <div class="ratio">
+          <span class="preview-ribbon">Preview · tap for sound</span>
+          <a class="yt-poster-fallback" href="https://www.youtube.com/watch?v=O9UByLyOjBM" target="_blank" rel="noopener noreferrer"
+            style="background-image:url(https://img.youtube.com/vi/O9UByLyOjBM/hqdefault.jpg)"><span>▶ Play on YouTube</span></a>
+          <iframe src="https://www.youtube-nocookie.com/embed/O9UByLyOjBM?autoplay=1&amp;mute=1&amp;rel=0&amp;modestbranding=1"
+            title="Kindness preview" referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <figcaption>
+          <h3>Science of kindness</h3>
+          <p>Quick serotonin boost—good pre-room mood.</p>
+        </figcaption>
+      </figure>
+      <figure class="video-card">
+        <div class="ratio">
+          <span class="preview-ribbon">Preview · tap for sound</span>
+          <a class="yt-poster-fallback" href="https://www.youtube.com/watch?v=oHv6vTKD6lg" target="_blank" rel="noopener noreferrer"
+            style="background-image:url(https://img.youtube.com/vi/oHv6vTKD6lg/hqdefault.jpg)"><span>▶ Play on YouTube</span></a>
+          <iframe src="https://www.youtube-nocookie.com/embed/oHv6vTKD6lg?autoplay=1&amp;mute=1&amp;rel=0&amp;modestbranding=1"
+            title="Gratitude preview" referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <figcaption>
+          <h3>Gratitude experiment</h3>
+          <p>Share clips like this later in #wins (Premium).</p>
+        </figcaption>
+      </figure>
+      <figure class="video-card">
+        <div class="ratio">
+          <span class="preview-ribbon">Preview · tap for sound</span>
+          <a class="yt-poster-fallback" href="https://www.youtube.com/watch?v=lTRiuFIWV54" target="_blank" rel="noopener noreferrer"
+            style="background-image:url(https://img.youtube.com/vi/lTRiuFIWV54/hqdefault.jpg)"><span>▶ Play on YouTube</span></a>
+          <iframe src="https://www.youtube-nocookie.com/embed/lTRiuFIWV54?autoplay=1&amp;mute=1&amp;rel=0&amp;modestbranding=1"
+            title="Lo-fi preview" referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <figcaption>
+          <h3>Study beats</h3>
+          <p>Background for homework between hangouts.</p>
+        </figcaption>
+      </figure>
+    </div>
+
+    <section class="section-head">
+      <span class="section-label">Orientation</span>
+      <h2>How Cheerly Community works</h2>
+      <p>No surprises: you see the layout and flow first. <strong>Tapping in for real messages, country rooms, and live events is a Premium perk</strong> so we can afford moderation and safety tooling.</p>
+    </section>
+
+    <div class="how-grid">
+      <div class="how-card"><span class="num">1</span>
+        <h3>Pick your region</h3>
+        <p>Flags below map you to local threads—Premium unlocks posting and invites.</p>
+      </div>
+      <div class="how-card"><span class="num">2</span>
+        <h3>Join channels</h3>
+        <p>#general, #mental-health, #music, #eco-therapy—each has norms and mod coverage.</p>
+      </div>
+      <div class="how-card"><span class="num">3</span>
+        <h3>Live pulse</h3>
+        <p>Presence, reactions, and chat sync in real time once your subscription is active.</p>
+      </div>
+      <div class="how-card"><span class="num">4</span>
+        <h3>Escalation path</h3>
+        <p>Report → review → action. Premium helps us staff that loop responsibly.</p>
+      </div>
+    </div>
+
+    <section class="hub" id="preview-hub">
+      <div class="premium-banner">
+        <strong>This is a visual mock-up.</strong> You’re seeing sample messages and locked channels to learn the interface.
+        <strong> Sending chat, switching regions live, and member lists are turned on after Premium checkout</strong>
+        — same energy as the cartoon header: fun on the surface, careful underneath.
+      </div>
+      <div class="channels-members">
+        <aside class="side-panel">
+          <h2>Channels <span class="channel-lock">🔒 Premium</span></h2>
+          <ul>
+            <li><span class="ch-name">#general</span> — world foyer</li>
+            <li><span class="ch-name">#mental-health</span> — mod-led</li>
+            <li><span class="ch-name">#music</span> — share links</li>
+            <li><span class="ch-name">#eco-therapy</span> — nature wins</li>
+            <li class="muted">+ regional rooms when you upgrade</li>
+          </ul>
+        </aside>
+        <div class="live-chat" id="chat-section">
+          <h2>Live room <span class="channel-lock">preview only</span></h2>
+          <div class="chat-box" aria-label="Sample chat messages">
+            <div class="chat-line sys">System: Welcome to Cheerly Community (demo transcript).</div>
+            <div class="chat-line"><span class="who">Maya · #general</span><br>Anyone else decompress after exams with cartoons? 😄</div>
+            <div class="chat-line"><span class="who">Jordan · mod</span><br>Yep—drop your wins in #gratitude when you unlock Premium.</div>
+            <div class="chat-line"><span class="who">Sam · Cape Town</span><br>Eco walk thread tomorrow morning—who’s in?</div>
+            <div class="chat-line sys">Typing indicators, reactions, and threads appear for subscribers…</div>
+          </div>
+          <div class="chat-fake-inputs">
+            <input class="chat-username" type="text" placeholder="Nickname (locked)" disabled aria-disabled="true">
+            <input class="chat-input" type="text" placeholder="Type a message… (unlock with Premium)" disabled aria-disabled="true">
+            <button type="button" class="chat-send" disabled>Send locked</button>
+          </div>
+          <div class="unlock-row">
+            <a href="payment.html">Unlock live community — Stripe checkout</a>
+          </div>
+        </div>
+        <aside class="side-panel">
+          <h2>Presence <span class="channel-lock">🔒</span></h2>
+          <ul>
+            <li>🟢 <b>12</b> members viewing demo</li>
+            <li>🌍 Regional breakdown hidden</li>
+            <li>⭐ Mod shift: evening UTC</li>
+            <li class="muted">Full roster for Premium</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <div class="announcement">
+      Premium Community includes live chat, country rooms, and event pings. Free Cheerly still gives you mood tools, resources, and Sounds of Cheerly.
+    </div>
+
+    <section class="section-head" id="regions">
+      <span class="section-label">Global map</span>
+      <h2>Find your region</h2>
+      <p>Every UN-recognized country we can load from the public registry—search, then <strong>Join</strong> routes to checkout until Premium room wiring is live on your account.</p>
+    </section>
+
+    <div class="regions-toolbar">
+      <input type="search" id="countrySearch" placeholder="Search any country…" autocomplete="off" aria-label="Filter countries">
+      <span class="count" id="countryCount">Loading countries…</span>
+    </div>
+    <div class="flags-grid" id="flagsRoot">
+      <div class="flags-loading" id="flagsLoading">Fetching world list…</div>
+    </div>
+
+    <footer class="community-footer">
+      <p>Community access is intentionally premium-backed: it pays for moderation, reporting tools, and safer youth spaces. Tom &amp; Jerry–style clips are used as a playful header; Cheerly is not affiliated with Warner Bros.</p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var root = document.getElementById('flagsRoot');
+      var loading = document.getElementById('flagsLoading');
+      var search = document.getElementById('countrySearch');
+      var countEl = document.getElementById('countryCount');
+
+      function render(list) {
+        if (loading) loading.remove();
+        root.textContent = '';
+        var frag = document.createDocumentFragment();
+        list.forEach(function (c) {
+          var code = (c.cca2 || '').toLowerCase();
+          if (!code || code.length !== 2) return;
+          var card = document.createElement('div');
+          card.className = 'flag-card';
+          card.dataset.name = (c.name && c.name.common) ? c.name.common.toLowerCase() : '';
+          var img = document.createElement('img');
+          img.className = 'flag-img';
+          img.src = 'https://flagcdn.com/w80/' + code + '.png';
+          img.alt = '';
+          img.loading = 'lazy';
+          img.onerror = function () { this.src = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg viewBox="0 0 44 30"><rect fill="#e7e5e4" width="44" height="30"/></svg>'); };
+          var name = document.createElement('div');
+          name.className = 'country-name';
+          name.textContent = c.name && c.name.common ? c.name.common : code.toUpperCase();
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'join-btn';
+          btn.textContent = 'Join';
+          btn.addEventListener('click', function () {
+            window.location.href = 'payment.html?intent=community&region=' + encodeURIComponent(code);
+          });
+          card.appendChild(img);
+          card.appendChild(name);
+          card.appendChild(btn);
+          frag.appendChild(card);
+        });
+        root.appendChild(frag);
+        countEl.textContent = list.filter(function (x) { return x.cca2 && x.cca2.length === 2; }).length + ' countries';
+      }
+
+      function filterCountries() {
+        var q = (search.value || '').trim().toLowerCase();
+        var cards = root.querySelectorAll('.flag-card');
+        var n = 0;
+        cards.forEach(function (card) {
+          var ok = !q || (card.dataset.name && card.dataset.name.indexOf(q) !== -1);
+          card.classList.toggle('hidden', !ok);
+          if (ok) n++;
+        });
+        countEl.textContent = q ? n + ' matching' : n + ' countries';
+      }
+
+      fetch('https://restcountries.com/v3.1/all?fields=name,cca2')
+        .then(function (r) {
+          if (!r.ok) throw new Error('countries api');
+          return r.json();
+        })
+        .then(function (data) {
+          data.sort(function (a, b) {
+            var an = (a.name && a.name.common) ? a.name.common : '';
+            var bn = (b.name && b.name.common) ? b.name.common : '';
+            return an.localeCompare(bn);
+          });
+          render(data);
+          search.addEventListener('input', filterCountries);
+        })
+        .catch(function () {
+          if (loading) loading.textContent = 'Could not load country list (offline?). Try again later.';
+          countEl.textContent = '0 countries';
+        });
+    })();
+  </script>
+</body>
+</html>

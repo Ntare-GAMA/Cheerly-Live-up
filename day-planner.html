@@ -533,8 +533,11 @@
             <li><a href="mood-tracker.html">Mood</a></li>
             <li><a href="day-planner.html">Day Planner</a></li>
             <li><a href="chat.html">Chat</a></li>
+            <li><a href="eco-therapy.html">Eco-Therapy 🌿</a></li>
             <li><a href="resources.html">Resources</a></li>
-            <li><a href="settings.html">Settings</a></li>
+            <li><a href="breathe.html">Breathe</a></li>
+            <li><a href="gratitude.html">Gratitude</a></li>
+            <li><a href="self-care.html">Self-Care</a></li>
         </ul>
     </nav>
 
@@ -1080,5 +1083,31 @@
             }
         });
     </script>
+
+    <!-- SOS Crisis Button -->
+    <style>
+        .sos-float { position: fixed; bottom: 2rem; right: 2rem; z-index: 9999; }
+        .sos-btn { width: 56px; height: 56px; border-radius: 50%; background: #ef4444; color: white; border: none; font-size: 1.2rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 20px rgba(239,68,68,0.4); transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+        .sos-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(239,68,68,0.5); }
+        .sos-panel { display: none; position: absolute; bottom: 70px; right: 0; width: 300px; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); padding: 1.5rem; }
+        .sos-panel.open { display: block; animation: sosFade 0.2s ease; }
+        @keyframes sosFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .sos-panel h4 { color: #ef4444; margin-bottom: 0.75rem; font-size: 1.05rem; }
+        .sos-panel .sos-line { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid #f3f4f6; font-size: 0.9rem; color: #1f2937; }
+        .sos-panel .sos-line:last-child { border-bottom: none; }
+        .sos-panel .sos-line a { color: #ef4444; font-weight: 600; text-decoration: none; }
+        .sos-panel .sos-note { font-size: 0.8rem; color: #6b7280; margin-top: 0.75rem; }
+    </style>
+    <div class="sos-float">
+        <div class="sos-panel" id="sosPanel">
+            <h4>Need help right now?</h4>
+            <div class="sos-line">📞 Emergency: <a href="tel:112">112</a> / <a href="tel:911">911</a></div>
+            <div class="sos-line">💬 Crisis Text Line: Text HELLO to your local helpline</div>
+            <div class="sos-line">🌍 WHO: <a href="tel:+41227912111">+41 22 791 21 11</a></div>
+            <div class="sos-line">🔗 <a href="resources.html#crisis">More resources</a></div>
+            <div class="sos-note">You're not alone. Someone is ready to listen.</div>
+        </div>
+        <button class="sos-btn" onclick="document.getElementById('sosPanel').classList.toggle('open')" title="Crisis support">SOS</button>
+    </div>
 </body>
 </html>

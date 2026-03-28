@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breathing Exercises - Cheerly Live Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f0fdf4;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #f9fafb;
+        }
+
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .reveal{opacity:0;transform:translateY(30px);transition:all 0.7s cubic-bezier(0.16,1,0.3,1)}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(16,185,129,0.1);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+
+        .container {
+            margin-top: 90px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2rem 5%;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* Technique picker */
+        .technique-picker {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .technique-btn {
+            padding: 0.6rem 1.4rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 50px;
+            background: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text-dark);
+        }
+
+        .technique-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .technique-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Breathing circle */
+        .breathe-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .circle-wrap {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin-bottom: 2rem;
+        }
+
+        .breathe-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, rgba(16,185,129,0.05) 100%);
+            border: 4px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .breathe-circle.inhale {
+            animation: grow var(--inhale-time) ease-in-out forwards;
+        }
+
+        .breathe-circle.hold {
+            transform: scale(1.35);
+        }
+
+        .breathe-circle.exhale {
+            animation: shrink var(--exhale-time) ease-in-out forwards;
+        }
+
+        @keyframes grow {
+            from { transform: scale(1); }
+            to { transform: scale(1.35); }
+        }
+
+        @keyframes shrink {
+            from { transform: scale(1.35); }
+            to { transform: scale(1); }
+        }
+
+        .breathe-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .breathe-text .timer {
+            display: block;
+            font-size: 3rem;
+            margin-top: 0.25rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .cycle-count {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-start {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-start:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+        .btn-stop {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-stop:hover { background: #dc2626; transform: translateY(-2px); }
+
+        .btn-reset {
+            background: #e5e7eb;
+            color: var(--text-dark);
+        }
+
+        .btn-reset:hover { background: #d1d5db; }
+
+        /* Technique info cards */
+        .technique-info {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.06);
+            margin-bottom: 2rem;
+        }
+
+        .technique-info h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .technique-info p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .technique-info .pattern {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .pattern-step {
+            background: var(--bg-light);
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 0.95rem;
+        }
+
+        /* Session log */
+        .session-log {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.06);
+            margin-bottom: 2rem;
+        }
+
+        .session-log h3 {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .log-entry {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: var(--bg-light);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .log-entry .log-tech { font-weight: 600; color: var(--primary-dark); }
+        .log-entry .log-detail { color: var(--text-light); }
+
+        .empty-log {
+            text-align: center;
+            color: var(--text-light);
+            padding: 1.5rem;
+        }
+
+        /* Tips */
+        .tips-section {
+            background: linear-gradient(135deg, var(--primary), #059669);
+            color: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .tips-section h3 { margin-bottom: 1rem; font-size: 1.3rem; }
+
+        .tips-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-section li {
+            padding: 0.4rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            opacity: 0.95;
+        }
+
+        .tips-section li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: rgba(255,255,255,0.7);
+        }
+
+        footer {
+            background: var(--text-dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 5%;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover { color: white; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .page-header h1 { font-size: 2rem; }
+            .circle-wrap { width: 220px; height: 220px; }
+            .breathe-text { font-size: 1.3rem; }
+            .breathe-text .timer { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span style="font-size: inherit;">🌟</span>
+            <span>Cheerly Live Up</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="mood-tracker.html">Mood</a></li>
+            <li><a href="chat.html">Chat</a></li>
+            <li><a href="eco-therapy.html">Eco-Therapy</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="breathe.html" class="active">Breathe</a></li>
+            <li><a href="gratitude.html">Gratitude</a></li>
+            <li><a href="self-care.html">Self-Care</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>🌬️ Breathe</h1>
+            <p>Pick a technique, follow the circle, let your body do the rest.</p>
+        </div>
+
+        <div class="technique-picker">
+            <button class="technique-btn active" onclick="setTechnique('478')">4-7-8 Calm</button>
+            <button class="technique-btn" onclick="setTechnique('box')">Box Breathing</button>
+            <button class="technique-btn" onclick="setTechnique('relaxing')">Deep Relax</button>
+            <button class="technique-btn" onclick="setTechnique('energize')">Energize</button>
+        </div>
+
+        <div class="breathe-area">
+            <div class="circle-wrap">
+                <div class="breathe-circle" id="breatheCircle">
+                    <div class="breathe-text" id="breatheText">
+                        Ready
+                        <span class="timer" id="breatheTimer"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cycle-count" id="cycleCount">Cycles: 0</div>
+
+            <div class="controls">
+                <button class="btn btn-start" id="startBtn" onclick="startSession()">▶ Start</button>
+                <button class="btn btn-stop" id="stopBtn" onclick="stopSession()" style="display:none;">⏹ Stop</button>
+                <button class="btn btn-reset" onclick="resetSession()">↻ Reset</button>
+            </div>
+        </div>
+
+        <div class="technique-info" id="techniqueInfo">
+            <!-- filled by JS -->
+        </div>
+
+        <div class="session-log">
+            <h3>Recent Sessions</h3>
+            <div id="sessionLog"></div>
+        </div>
+
+        <div class="tips-section">
+            <h3>💡 Quick Tips</h3>
+            <ul>
+                <li>Breathe through your nose if you can — it filters and warms the air</li>
+                <li>Sit up straight but don't force it. Relaxed posture helps your lungs open up</li>
+                <li>If you feel dizzy, stop and breathe normally for a bit. No need to push through</li>
+                <li>Try doing this first thing in the morning or right before bed</li>
+                <li>Even 2-3 minutes makes a difference. Consistency beats long sessions</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Cheerly Live Up</strong> — For African youth, by African youth.</p>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </footer>
+
+    <script>
+        const techniques = {
+            '478': {
+                name: '4-7-8 Calm',
+                inhale: 4, hold: 7, exhale: 8, holdAfter: 0,
+                desc: 'The classic relaxation technique. Good for winding down before sleep or calming nerves quickly.',
+                steps: ['Breathe in for 4s', 'Hold for 7s', 'Breathe out for 8s']
+            },
+            'box': {
+                name: 'Box Breathing',
+                inhale: 4, hold: 4, exhale: 4, holdAfter: 4,
+                desc: 'Equal timing on all four phases. Used by a lot of first responders and military folks to stay level-headed under pressure.',
+                steps: ['Breathe in for 4s', 'Hold for 4s', 'Breathe out for 4s', 'Hold for 4s']
+            },
+            'relaxing': {
+                name: 'Deep Relax',
+                inhale: 5, hold: 2, exhale: 8, holdAfter: 0,
+                desc: 'Long exhales tell your nervous system to chill out. Great when anxiety is running high.',
+                steps: ['Breathe in for 5s', 'Hold for 2s', 'Breathe out for 8s']
+            },
+            'energize': {
+                name: 'Energize',
+                inhale: 6, hold: 0, exhale: 3, holdAfter: 0,
+                desc: 'Longer inhales, shorter exhales. Wakes up your system when you\'re feeling sluggish.',
+                steps: ['Breathe in for 6s', 'Breathe out for 3s']
+            }
+        };
+
+        let currentTechnique = '478';
+        let running = false;
+        let cycles = 0;
+        let sessionStart = null;
+        let phaseTimeout = null;
+        let countdownInterval = null;
+
+        function setTechnique(key) {
+            if (running) stopSession();
+            currentTechnique = key;
+            document.querySelectorAll('.technique-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            resetSession();
+            showTechniqueInfo();
+        }
+
+        function showTechniqueInfo() {
+            const t = techniques[currentTechnique];
+            const info = document.getElementById('techniqueInfo');
+            info.innerHTML = `
+                <h3>${t.name}</h3>
+                <p>${t.desc}</p>
+                <div class="pattern">${t.steps.map(s => `<span class="pattern-step">${s}</span>`).join('')}</div>
+            `;
+        }
+
+        function startSession() {
+            if (running) return;
+            running = true;
+            cycles = 0;
+            sessionStart = Date.now();
+            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('stopBtn').style.display = 'inline-block';
+            updateCycleCount();
+            runCycle();
+        }
+
+        function stopSession() {
+            running = false;
+            clearTimeout(phaseTimeout);
+            clearInterval(countdownInterval);
+
+            const circle = document.getElementById('breatheCircle');
+            circle.className = 'breathe-circle';
+            circle.style.transform = 'scale(1)';
+
+            document.getElementById('breatheText').innerHTML = 'Done<span class="timer" id="breatheTimer"></span>';
+            document.getElementById('startBtn').style.display = 'inline-block';
+            document.getElementById('stopBtn').style.display = 'none';
+
+            if (cycles > 0) logSession();
+        }
+
+        function resetSession() {
+            stopSession();
+            cycles = 0;
+            updateCycleCount();
+            document.getElementById('breatheText').innerHTML = 'Ready<span class="timer" id="breatheTimer"></span>';
+        }
+
+        function runCycle() {
+            if (!running) return;
+            const t = techniques[currentTechnique];
+            runPhase('Breathe in', t.inhale, 'inhale', () => {
+                if (t.hold > 0) {
+                    runPhase('Hold', t.hold, 'hold', () => {
+                        runPhase('Breathe out', t.exhale, 'exhale', () => {
+                            if (t.holdAfter > 0) {
+                                runPhase('Hold', t.holdAfter, '', () => {
+                                    cycles++;
+                                    updateCycleCount();
+                                    runCycle();
+                                });
+                            } else {
+                                cycles++;
+                                updateCycleCount();
+                                runCycle();
+                            }
+                        });
+                    });
+                } else {
+                    runPhase('Breathe out', t.exhale, 'exhale', () => {
+                        cycles++;
+                        updateCycleCount();
+                        runCycle();
+                    });
+                }
+            });
+        }
+
+        function runPhase(label, duration, circleClass, callback) {
+            if (!running) return;
+            const circle = document.getElementById('breatheCircle');
+            const text = document.getElementById('breatheText');
+
+            circle.className = 'breathe-circle';
+            void circle.offsetWidth;
+
+            if (circleClass) {
+                circle.style.setProperty('--inhale-time', techniques[currentTechnique].inhale + 's');
+                circle.style.setProperty('--exhale-time', techniques[currentTechnique].exhale + 's');
+                circle.classList.add(circleClass);
+            }
+
+            let remaining = duration;
+            text.innerHTML = `${label}<span class="timer" id="breatheTimer">${remaining}</span>`;
+
+            clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                remaining--;
+                if (remaining > 0) {
+                    document.getElementById('breatheTimer').textContent = remaining;
+                }
+            }, 1000);
+
+            phaseTimeout = setTimeout(() => {
+                clearInterval(countdownInterval);
+                callback();
+            }, duration * 1000);
+        }
+
+        function updateCycleCount() {
+            document.getElementById('cycleCount').textContent = `Cycles: ${cycles}`;
+        }
+
+        function logSession() {
+            const t = techniques[currentTechnique];
+            const elapsed = Math.round((Date.now() - sessionStart) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+            const duration = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+
+            const logs = JSON.parse(localStorage.getItem('breatheSessions') || '[]');
+            logs.unshift({
+                technique: t.name,
+                cycles: cycles,
+                duration: duration,
+                durationSec: elapsed,
+                date: new Date().toISOString()
+            });
+            if (logs.length > 30) logs.length = 30;
+            localStorage.setItem('breatheSessions', JSON.stringify(logs));
+            loadSessionLog();
+        }
+
+        function loadSessionLog() {
+            const logs = JSON.parse(localStorage.getItem('breatheSessions') || '[]');
+            const container = document.getElementById('sessionLog');
+
+            if (logs.length === 0) {
+                container.innerHTML = '<div class="empty-log">No sessions yet. Hit start whenever you\'re ready.</div>';
+                return;
+            }
+
+            container.innerHTML = logs.slice(0, 8).map(log => {
+                const date = new Date(log.date);
+                const formatted = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                return `<div class="log-entry">
+                    <span class="log-tech">${log.technique}</span>
+                    <span class="log-detail">${log.cycles} cycles · ${log.duration}</span>
+                    <span class="log-detail">${formatted}</span>
+                </div>`;
+            }).join('');
+        }
+
+        // Init
+        showTechniqueInfo();
+        loadSessionLog();
+    </script>
+
+    <!-- SOS Crisis Button -->
+    <style>
+        .sos-float { position: fixed; bottom: 2rem; right: 2rem; z-index: 9999; }
+        .sos-btn { width: 56px; height: 56px; border-radius: 50%; background: #ef4444; color: white; border: none; font-size: 1.2rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 20px rgba(239,68,68,0.4); transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+        .sos-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(239,68,68,0.5); }
+        .sos-panel { display: none; position: absolute; bottom: 70px; right: 0; width: 300px; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); padding: 1.5rem; }
+        .sos-panel.open { display: block; animation: sosFade 0.2s ease; }
+        @keyframes sosFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .sos-panel h4 { color: #ef4444; margin-bottom: 0.75rem; font-size: 1.05rem; }
+        .sos-panel .sos-line { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid #f3f4f6; font-size: 0.9rem; color: #1f2937; }
+        .sos-panel .sos-line:last-child { border-bottom: none; }
+        .sos-panel .sos-line a { color: #ef4444; font-weight: 600; text-decoration: none; }
+        .sos-panel .sos-note { font-size: 0.8rem; color: #6b7280; margin-top: 0.75rem; }
+    </style>
+    <div class="sos-float">
+        <div class="sos-panel" id="sosPanel">
+            <h4>Need help right now?</h4>
+            <div class="sos-line">📞 Emergency: <a href="tel:112">112</a> / <a href="tel:911">911</a></div>
+            <div class="sos-line">💬 Crisis Text Line: Text HELLO to your local helpline</div>
+            <div class="sos-line">🌍 WHO: <a href="tel:+41227912111">+41 22 791 21 11</a></div>
+            <div class="sos-line">🔗 <a href="resources.html#crisis">More resources</a></div>
+            <div class="sos-note">You're not alone. Someone is ready to listen.</div>
+        </div>
+        <button class="sos-btn" onclick="document.getElementById('sosPanel').classList.toggle('open')" title="Crisis support">SOS</button>
+    </div>
+
+<script>
+// Scroll reveal
+const rEls=document.querySelectorAll('.reveal');
+const rObs=new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);rObs.unobserve(e.target)}});
+},{threshold:0.1});
+rEls.forEach(el=>rObs.observe(el));
+</script>
+</body>
+</html>

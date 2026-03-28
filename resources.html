@@ -310,6 +310,79 @@
             transform: translateY(-3px);
         }
 
+        /* ─── In-app music hub (Spotify, Apple Music, YouTube) ─── */
+        .music-hub {
+            background: linear-gradient(145deg, #ecfdf5 0%, #f5f3ff 45%, #fff7ed 100%);
+            border-radius: 24px;
+            padding: 2.25rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 16px 48px rgba(16, 185, 129, 0.12);
+        }
+        .music-hub h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        .music-hub .hub-sub {
+            text-align: center;
+            color: var(--text-light);
+            max-width: 560px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.55;
+        }
+        .mood-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+        }
+        .mood-chip {
+            border: 2px solid transparent;
+            padding: 0.55rem 1rem;
+            border-radius: 999px;
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            background: #fff;
+            color: var(--text-dark);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            transition: all 0.2s;
+        }
+        .mood-chip:hover {
+            border-color: var(--primary);
+            color: var(--primary-dark);
+        }
+        .mood-chip.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+        }
+        .embed-stage {
+            background: #0f172a;
+            border-radius: 20px;
+            overflow: hidden;
+            min-height: 200px;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+        }
+        .embed-stage iframe {
+            display: block;
+            width: 100%;
+            border: 0;
+        }
+        .embed-caption {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.88rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+        .embed-caption a { color: var(--primary); font-weight: 600; }
+
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -320,6 +393,7 @@
             .crisis-contacts {
                 flex-direction: column;
             }
+            .music-hub { padding: 1.25rem; }
         }
     </style>
 </head>
@@ -373,10 +447,6 @@
             <symbol id="icon-mobile" viewBox="0 0 24 24">
                 <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/>
             </symbol>
-            <symbol id="icon-brain" viewBox="0 0 24 24">
-                <circle cx="12" cy="8" r="6"/>
-                <path d="M12 14c-4 0-7 2-7 4v2h14v-2c0-2-3-4-7-4z"/>
-            </symbol>
             <symbol id="icon-heart" viewBox="0 0 24 24">
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
             </symbol>
@@ -399,15 +469,58 @@
         </a>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
             <li><a href="dashboard.html">Dashboard</a></li>
             <li><a href="chat.html">Chat</a></li>
             <li><a href="mood-tracker.html">Mood Tracker</a></li>
+            <li><a href="eco-therapy.html">Eco-Therapy 🌿</a></li>
+            <li><a href="breathe.html">Breathe</a></li>
+            <li><a href="gratitude.html">Gratitude</a></li>
+            <li><a href="self-care.html">Self-Care</a></li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
 
     <div class="container">
+        <section id="sounds-cheerly" class="music-hub" aria-labelledby="sounds-title">
+            <h2 id="sounds-title">Sounds of Cheerly — music for how you feel</h2>
+            <p class="hub-sub">Tap a mood. Spotify, Apple Music, and YouTube load <strong>inside Cheerly</strong> so you are not bounced out to another app. Sign in inside the player if a service asks for your account.</p>
+            <div class="mood-chips" id="mood-chips" role="tablist" aria-label="Music by mood"></div>
+            <div class="embed-stage">
+                <iframe id="cheerly-music-embed"
+                    title="Embedded music player"
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy"
+                    src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4sWSpwq3LiO?utm_source=generator&amp;theme=0"></iframe>
+            </div>
+            <p class="embed-caption" id="embed-caption">Peaceful piano &amp; soft keys — Spotify playlist embedded here.</p>
+        </section>
+
+        <h2 class="section-title">Extra ambient streams</h2>
+        <div class="resources-grid">
+            <div class="resource-card">
+                <div class="resource-icon">🔊</div>
+                <h3>Nature &amp; rain</h3>
+                <p>Open the <a href="#sounds-cheerly">Sounds of Cheerly</a> hub for playlists, or try these classic ambience links.</p>
+                <a class="resource-link" href="https://www.youtube.com/watch?v=1ZYbU82GVz4" target="_blank" rel="noopener">Rain &amp; thunder ↗</a>
+                <a class="resource-link" href="https://www.youtube.com/watch?v=OdIJ2x3nxzQ" target="_blank" rel="noopener">Forest birds ↗</a>
+            </div>
+            <div class="resource-card">
+                <div class="resource-icon">🎧</div>
+                <h3>Guided audio</h3>
+                <p>Short meditations you can also open in the hub with YouTube sources.</p>
+                <a class="resource-link" href="https://www.youtube.com/watch?v=inpok4MKVLM" target="_blank" rel="noopener">5-min meditation ↗</a>
+                <a class="resource-link" href="https://www.youtube.com/watch?v=6p_yaNFSYao" target="_blank" rel="noopener">10-min mindfulness ↗</a>
+            </div>
+            <div class="resource-card">
+                <div class="resource-icon">🌊</div>
+                <h3>Water &amp; sleep beats</h3>
+                <p>Gentle loops for sleep hygiene practice and wind-down routines.</p>
+                <a class="resource-link" href="https://www.youtube.com/watch?v=DWcJFNfaw9c" target="_blank" rel="noopener">Lo-fi sleep radio ↗</a>
+                <a class="resource-link" href="https://www.youtube.com/watch?v=QZbuj3RJcjI" target="_blank" rel="noopener">River stream ↗</a>
+            </div>
+        </div>
         <div class="hero-section">
             <h1>Mental Health <span class="highlight">Resources</span></h1>
             <p>Tools, techniques, and support for your wellbeing journey</p>
@@ -473,6 +586,13 @@
                 <p>Set achievable goals and create positive momentum in your life. Learn SMART goal-setting and action planning techniques.</p>
                 <a href="#goals" class="resource-link">Set Goals →</a>
             </div>
+
+            <div class="resource-card" style="border: 2px solid #10b981;">
+                <div class="resource-icon" style="background: linear-gradient(135deg, #166534, #10b981);"><span style="font-size: inherit;">🌿</span></div>
+                <h3>Eco-Therapy & Nature Healing</h3>
+                <p>Step outside and let nature do its thing. Forest walks, earthing, gardening — simple stuff that actually makes a difference.</p>
+                <a href="eco-therapy.html" class="resource-link" style="color: #166534;">Explore Eco-Therapy →</a>
+            </div>
         </div>
 
         <div class="techniques-section" id="breathing">
@@ -520,6 +640,18 @@
                     <li>Turn off non-essential notifications</li>
                     <li>Create phone-free zones (bedroom, dinner table)</li>
                     <li>Replace scrolling time with activities you enjoy</li>
+                </ul>
+            </div>
+
+            <div class="technique-item" style="border-left-color: #166534;">
+                <h4><span style="font-size: inherit;">🌿</span> Nature Breathing (Eco-Therapy)</h4>
+                <p style="color: var(--text-light); margin-bottom: 1rem;">A calming breathing exercise that works best near a window or outside — <a href="eco-therapy.html" style="color: #10b981;">more nature exercises here</a></p>
+                <ul class="technique-steps">
+                    <li>Go outside or sit by an open window facing nature</li>
+                    <li>Breathe in for 4 counts — imagine pulling in fresh, green air</li>
+                    <li>Hold for 4 counts — feel the quiet</li>
+                    <li>Breathe out for 6 counts — let the tension go with it</li>
+                    <li>Do this 5 times. Each round should feel a bit calmer</li>
                 </ul>
             </div>
         </div>
@@ -574,10 +706,76 @@
             <div class="external-links">
                 <a href="https://www.who.int/health-topics/mental-health" target="_blank" class="external-link">WHO Mental Health</a>
                 <a href="#" class="external-link">African Mental Health Foundation</a>
-                <a href="#" class="external-link">Youth Mental Health Network</a>
+                <a href="eco-therapy.html" class="external-link">Eco-Therapy 🌿</a>
                 <a href="chat.html" class="external-link">Chat with Cheerly 💬</a>
             </div>
         </div>
+    </div>
+
+    <script>
+        (function () {
+            var moods = [
+                { label: 'Calm / anxious', caption: 'Soft piano — Spotify “Peaceful Piano” embedded in Cheerly.', src: 'https://open.spotify.com/embed/playlist/37i9dQZF1DX4sWSpwq3LiO?utm_source=generator&theme=0', h: 380 },
+                { label: 'Happy / pop', caption: "Chart energy — Spotify Today's Top Hits.", src: 'https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator&theme=0', h: 380 },
+                { label: 'Focus / deep work', caption: 'Instrumentals for concentration — Spotify “Deep Focus”.', src: 'https://open.spotify.com/embed/playlist/37i9dQZF1DWZeKCadgRdKQ?utm_source=generator&theme=0', h: 380 },
+                { label: 'Lo-fi / chill', caption: 'Lo-fi hip hop radio — YouTube plays inline (stay on this tab).', src: 'https://www.youtube.com/embed/jfKfPfyJRdk?rel=0', h: 400 },
+                { label: 'R&B feels', caption: 'Classic R&B soul — YouTube; more tracks appear in the player sidebar.', src: 'https://www.youtube.com/embed/Ju8Hr50Ckwk?rel=0', h: 400 },
+                { label: 'Heavy day / comfort', caption: 'Soft night beats when you need low stimulation — YouTube.', src: 'https://www.youtube.com/embed/DWcJFNfaw9c?rel=0', h: 400 },
+                { label: 'Spiritual / Islamic', caption: 'Faith-rooted songs & stories — Apple Music album embed (sign in if prompted).', src: 'https://embed.music.apple.com/us/album/the-message-the-story-of-islam-vol-1/1440852725', h: 450 },
+                { label: 'Late study', caption: '1 a.m. study session mix — YouTube, embedded here.', src: 'https://www.youtube.com/embed/lTRiuFIWV54?rel=0', h: 400 }
+            ];
+            var chipsEl = document.getElementById('mood-chips');
+            var iframeEl = document.getElementById('cheerly-music-embed');
+            var capEl = document.getElementById('embed-caption');
+            if (!chipsEl || !iframeEl || !capEl) return;
+
+            function selectMood(btn, m) {
+                var all = chipsEl.querySelectorAll('.mood-chip');
+                for (var i = 0; i < all.length; i++) all[i].classList.remove('active');
+                btn.classList.add('active');
+                iframeEl.src = m.src;
+                iframeEl.style.height = m.h + 'px';
+                iframeEl.setAttribute('title', m.label + ' — music player');
+                capEl.textContent = m.caption;
+            }
+
+            moods.forEach(function (m, idx) {
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'mood-chip' + (idx === 0 ? ' active' : '');
+                btn.setAttribute('role', 'tab');
+                btn.textContent = m.label;
+                btn.addEventListener('click', function () { selectMood(btn, m); });
+                chipsEl.appendChild(btn);
+            });
+            iframeEl.style.height = moods[0].h + 'px';
+        })();
+    </script>
+
+    <!-- SOS Crisis Button -->
+    <style>
+        .sos-float { position: fixed; bottom: 2rem; right: 2rem; z-index: 9999; }
+        .sos-btn { width: 56px; height: 56px; border-radius: 50%; background: #ef4444; color: white; border: none; font-size: 1.2rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 20px rgba(239,68,68,0.4); transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+        .sos-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(239,68,68,0.5); }
+        .sos-panel { display: none; position: absolute; bottom: 70px; right: 0; width: 300px; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); padding: 1.5rem; }
+        .sos-panel.open { display: block; animation: sosFade 0.2s ease; }
+        @keyframes sosFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .sos-panel h4 { color: #ef4444; margin-bottom: 0.75rem; font-size: 1.05rem; }
+        .sos-panel .sos-line { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid #f3f4f6; font-size: 0.9rem; color: #1f2937; }
+        .sos-panel .sos-line:last-child { border-bottom: none; }
+        .sos-panel .sos-line a { color: #ef4444; font-weight: 600; text-decoration: none; }
+        .sos-panel .sos-note { font-size: 0.8rem; color: #6b7280; margin-top: 0.75rem; }
+    </style>
+    <div class="sos-float">
+        <div class="sos-panel" id="sosPanel">
+            <h4>Need help right now?</h4>
+            <div class="sos-line">📞 Emergency: <a href="tel:112">112</a> / <a href="tel:911">911</a></div>
+            <div class="sos-line">💬 Crisis Text Line: Text HELLO to your local helpline</div>
+            <div class="sos-line">🌍 WHO: <a href="tel:+41227912111">+41 22 791 21 11</a></div>
+            <div class="sos-line">🔗 <a href="resources.html#crisis">More resources</a></div>
+            <div class="sos-note">You're not alone. Someone is ready to listen.</div>
+        </div>
+        <button class="sos-btn" onclick="document.getElementById('sosPanel').classList.toggle('open')" title="Crisis support">SOS</button>
     </div>
 </body>
 </html>

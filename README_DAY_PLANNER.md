@@ -1,7 +1,7 @@
 # Day Planner Feature Documentation
 
 ## Overview
-The Day Planner feature is a comprehensive scheduling and task management system integrated into Cheerly Live Up. It helps users organize their daily activities, receive timely reminders, and get caring check-ins from the chatbot throughout the day.
+The Day Planner feature is a comprehensive scheduling and task management system integrated into Cheerly Live Up. It helps users organize their daily activities, receive timely reminders, and get caring check-ins throughout the day.
 
 ## Features
 
@@ -29,8 +29,8 @@ The Day Planner feature is a comprehensive scheduling and task management system
 - **Progress Tracking**: Visual representation of your daily achievements
 - **Upcoming Tasks**: Quick view of what's coming up next
 
-### 💬 Chatbot Integration
-The chatbot now sends human-like messages including:
+### 💬 Chat Integration
+The chat companion now sends human-like messages including:
 - **Personalized Greetings**: Based on time of day and your recent mood
 - **Task Reminders**: Friendly notifications about upcoming tasks
 - **Progress Check-ins**: Caring messages about your task completion
@@ -82,7 +82,7 @@ System-generated notifications for tasks and check-ins.
 ```
 
 #### `chat_checkins`
-Logs all chatbot check-in messages sent to users.
+Logs all check-in messages sent to users.
 ```sql
 - id: INT PRIMARY KEY
 - user_id: INT (FK to users)
@@ -234,7 +234,7 @@ Returns: {
 
 6. **Chat Integration**
    - Open the chat to receive personalized check-ins
-   - The chatbot will mention your tasks and offer support
+   - The companion will mention your tasks and offer support
    - You'll get friendly reminders about upcoming activities
 
 ### For Developers
@@ -269,7 +269,7 @@ Human-like messages are generated in `routes/chat.js`:
 - **`generateTaskReminder()`**: Task reminder messages
 - **`generateEncouragementMessage()`**: Progress-based motivation
 
-Modify these functions to customize the chatbot's personality.
+Modify these functions to customize the companion's personality.
 
 ## Future Enhancements
 

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=320">
+  <title>Payment - Cheerly Live Up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #10b981;
+      --primary-dark: #047857;
+      --accent: #6366f1;
+      --gold: #f97316;
+      --text: #0f172a;
+      --muted: #64748b;
+    }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background: #0c4a6e;
+    }
+    .scene {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 20%, rgba(16, 185, 129, 0.35), transparent),
+        radial-gradient(ellipse 70% 50% at 85% 15%, rgba(249, 115, 22, 0.22), transparent),
+        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(251, 191, 36, 0.15), transparent),
+        linear-gradient(165deg, #0c4a6e 0%, #134e4a 45%, #14532d 100%);
+    }
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .orb.a { width: 400px; height: 400px; background: #34d399; top: -100px; right: -80px; }
+    .orb.b { width: 320px; height: 320px; background: #fb923c; bottom: 10%; left: -80px; opacity: 0.35; }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      background: rgba(15, 23, 42, 0.35);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    nav a { color: #e2e8f0; text-decoration: none; font-weight: 600; font-size: 0.9rem; margin-left: 1.25rem; }
+    nav a:first-child { margin-left: 0; font-weight: 800; color: #fff; }
+    nav a:hover { color: #fff; }
+    main { max-width: 520px; margin: 0 auto; padding: 3rem 5% 4rem; }
+    .panel {
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 28px;
+      padding: 2.25rem;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+    .panel h1 { font-size: 1.65rem; font-weight: 800; margin-bottom: 0.35rem; }
+    .panel .sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.75rem; line-height: 1.5; }
+    fieldset { border: none; }
+    legend { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; }
+    .plan-opt {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      padding: 1rem 1.1rem;
+      border-radius: 16px;
+      border: 2px solid #e2e8f0;
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .plan-opt:has(input:checked) {
+      border-color: var(--primary);
+      background: #ecfdf5;
+    }
+    .plan-opt input { margin-top: 0.2rem; accent-color: var(--primary); }
+    .plan-opt strong { display: block; font-size: 1rem; }
+    .plan-opt span { font-size: 0.85rem; color: var(--muted); }
+    .note {
+      margin-top: 1.25rem;
+      padding: 1rem;
+      background: #f8fafc;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .note code { font-size: 0.75rem; }
+    button[type="submit"] {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border: none;
+      border-radius: 14px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      box-shadow: 0 12px 28px rgba(16, 185, 129, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button[type="submit"]:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(16, 185, 129, 0.45); }
+    button[type="submit"]:disabled { opacity: 0.65; cursor: not-allowed; }
+    .fineprint { text-align: center; margin-top: 1.5rem; font-size: 0.8rem; color: rgba(255, 255, 255, 0.75); }
+    .fineprint a { color: #fff; font-weight: 600; }
+    .toast {
+      position: fixed; top: 88px; right: 16px; max-width: 320px; padding: 1rem 1.25rem; border-radius: 12px;
+      font-size: 0.88rem; font-weight: 600; z-index: 200; transform: translateX(120%); transition: transform 0.35s ease;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    }
+    .toast.show { transform: translateX(0); }
+    .toast.err { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+    .toast.ok { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+  </style>
+</head>
+<body>
+  <div class="scene"></div>
+  <div class="orb a"></div>
+  <div class="orb b"></div>
+  <div class="toast" id="toast" role="status"></div>
+  <nav>
+    <a href="index.html">Cheerly Live Up</a>
+    <span>
+      <a href="pricing.html">Pricing</a>
+      <a href="upgrade.html">Why upgrade</a>
+    </span>
+  </nav>
+  <main>
+    <div class="panel">
+      <h1>Secure checkout</h1>
+      <p class="sub">Premium uses <strong>Stripe Checkout</strong> (hosted payment page). Run <code>npm start</code> and open this page from the same URL (e.g. <code>http://localhost:3000/payment.html</code>) so the request reaches the API.</p>
+      <form id="payForm">
+        <fieldset>
+          <legend>Select plan</legend>
+          <label class="plan-opt">
+            <input type="radio" name="plan" value="free" checked>
+            <div>
+              <strong>Cheerly Free</strong>
+              <span>No card — mood tools, resources, and Sounds of Cheerly.</span>
+            </div>
+          </label>
+          <label class="plan-opt">
+            <input type="radio" name="plan" value="premium_monthly">
+            <div>
+              <strong>Cheerly Premium — $9.99 / month</strong>
+              <span>Stripe subscription; includes full community access when you enable it in the product.</span>
+            </div>
+          </label>
+        </fieldset>
+        <p class="note">Add <code>STRIPE_SECRET_KEY</code> to <code>.env</code> (see <code>.env.example</code>). Optional <code>STRIPE_PRICE_MONTHLY</code> from the Stripe Dashboard; otherwise the server creates a default $9.99/mo line item.</p>
+        <button type="submit" id="payBtn">Continue</button>
+      </form>
+    </div>
+    <p class="fineprint">Questions? <a href="contact.html">Contact us</a> · <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a></p>
+  </main>
+  <script>
+    (function () {
+      var apiBase = window.location.origin;
+      var toast = document.getElementById('toast');
+      function show(msg, ok) {
+        toast.textContent = msg;
+        toast.className = 'toast ' + (ok ? 'ok' : 'err');
+        requestAnimationFrame(function () { toast.classList.add('show'); });
+        setTimeout(function () { toast.classList.remove('show'); }, 6500);
+      }
+      document.getElementById('payForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var plan = document.querySelector('input[name="plan"]:checked').value;
+        var btn = document.getElementById('payBtn');
+        if (plan === 'free') {
+          show('Free plan — head to sign up. Redirecting…', true);
+          setTimeout(function () { window.location.href = 'signup.html'; }, 900);
+          return;
+        }
+        btn.disabled = true;
+        btn.textContent = 'Redirecting to Stripe…';
+        fetch(apiBase + '/api/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ plan: 'premium_monthly', userId: localStorage.getItem('cheerlyUser') ? 'local' : 'guest' })
+        })
+          .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+          .then(function (_ref) {
+            if (_ref.ok && _ref.d.url) {
+              window.location.href = _ref.d.url;
+              return;
+            }
+            btn.disabled = false;
+            btn.textContent = 'Continue';
+            show(_ref.d.error || 'Checkout failed. Is the server running with STRIPE_SECRET_KEY set?', false);
+          })
+          .catch(function (err) {
+            btn.disabled = false;
+            btn.textContent = 'Continue';
+            show('Cannot reach the API. Use the Node server (npm start) on the same host/port as this page.', false);
+          });
+      });
+    })();
+  </script>
+</body>
+</html>

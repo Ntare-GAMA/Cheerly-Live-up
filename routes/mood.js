@@ -1,5 +1,5 @@
 const express = require('express');
-const { promisePool } = require('../config/database');
+const { db, admin } = require('../config/database');
 const { authenticateToken } = require('../middleware/auth');
 
 const router = express.Router();
@@ -8,15 +8,19 @@ const router = express.Router();
 router.get('/history', authenticateToken, async (req, res) => {
     try {
         const { limit = 100, offset = 0 } = req.query;
-        
-        const [moods] = await promisePool.query(
-            `SELECT id, mood, note, entry_date 
-             FROM mood_entries 
-             WHERE user_id = ? 
-             ORDER BY entry_date DESC 
-             LIMIT ? OFFSET ?`,
-            [req.user.userId, parseInt(limit), parseInt(offset)]
-        );
+
+        const snapshot = await db.collection('mood_entries')
+            .where('user_id', '==', req.user.userId)
+            .orderBy('entry_date', 'desc')
+            .limit(parseInt(limit))
+            .offset(parseInt(offset))
+            .get();
+
+        const moods = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+            entry_date: doc.data().entry_date?.toDate?.() || doc.data().entry_date
+        }));
 
         res.json(moods);
     } catch (error) {
@@ -39,14 +43,16 @@ router.post('/entry', authenticateToken, async (req, res) => {
             return res.status(400).json({ error: 'Invalid mood value' });
         }
 
-        const [result] = await promisePool.query(
-            'INSERT INTO mood_entries (user_id, mood, note) VALUES (?, ?, ?)',
-            [req.user.userId, mood, note || null]
-        );
+        const docRef = await db.collection('mood_entries').add({
+            user_id: req.user.userId,
+            mood,
+            note: note || null,
+            entry_date: admin.firestore.FieldValue.serverTimestamp()
+        });
 
         res.status(201).json({
             message: 'Mood saved successfully',
-            id: result.insertId,
+            id: docRef.id,
             mood,
             note,
             entry_date: new Date()
@@ -61,44 +67,44 @@ router.post('/entry', authenticateToken, async (req, res) => {
 router.get('/stats', authenticateToken, async (req, res) => {
     try {
         const { days = 30 } = req.query;
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - parseInt(days));
 
-        // Get mood counts
-        const [moodCounts] = await promisePool.query(
-            `SELECT mood, COUNT(*) as count 
-             FROM mood_entries 
-             WHERE user_id = ? AND entry_date >= DATE_SUB(NOW(), INTERVAL ? DAY)
-             GROUP BY mood`,
-            [req.user.userId, parseInt(days)]
-        );
+        // Get mood entries within time range
+        const recentSnap = await db.collection('mood_entries')
+            .where('user_id', '==', req.user.userId)
+            .where('entry_date', '>=', cutoff)
+            .get();
+
+        // Count by mood
+        const moodCounts = {};
+        recentSnap.docs.forEach(doc => {
+            const m = doc.data().mood;
+            moodCounts[m] = (moodCounts[m] || 0) + 1;
+        });
+        const moodDistribution = Object.entries(moodCounts).map(([mood, count]) => ({ mood, count }));
 
         // Get total entries
-        const [total] = await promisePool.query(
-            `SELECT COUNT(*) as total 
-             FROM mood_entries 
-             WHERE user_id = ?`,
-            [req.user.userId]
-        );
+        const totalSnap = await db.collection('mood_entries')
+            .where('user_id', '==', req.user.userId)
+            .get();
 
         // Calculate streak
-        const [streakData] = await promisePool.query(
-            `SELECT DATE(entry_date) as date 
-             FROM mood_entries 
-             WHERE user_id = ? 
-             GROUP BY DATE(entry_date) 
-             ORDER BY date DESC`,
-            [req.user.userId]
-        );
+        const allEntries = totalSnap.docs.map(doc => {
+            const d = doc.data().entry_date?.toDate?.() || new Date(doc.data().entry_date);
+            return d.toISOString().split('T')[0];
+        });
+        const uniqueDates = [...new Set(allEntries)].sort().reverse();
 
         let streak = 0;
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        for (let i = 0; i < streakData.length; i++) {
-            const entryDate = new Date(streakData[i].date);
+        for (let i = 0; i < uniqueDates.length; i++) {
             const expectedDate = new Date(today);
             expectedDate.setDate(expectedDate.getDate() - i);
-            
-            if (entryDate.getTime() === expectedDate.getTime()) {
+            const expected = expectedDate.toISOString().split('T')[0];
+            if (uniqueDates[i] === expected) {
                 streak++;
             } else {
                 break;
@@ -106,8 +112,8 @@ router.get('/stats', authenticateToken, async (req, res) => {
         }
 
         res.json({
-            totalEntries: total[0].total,
-            moodDistribution: moodCounts,
+            totalEntries: totalSnap.size,
+            moodDistribution,
             streak,
             periodDays: parseInt(days)
         });
@@ -120,15 +126,14 @@ router.get('/stats', authenticateToken, async (req, res) => {
 // Delete mood entry
 router.delete('/entry/:id', authenticateToken, async (req, res) => {
     try {
-        const [result] = await promisePool.query(
-            'DELETE FROM mood_entries WHERE id = ? AND user_id = ?',
-            [req.params.id, req.user.userId]
-        );
+        const docRef = db.collection('mood_entries').doc(req.params.id);
+        const doc = await docRef.get();
 
-        if (result.affectedRows === 0) {
+        if (!doc.exists || doc.data().user_id !== req.user.userId) {
             return res.status(404).json({ error: 'Mood entry not found' });
         }
 
+        await docRef.delete();
         res.json({ message: 'Mood entry deleted successfully' });
     } catch (error) {
         console.error('Delete mood error:', error);

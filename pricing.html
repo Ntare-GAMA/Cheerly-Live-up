@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing - Cheerly Live Up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #10b981;
+      --primary-dark: #047857;
+      --accent: #8b5cf6;
+      --gold: #fbbf24;
+      --text: #0f172a;
+      --muted: #64748b;
+      --card: rgba(255, 255, 255, 0.92);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background: #020617;
+    }
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse 100% 80% at 50% -30%, rgba(16, 185, 129, 0.45), transparent 45%),
+        radial-gradient(ellipse 60% 50% at 0% 100%, rgba(139, 92, 246, 0.25), transparent),
+        radial-gradient(ellipse 50% 40% at 100% 60%, rgba(251, 191, 36, 0.12), transparent),
+        linear-gradient(180deg, #020617 0%, #0f172a 40%, #1e293b 100%);
+    }
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.04;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+    }
+    nav a.logo {
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+    nav a.logo span {
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--gold);
+    }
+    .nav-links { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+    .nav-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    main { max-width: 1100px; margin: 0 auto; padding: 6.5rem 5% 4rem; }
+    .hero { text-align: center; margin-bottom: 3rem; }
+    .hero .eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #34d399, var(--gold), #c4b5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p { color: #94a3b8; font-size: 1.1rem; max-width: 520px; margin: 0 auto; line-height: 1.6; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 24px;
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      opacity: 0.85;
+    }
+    .card.featured {
+      border-color: rgba(16, 185, 129, 0.45);
+      box-shadow: 0 24px 60px rgba(16, 185, 129, 0.2);
+    }
+    .card.featured::before {
+      height: 5px;
+      background: linear-gradient(90deg, var(--gold), var(--primary), var(--accent));
+    }
+    .badge {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: linear-gradient(135deg, var(--gold), #f59e0b);
+      color: #422006;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 0.35rem 0.65rem;
+      border-radius: 8px;
+      text-transform: uppercase;
+    }
+    .card h2 { font-size: 1.35rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text); }
+    .price { font-size: 2.5rem; font-weight: 900; color: var(--primary-dark); margin: 1rem 0 0.25rem; }
+    .price small { font-size: 1rem; font-weight: 600; color: var(--muted); }
+    .card ul { list-style: none; margin: 1.5rem 0; }
+    .card li {
+      padding: 0.55rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+      color: #334155;
+      font-size: 0.95rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .card li:last-child { border-bottom: none; }
+    .card li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.85rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      width: 100%;
+      padding: 0.95rem 1.5rem;
+      border-radius: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--primary-dark);
+      border: 2px solid var(--primary);
+    }
+    .btn-outline:hover { background: #ecfdf5; transform: translateY(-2px); }
+    .btn-solid {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.35);
+    }
+    .btn-solid:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(16, 185, 129, 0.45); }
+    .trust {
+      margin-top: 3rem;
+      text-align: center;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+    .trust strong { color: #cbd5e1; }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="grain"></div>
+  <nav>
+    <a class="logo" href="index.html"><span></span> Cheerly Live Up</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="resources.html">Resources</a>
+      <a href="community.html">Community</a>
+      <a href="payment.html">Checkout</a>
+    </div>
+  </nav>
+  <main>
+    <header class="hero">
+      <span class="eyebrow">Simple, honest pricing</span>
+      <h1>Pick the plan that <em>fits your season</em></h1>
+      <p>Start free, stay supported. Upgrade when you want deeper tools, analytics, and premium wellness journeys.</p>
+    </header>
+    <div class="grid">
+      <article class="card">
+        <h2>Cheerly Free</h2>
+        <p class="price">$0 <small>forever</small></p>
+        <ul>
+          <li>Mood tracker and day planner basics</li>
+          <li>Community browse and limited live chat</li>
+          <li>Resource library, breathing, and eco-therapy starters</li>
+          <li>Sounds of Cheerly hub (Spotify &amp; YouTube in-app)</li>
+        </ul>
+        <a class="btn btn-outline" href="signup.html">Create free account</a>
+      </article>
+      <article class="card featured">
+        <span class="badge">Best value</span>
+        <h2>Cheerly Premium</h2>
+        <p class="price">$9.99 <small>/ month</small></p>
+        <ul>
+          <li>Everything in Free</li>
+          <li>Advanced mood insights and streak coaching</li>
+          <li>Unlimited AI chat &amp; priority community channels</li>
+          <li>Full eco-therapy tracks, exclusive video calm library</li>
+          <li>Priority email support &amp; early feature access</li>
+        </ul>
+        <a class="btn btn-solid" href="payment.html">Start Premium checkout</a>
+      </article>
+    </div>
+    <p class="trust">Cancel Premium any time. <strong>Student-friendly:</strong> reach out on <a href="contact.html" style="color: var(--primary);">Contact</a> for assistance programs.</p>
+  </main>
+</body>
+</html>

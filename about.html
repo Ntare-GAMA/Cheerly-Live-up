@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Cheerly Live Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -21,10 +23,15 @@
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
             line-height: 1.6;
             color: var(--text-dark);
         }
+
+        /* Scroll reveal animations */
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .reveal{opacity:0;transform:translateY(30px);transition:all 0.7s cubic-bezier(0.16,1,0.3,1)}
+        .reveal.visible{opacity:1;transform:translateY(0)}
 
         .navbar {
             position: fixed;
@@ -239,9 +246,6 @@
             <symbol id="icon-target" viewBox="0 0 24 24">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
             </symbol>
-            <symbol id="icon-sparkle" viewBox="0 0 24 24">
-                <path d="M12 2l1.5 5L19 8.5l-5.5 1.5L12 15.5 10.5 10 5 8.5l5-1.5L12 2zm7 14l-.75 2.5L21 19.25l-2.75.75L17.5 23l-.75-2.75L14 19.5l2.5-.75L17.5 16z"/>
-            </symbol>
             <symbol id="icon-heart" viewBox="0 0 24 24">
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
             </symbol>
@@ -273,8 +277,11 @@
             <li><a href="about.html">About</a></li>
             <li><a href="chat.html">Chat</a></li>
             <li><a href="mood-tracker.html">Mood Tracker</a></li>
+            <li><a href="eco-therapy.html">Eco-Therapy 🌿</a></li>
             <li><a href="resources.html">Resources</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="breathe.html">Breathe</a></li>
+            <li><a href="gratitude.html">Gratitude</a></li>
+            <li><a href="self-care.html">Self-Care</a></li>
             <li><a href="signup.html" style="background: var(--primary); color: white; padding: 0.5rem 1.5rem; border-radius: 50px;">Get Started</a></li>
         </ul>
     </nav>
@@ -285,18 +292,18 @@
     </section>
 
     <section>
-        <div class="content-block">
+        <div class="content-block reveal">
             <h2>🌍 Our Story</h2>
             <p>Cheerly Live Up was born from a simple observation: too many young people across Africa are struggling with mental health challenges, but accessing support remains difficult due to stigma, cost, and limited availability of services.</p>
-            <p>We believe that every young person deserves to feel heard, supported, and empowered to navigate life's challenges. That's why we created an AI-powered companion that's available 24/7, completely private, and designed specifically for African youth.</p>
+            <p>We believe that every young person deserves to feel heard, supported, and empowered to navigate life's challenges. That's why we created a wellness companion that's available 24/7, completely private, and designed specifically for African youth.</p>
         </div>
 
-        <div class="content-block">
+        <div class="content-block reveal">
             <h2>🎯 Our Mission</h2>
             <p>To provide free, accessible, and culturally-relevant mental health support to young people across Africa, breaking down barriers and reducing stigma around mental wellbeing.</p>
         </div>
 
-        <div class="content-block">
+        <div class="content-block reveal">
             <h2>✨ Our Vision</h2>
             <p>A future where every young African person has the tools, support, and confidence to prioritize their mental health and live their best life—without shame, without barriers, and with hope.</p>
         </div>
@@ -305,12 +312,12 @@
     <section style="background: var(--bg-light);">
         <h2 class="section-title">Our Core Values</h2>
         <div class="values-grid">
-            <div class="value-card">
+            <div class="value-card reveal">
                 <div class="value-icon">🌍</div>
                 <h3>Afrocentric</h3>
                 <p>Built by Africans, for Africans. We understand the unique cultural context and challenges facing our youth.</p>
             </div>
-            <div class="value-card">
+            <div class="value-card reveal">
                 <div class="value-icon">💚</div>
                 <h3>Empathy First</h3>
                 <p>Every interaction is designed with compassion, understanding, and genuine care for your wellbeing.</p>
@@ -359,8 +366,8 @@
     <section class="team-section">
         <div class="content-block">
             <h2>👥 Meet the Team</h2>
-            <p>Cheerly Live Up is powered by a passionate team of mental health advocates, technologists, and young people who believe in the power of accessible mental health support. We combine expertise in psychology, AI technology, and African youth culture to create a platform that truly understands and serves our community.</p>
-            <p>Our diverse team includes mental health professionals, AI engineers, cultural consultants, and youth advisors who ensure that every aspect of Cheerly Live Up is built with empathy, cultural sensitivity, and effectiveness.</p>
+            <p>Cheerly Live Up is powered by a passionate team of mental health advocates, technologists, and young people who believe in the power of accessible mental health support. We combine expertise in psychology, technology, and African youth culture to create a platform that truly understands and serves our community.</p>
+            <p>Our diverse team includes mental health professionals, software engineers, cultural consultants, and youth advisors who ensure that every aspect of Cheerly Live Up is built with empathy, cultural sensitivity, and effectiveness.</p>
         </div>
     </section>
 
@@ -378,5 +385,14 @@
             <a href="contact.html" style="color: white; text-decoration: none; margin: 0 1rem;">Contact Us</a>
         </p>
     </footer>
+
+<script>
+// Scroll reveal
+const revealEls=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target)}});
+},{threshold:0.1});
+revealEls.forEach(el=>obs.observe(el));
+</script>
 </body>
 </html>

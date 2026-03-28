@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mood Tracker - Cheerly Live Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -21,11 +23,15 @@
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
             line-height: 1.6;
             color: var(--text-dark);
             background: #f9fafb;
         }
+
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .reveal{opacity:0;transform:translateY(30px);transition:all 0.7s cubic-bezier(0.16,1,0.3,1)}
+        .reveal.visible{opacity:1;transform:translateY(0)}
 
         .navbar {
             position: fixed;
@@ -363,8 +369,12 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="dashboard.html">Dashboard</a></li>
             <li><a href="chat.html">Chat</a></li>
+            <li><a href="eco-therapy.html">Eco-Therapy 🌿</a></li>
             <li><a href="analytics.html">Analytics</a></li>
             <li><a href="resources.html">Resources</a></li>
+            <li><a href="breathe.html">Breathe</a></li>
+            <li><a href="gratitude.html">Gratitude</a></li>
+            <li><a href="self-care.html">Self-Care</a></li>
         </ul>
     </nav>
 
@@ -410,6 +420,18 @@
             <div class="mood-note">
                 <label for="moodNote">What's on your mind? (Optional)</label>
                 <textarea id="moodNote" placeholder="Share what contributed to your mood today..."></textarea>
+            </div>
+
+            <div class="mood-note" style="margin-top: 1.5rem;">
+                <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; padding: 1rem; background: #f0fdf4; border-radius: 12px; border: 2px solid transparent; transition: all 0.3s;" id="outdoorToggle">
+                    <input type="checkbox" id="wasOutdoors" style="width: 20px; height: 20px; accent-color: #10b981;">
+                    <span style="font-size: 1.5rem;">🌿</span>
+                    <span>I spent time in nature today</span>
+                </label>
+                <div id="ecoSuggestion" style="display: none; margin-top: 1rem; padding: 1rem; background: linear-gradient(135deg, #dcfce7, #fef3c7); border-radius: 12px; font-size: 0.95rem;">
+                    <strong style="color: #166534;">🌱 Nice one!</strong> Time outside really does help. 
+                    <a href="eco-therapy.html" style="color: #10b981; font-weight: 600;">See some eco-therapy ideas →</a>
+                </div>
             </div>
 
             <button class="save-button" onclick="saveMood()">
@@ -463,6 +485,21 @@
         let selectedMood = null;
         const moodOptions = document.querySelectorAll('.mood-option');
 
+        // Handle outdoor toggle
+        document.getElementById('wasOutdoors').addEventListener('change', function() {
+            const suggestion = document.getElementById('ecoSuggestion');
+            const toggle = document.getElementById('outdoorToggle');
+            if (this.checked) {
+                suggestion.style.display = 'block';
+                toggle.style.borderColor = '#10b981';
+                toggle.style.background = '#dcfce7';
+            } else {
+                suggestion.style.display = 'none';
+                toggle.style.borderColor = 'transparent';
+                toggle.style.background = '#f0fdf4';
+            }
+        });
+
         // Handle mood selection
         moodOptions.forEach(option => {
             option.addEventListener('click', function() {
@@ -492,13 +529,15 @@
             }
 
             const moodNote = document.getElementById('moodNote').value;
+            const wasOutdoors = document.getElementById('wasOutdoors').checked;
             const moodHistory = JSON.parse(localStorage.getItem('moodHistory') || '[]');
             
             const newEntry = {
                 mood: selectedMood,
-                note: moodNote,
+                note: (wasOutdoors ? '🌿 ' : '') + moodNote,
                 date: new Date().toISOString(),
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                outdoors: wasOutdoors
             };
 
             moodHistory.unshift(newEntry);
@@ -514,6 +553,10 @@
             // Reset form
             moodOptions.forEach(opt => opt.classList.remove('selected'));
             document.getElementById('moodNote').value = '';
+            document.getElementById('wasOutdoors').checked = false;
+            document.getElementById('ecoSuggestion').style.display = 'none';
+            document.getElementById('outdoorToggle').style.borderColor = 'transparent';
+            document.getElementById('outdoorToggle').style.background = '#f0fdf4';
             selectedMood = null;
 
             // Reload data
@@ -607,5 +650,49 @@
         // Load data on page load
         loadMoodData();
     </script>
+
+    <!-- Eco-therapy suggestion banner -->
+    <div style="max-width: 1200px; margin: 0 auto 2rem; padding: 0 5%;">
+        <div style="background: linear-gradient(135deg, #166534, #10b981); color: white; padding: 2rem; border-radius: 20px; text-align: center;">
+            <h3 style="margin-bottom: 0.5rem;">🌿 Feeling off? Getting outside might help.</h3>
+            <p style="opacity: 0.95; margin-bottom: 1rem;">Even a short walk or sitting in the sun for 20 minutes can shift your mood more than you'd expect.</p>
+            <a href="eco-therapy.html" style="display: inline-block; padding: 0.75rem 2rem; background: white; color: #166534; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s;">Check Out Eco-Therapy →</a>
+        </div>
+    </div>
+
+    <!-- SOS Crisis Button -->
+    <style>
+        .sos-float { position: fixed; bottom: 2rem; right: 2rem; z-index: 9999; }
+        .sos-btn { width: 56px; height: 56px; border-radius: 50%; background: #ef4444; color: white; border: none; font-size: 1.2rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 20px rgba(239,68,68,0.4); transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+        .sos-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(239,68,68,0.5); }
+        .sos-panel { display: none; position: absolute; bottom: 70px; right: 0; width: 300px; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); padding: 1.5rem; }
+        .sos-panel.open { display: block; animation: sosFade 0.2s ease; }
+        @keyframes sosFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .sos-panel h4 { color: #ef4444; margin-bottom: 0.75rem; font-size: 1.05rem; }
+        .sos-panel .sos-line { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid #f3f4f6; font-size: 0.9rem; color: #1f2937; }
+        .sos-panel .sos-line:last-child { border-bottom: none; }
+        .sos-panel .sos-line a { color: #ef4444; font-weight: 600; text-decoration: none; }
+        .sos-panel .sos-note { font-size: 0.8rem; color: #6b7280; margin-top: 0.75rem; }
+    </style>
+    <div class="sos-float">
+        <div class="sos-panel" id="sosPanel">
+            <h4>Need help right now?</h4>
+            <div class="sos-line">📞 Emergency: <a href="tel:112">112</a> / <a href="tel:911">911</a></div>
+            <div class="sos-line">💬 Crisis Text Line: Text HELLO to your local helpline</div>
+            <div class="sos-line">🌍 WHO: <a href="tel:+41227912111">+41 22 791 21 11</a></div>
+            <div class="sos-line">🔗 <a href="resources.html#crisis">More resources</a></div>
+            <div class="sos-note">You're not alone. Someone is ready to listen.</div>
+        </div>
+        <button class="sos-btn" onclick="document.getElementById('sosPanel').classList.toggle('open')" title="Crisis support">SOS</button>
+    </div>
+
+<script>
+// Scroll reveal
+const revealEls=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target)}});
+},{threshold:0.1});
+revealEls.forEach(el=>obs.observe(el));
+</script>
 </body>
 </html>

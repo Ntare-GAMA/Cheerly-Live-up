@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS users (
     last_login TIMESTAMP NULL,
     is_active BOOLEAN DEFAULT TRUE,
     profile_picture_url VARCHAR(500),
+        subscription_status ENUM('free', 'premium_monthly', 'premium_yearly') DEFAULT 'free',
     INDEX idx_email (email),
     INDEX idx_signup_date (signup_date)
 );
@@ -166,6 +167,35 @@ CREATE TABLE IF NOT EXISTS chat_checkins (
     INDEX idx_user_date (user_id, sent_at)
 );
 
+-- Eco-Therapy Activity Logs Table
+CREATE TABLE IF NOT EXISTS eco_therapy_logs (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    activity_type VARCHAR(100) NOT NULL,
+    duration_minutes INT,
+    mood_after VARCHAR(50),
+    notes TEXT,
+    location VARCHAR(255),
+    logged_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_user_date (user_id, logged_at),
+    INDEX idx_activity (activity_type)
+);
+
+-- Eco-Therapy Weekly Challenges Table
+CREATE TABLE IF NOT EXISTS eco_challenges (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    week_key VARCHAR(20) NOT NULL,
+    completed_days JSON,
+    days_completed INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_user_week (user_id, week_key),
+    INDEX idx_user_week (user_id, week_key)
+);
+
 -- Insert Sample Affirmations
 INSERT INTO affirmations (affirmation_text, category) VALUES
 ('You are stronger than you think, braver than you believe, and more capable than you imagine.', 'strength'),
@@ -177,7 +207,17 @@ INSERT INTO affirmations (affirmation_text, category) VALUES
 ('You are worthy of taking up space and being heard.', 'self-worth'),
 ('Healing is not linear. Be patient and kind to yourself.', 'healing'),
 ('Your story is unique and valuable. Share it when you''re ready.', 'courage'),
-('You are not alone in this journey. Support is always available.', 'support');
+('You are not alone in this journey. Support is always available.', 'support'),
+('Like a tree, your roots run deep. You are grounded, strong, and growing every day.', 'nature'),
+('Nature does not hurry, yet everything is accomplished. Trust your own timing.', 'nature'),
+('You are part of this beautiful earth. Step outside and let nature remind you of your belonging.', 'nature'),
+('The sun rises every morning without fail. Like the sun, your light will always return.', 'nature'),
+('Even the tallest mountain was once beneath the ocean. Growth takes time — be patient with yourself.', 'nature'),
+('Breathe in the freshness of the world around you. You are alive, and that is a gift.', 'nature'),
+('Like a river, you can flow around obstacles. Your path is not blocked — it is being shaped.', 'nature'),
+('The earth holds you. The sky watches over you. You belong in this world.', 'nature'),
+('In nature, nothing is perfect and everything is perfect. Embrace your beautiful imperfection.', 'nature'),
+('Every seed needs darkness before it blooms. Your struggles are part of your growth.', 'nature');
 
 -- Insert Sample Crisis Resources
 INSERT INTO crisis_resources (country, resource_name, phone_number, website_url, description) VALUES

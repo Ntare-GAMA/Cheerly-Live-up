@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upgrade - Cheerly Live Up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh;
+      color: #0f172a;
+      background: linear-gradient(145deg, #fdf4ff 0%, #ecfdf5 40%, #eef2ff 100%);
+    }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 3rem 5%; }
+    header { margin-bottom: 2rem; }
+    h1 { font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem; }
+    p.lead { color: #64748b; line-height: 1.65; margin-bottom: 1.5rem; }
+    ul { list-style: none; margin-bottom: 2rem; }
+    li {
+      padding: 0.65rem 0;
+      padding-left: 1.75rem;
+      position: relative;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+    }
+    li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #10b981;
+      font-weight: 800;
+    }
+    nav { margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    nav a { color: #059669; font-weight: 700; text-decoration: none; font-size: 0.95rem; }
+    nav a:hover { text-decoration: underline; }
+    .btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #10b981, #047857);
+      color: #fff;
+      font-weight: 800;
+      text-decoration: none;
+      border-radius: 14px;
+      box-shadow: 0 10px 28px rgba(16, 185, 129, 0.35);
+      transition: transform 0.2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="payment.html">Payment</a>
+    </nav>
+    <header>
+      <h1>Upgrade to Premium</h1>
+      <p class="lead">Go deeper with Cheerly when you are ready for richer insights, calmer dashboards, and room to grow without limits.</p>
+    </header>
+    <ul>
+      <li>Unlock advanced mood analytics and gentle streak coaching</li>
+      <li>Unlimited supportive chat and richer community spaces</li>
+      <li>Full eco-therapy library and premium calm-video picks</li>
+      <li>Priority help from our team when things feel heavy</li>
+    </ul>
+    <a class="btn" href="payment.html">Proceed to checkout</a>
+  </div>
+</body>
+</html>

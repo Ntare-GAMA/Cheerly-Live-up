@@ -2,7 +2,7 @@
 
 ## Feature Summary
 
-I've successfully added a comprehensive **Day Planning & Scheduling** system to your Cheerly Live Up app with **human-like chatbot check-ins**!
+I've successfully added a comprehensive **Day Planning & Scheduling** system to your Cheerly Live Up app with **caring check-ins**!
 
 ---
 
@@ -301,7 +301,7 @@ The bot:
 ### For Users:
 - Better daily organization
 - Reduced stress through planning
-- Caring support from chatbot
+- Caring support from companion
 - Motivation through progress tracking
 - Human connection feeling
 
@@ -317,7 +317,7 @@ The bot:
 ## 🎉 Feature Highlights
 
 1. **📅 Comprehensive Planning** - Full task management with times, priorities, categories
-2. **🤖 Human-Like Bot** - Messages feel like a caring friend, not a robot
+2. **💬 Caring Companion** - Messages feel like a caring friend, not a robot
 3. **🔔 Smart Reminders** - Timely, friendly notifications
 4. **📊 Progress Tracking** - Visual stats and encouragement
 5. **💬 Integrated Chat** - Seamless connection between schedule and support

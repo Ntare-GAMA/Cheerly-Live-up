@@ -1,5 +1,5 @@
 const express = require('express');
-const { promisePool } = require('../config/database');
+const { db, admin } = require('../config/database');
 const { authenticateToken } = require('../middleware/auth');
 
 const router = express.Router();
@@ -7,13 +7,30 @@ const router = express.Router();
 // Create new chat session
 router.post('/session', authenticateToken, async (req, res) => {
     try {
-        const [result] = await promisePool.query(
-            'INSERT INTO chat_sessions (user_id) VALUES (?)',
-            [req.user.userId]
-        );
+        // Get user subscription status
+        const userDoc = await db.collection('users').doc(req.user.userId).get();
+        const user = userDoc.data();
+        const subscription = user.subscription_status || 'free';
+
+        if (subscription === 'free') {
+            // Limit free users to 5 chat sessions
+            const sessionsSnap = await db.collection('chat_sessions')
+                .where('user_id', '==', req.user.userId)
+                .get();
+            if (sessionsSnap.size >= 5) {
+                return res.status(403).json({ error: 'Free users are limited to 5 chat sessions. Upgrade for unlimited access.' });
+            }
+        }
+
+        const docRef = await db.collection('chat_sessions').add({
+            user_id: req.user.userId,
+            session_start: admin.firestore.FieldValue.serverTimestamp(),
+            session_end: null,
+            message_count: 0
+        });
 
         res.status(201).json({
-            sessionId: result.insertId,
+            sessionId: docRef.id,
             sessionStart: new Date()
         });
     } catch (error) {
@@ -31,19 +48,21 @@ router.post('/message', authenticateToken, async (req, res) => {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
-        const [result] = await promisePool.query(
-            'INSERT INTO chat_messages (session_id, user_id, message_type, message_text) VALUES (?, ?, ?, ?)',
-            [sessionId, req.user.userId, messageType, messageText]
-        );
+        const msgRef = await db.collection('chat_messages').add({
+            session_id: sessionId,
+            user_id: req.user.userId,
+            message_type: messageType,
+            message_text: messageText,
+            timestamp: admin.firestore.FieldValue.serverTimestamp()
+        });
 
         // Update message count
-        await promisePool.query(
-            'UPDATE chat_sessions SET message_count = message_count + 1 WHERE id = ?',
-            [sessionId]
-        );
+        await db.collection('chat_sessions').doc(sessionId).update({
+            message_count: admin.firestore.FieldValue.increment(1)
+        });
 
         res.status(201).json({
-            messageId: result.insertId,
+            messageId: msgRef.id,
             timestamp: new Date()
         });
     } catch (error) {
@@ -55,13 +74,18 @@ router.post('/message', authenticateToken, async (req, res) => {
 // Get chat history for a session
 router.get('/session/:sessionId', authenticateToken, async (req, res) => {
     try {
-        const [messages] = await promisePool.query(
-            `SELECT id, message_type, message_text, timestamp 
-             FROM chat_messages 
-             WHERE session_id = ? AND user_id = ? 
-             ORDER BY timestamp ASC`,
-            [req.params.sessionId, req.user.userId]
-        );
+        const snap = await db.collection('chat_messages')
+            .where('session_id', '==', req.params.sessionId)
+            .where('user_id', '==', req.user.userId)
+            .orderBy('timestamp', 'asc')
+            .get();
+
+        const messages = snap.docs.map(doc => ({
+            id: doc.id,
+            message_type: doc.data().message_type,
+            message_text: doc.data().message_text,
+            timestamp: doc.data().timestamp?.toDate?.() || doc.data().timestamp
+        }));
 
         res.json(messages);
     } catch (error) {
@@ -73,14 +97,18 @@ router.get('/session/:sessionId', authenticateToken, async (req, res) => {
 // Get user's chat sessions
 router.get('/sessions', authenticateToken, async (req, res) => {
     try {
-        const [sessions] = await promisePool.query(
-            `SELECT id, session_start, session_end, message_count 
-             FROM chat_sessions 
-             WHERE user_id = ? 
-             ORDER BY session_start DESC 
-             LIMIT 50`,
-            [req.user.userId]
-        );
+        const snap = await db.collection('chat_sessions')
+            .where('user_id', '==', req.user.userId)
+            .orderBy('session_start', 'desc')
+            .limit(50)
+            .get();
+
+        const sessions = snap.docs.map(doc => ({
+            id: doc.id,
+            session_start: doc.data().session_start?.toDate?.() || doc.data().session_start,
+            session_end: doc.data().session_end?.toDate?.() || doc.data().session_end,
+            message_count: doc.data().message_count
+        }));
 
         res.json(sessions);
     } catch (error) {
@@ -92,10 +120,9 @@ router.get('/sessions', authenticateToken, async (req, res) => {
 // End chat session
 router.put('/session/:sessionId/end', authenticateToken, async (req, res) => {
     try {
-        await promisePool.query(
-            'UPDATE chat_sessions SET session_end = NOW() WHERE id = ? AND user_id = ?',
-            [req.params.sessionId, req.user.userId]
-        );
+        await db.collection('chat_sessions').doc(req.params.sessionId).update({
+            session_end: admin.firestore.FieldValue.serverTimestamp()
+        });
 
         res.json({ message: 'Session ended successfully' });
     } catch (error) {
@@ -104,55 +131,57 @@ router.put('/session/:sessionId/end', authenticateToken, async (req, res) => {
     }
 });
 
-// Get personalized check-in message (human-like)
+// Get personalized check-in message
 router.get('/checkin', authenticateToken, async (req, res) => {
     try {
         const userId = req.user.userId;
         const now = new Date();
         const hour = now.getHours();
 
-        // Determine time of day
         let timeOfDay = 'morning';
         if (hour >= 12 && hour < 17) timeOfDay = 'afternoon';
         else if (hour >= 17) timeOfDay = 'evening';
 
         // Get user's name
-        const [users] = await promisePool.query(
-            'SELECT full_name FROM users WHERE id = ?',
-            [userId]
-        );
-        const firstName = users[0]?.full_name?.split(' ')[0] || 'friend';
+        const userDoc = await db.collection('users').doc(userId).get();
+        const firstName = userDoc.data()?.full_name?.split(' ')[0] || 'friend';
 
-        // Get today's tasks
-        const [tasks] = await promisePool.query(
-            `SELECT st.*, ds.schedule_date 
-             FROM schedule_tasks st
-             JOIN daily_schedules ds ON st.schedule_id = ds.id
-             WHERE st.user_id = ? 
-             AND ds.schedule_date = CURDATE()
-             AND st.status != 'completed'
-             ORDER BY st.start_time ASC`,
-            [userId]
-        );
+        // Get today's incomplete tasks
+        const today = new Date().toISOString().split('T')[0];
+        const schedulesSnap = await db.collection('daily_schedules')
+            .where('user_id', '==', userId)
+            .where('schedule_date', '==', today)
+            .limit(1)
+            .get();
+
+        let tasks = [];
+        if (!schedulesSnap.empty) {
+            const scheduleId = schedulesSnap.docs[0].id;
+            const tasksSnap = await db.collection('schedule_tasks')
+                .where('user_id', '==', userId)
+                .where('schedule_id', '==', scheduleId)
+                .where('status', '!=', 'completed')
+                .get();
+            tasks = tasksSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        }
 
         // Get recent mood
-        const [moods] = await promisePool.query(
-            `SELECT mood FROM mood_entries 
-             WHERE user_id = ? 
-             ORDER BY entry_date DESC 
-             LIMIT 1`,
-            [userId]
-        );
-        const recentMood = moods[0]?.mood;
+        const moodSnap = await db.collection('mood_entries')
+            .where('user_id', '==', userId)
+            .orderBy('entry_date', 'desc')
+            .limit(1)
+            .get();
+        const recentMood = moodSnap.empty ? null : moodSnap.docs[0].data().mood;
 
-        // Generate human-like message based on context
         const message = generateCheckinMessage(firstName, timeOfDay, tasks, recentMood);
 
         // Log the check-in
-        await promisePool.query(
-            'INSERT INTO chat_checkins (user_id, checkin_type, message_sent) VALUES (?, ?, ?)',
-            [userId, timeOfDay, message]
-        );
+        await db.collection('chat_checkins').add({
+            user_id: userId,
+            checkin_type: timeOfDay,
+            message_sent: message,
+            sent_at: admin.firestore.FieldValue.serverTimestamp()
+        });
 
         res.json({ message, timeOfDay, taskCount: tasks.length });
     } catch (error) {
@@ -161,31 +190,45 @@ router.get('/checkin', authenticateToken, async (req, res) => {
     }
 });
 
-// Get task reminders (human-like)
+// Get task reminders
 router.get('/task-reminders', authenticateToken, async (req, res) => {
     try {
         const userId = req.user.userId;
-        
-        // Get upcoming tasks in the next 2 hours
-        const [tasks] = await promisePool.query(
-            `SELECT st.*, ds.schedule_date 
-             FROM schedule_tasks st
-             JOIN daily_schedules ds ON st.schedule_id = ds.id
-             WHERE st.user_id = ? 
-             AND ds.schedule_date = CURDATE()
-             AND st.status = 'pending'
-             AND st.start_time BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 2 HOUR)
-             ORDER BY st.start_time ASC
-             LIMIT 3`,
-            [userId]
-        );
+        const today = new Date().toISOString().split('T')[0];
 
-        const reminders = tasks.map(task => ({
-            taskId: task.id,
-            taskTitle: task.task_title,
-            startTime: task.start_time,
-            message: generateTaskReminder(task)
-        }));
+        const schedulesSnap = await db.collection('daily_schedules')
+            .where('user_id', '==', userId)
+            .where('schedule_date', '==', today)
+            .limit(1)
+            .get();
+
+        let reminders = [];
+        if (!schedulesSnap.empty) {
+            const scheduleId = schedulesSnap.docs[0].id;
+            const now = new Date();
+            const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+            const nowTime = now.toTimeString().slice(0, 8);
+            const laterTime = twoHoursLater.toTimeString().slice(0, 8);
+
+            const tasksSnap = await db.collection('schedule_tasks')
+                .where('user_id', '==', userId)
+                .where('schedule_id', '==', scheduleId)
+                .where('status', '==', 'pending')
+                .get();
+
+            const upcomingTasks = tasksSnap.docs
+                .map(doc => ({ id: doc.id, ...doc.data() }))
+                .filter(t => t.start_time && t.start_time >= nowTime && t.start_time <= laterTime)
+                .sort((a, b) => a.start_time.localeCompare(b.start_time))
+                .slice(0, 3);
+
+            reminders = upcomingTasks.map(task => ({
+                taskId: task.id,
+                taskTitle: task.task_title,
+                startTime: task.start_time,
+                message: generateTaskReminder(task)
+            }));
+        }
 
         res.json({ reminders });
     } catch (error) {
@@ -198,22 +241,28 @@ router.get('/task-reminders', authenticateToken, async (req, res) => {
 router.get('/encouragement', authenticateToken, async (req, res) => {
     try {
         const userId = req.user.userId;
+        const today = new Date().toISOString().split('T')[0];
 
-        // Get today's task stats
-        const [stats] = await promisePool.query(
-            `SELECT 
-                COUNT(*) as total,
-                SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completed
-             FROM schedule_tasks st
-             JOIN daily_schedules ds ON st.schedule_id = ds.id
-             WHERE st.user_id = ? 
-             AND ds.schedule_date = CURDATE()`,
-            [userId]
-        );
+        const schedulesSnap = await db.collection('daily_schedules')
+            .where('user_id', '==', userId)
+            .where('schedule_date', '==', today)
+            .limit(1)
+            .get();
 
-        const message = generateEncouragementMessage(stats[0]);
+        let stats = { total: 0, completed: 0 };
+        if (!schedulesSnap.empty) {
+            const scheduleId = schedulesSnap.docs[0].id;
+            const tasksSnap = await db.collection('schedule_tasks')
+                .where('user_id', '==', userId)
+                .where('schedule_id', '==', scheduleId)
+                .get();
 
-        res.json({ message, stats: stats[0] });
+            stats.total = tasksSnap.size;
+            stats.completed = tasksSnap.docs.filter(d => d.data().status === 'completed').length;
+        }
+
+        const message = generateEncouragementMessage(stats);
+        res.json({ message, stats });
     } catch (error) {
         console.error('Get encouragement error:', error);
         res.status(500).json({ error: 'Failed to get encouragement' });

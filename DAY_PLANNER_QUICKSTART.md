@@ -2,7 +2,7 @@
 
 ## 🎉 What's New?
 
-Your Cheerly Live Up app now includes a complete **Day Planning & Scheduling** system with human-like chatbot check-ins!
+Your Cheerly Live Up app now includes a complete **Day Planning & Scheduling** system with caring check-ins!
 
 ## ✨ Key Features Added
 
@@ -19,8 +19,8 @@ Your Cheerly Live Up app now includes a complete **Day Planning & Scheduling** s
 - Customizable reminder intervals (5, 15, 30, 60 minutes)
 - Human-like reminder messages
 
-### 3. **Human-Like Chatbot Check-ins**
-The chatbot now:
+### 3. **Caring Check-ins**
+The chat companion now:
 - Greets you based on time of day (morning/afternoon/evening)
 - Checks in on your tasks and schedule
 - Considers your recent mood when messaging
@@ -99,7 +99,7 @@ New chat endpoints:
      - Your recent mood entries
 
 2. **Receive Reminders:**
-   - The chatbot will send friendly reminders about upcoming tasks
+   - The companion will send friendly reminders about upcoming tasks
    - Messages feel like a caring friend checking in on you
 
 3. **Get Encouragement:**
@@ -122,9 +122,9 @@ New chat endpoints:
 - `chat.html` - Enhanced with personalized check-ins
 - `index.html` - Added Day Planner to features
 
-## 🎨 Chatbot Personality
+## 🎨 Chat Companion Personality
 
-The chatbot now talks like a caring human friend:
+The chat companion now talks like a caring human friend:
 
 **Before:**
 > "Your task is scheduled for 14:00."
@@ -195,4 +195,4 @@ See `README_DAY_PLANNER.md` for complete documentation including:
 
 ---
 
-**Enjoy planning your day with your caring AI companion! 🌟**
+**Enjoy planning your day with your caring wellness companion! 🌟**

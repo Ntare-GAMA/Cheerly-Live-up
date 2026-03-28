@@ -1,36 +1,41 @@
-const mysql = require('mysql2');
+const admin = require('firebase-admin');
 require('dotenv').config();
 
-// Create MySQL connection pool
-const pool = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'cheerly_db',
-    port: process.env.DB_PORT || 3306,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-    enableKeepAlive: true,
-    keepAliveInitialDelay: 0
+// Initialize Firebase Admin SDK
+let serviceAccount;
+
+if (process.env.FIREBASE_SERVICE_ACCOUNT_PATH) {
+    serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT_PATH);
+} else if (process.env.FIREBASE_PROJECT_ID) {
+    serviceAccount = {
+        type: 'service_account',
+        project_id: process.env.FIREBASE_PROJECT_ID,
+        private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID || '',
+        private_key: (process.env.FIREBASE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+        client_email: process.env.FIREBASE_CLIENT_EMAIL || '',
+        client_id: process.env.FIREBASE_CLIENT_ID || '',
+        auth_uri: 'https://accounts.google.com/o/oauth2/auth',
+        token_uri: 'https://oauth2.googleapis.com/token',
+    };
+} else {
+    console.error('❌ Firebase configuration missing!');
+    console.error('💡 Set FIREBASE_SERVICE_ACCOUNT_PATH or FIREBASE_PROJECT_ID in your .env file');
+    process.exit(1);
+}
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
 });
 
-// Promisify for async/await usage
-const promisePool = pool.promise();
+const db = admin.firestore();
 
-// Test database connection
-pool.getConnection((err, connection) => {
-    if (err) {
-        console.error('❌ Database connection failed:', err.message);
-        if (err.code === 'ECONNREFUSED') {
-            console.error('💡 Make sure MySQL server is running');
-        } else if (err.code === 'ER_ACCESS_DENIED_ERROR') {
-            console.error('💡 Check your database credentials in .env file');
-        }
-    } else {
-        console.log('✅ Database connected successfully');
-        connection.release();
-    }
-});
+// Test Firestore connection
+db.collection('_health').doc('ping').set({ timestamp: admin.firestore.FieldValue.serverTimestamp() })
+    .then(() => {
+        console.log('✅ Firebase Firestore connected successfully');
+    })
+    .catch((err) => {
+        console.error('❌ Firestore connection failed:', err.message);
+    });
 
-module.exports = { pool, promisePool };
+module.exports = { db, admin };

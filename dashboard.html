@@ -4,744 +4,403 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Dashboard - Cheerly Live Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --primary:#10b981;--primary-dark:#059669;--primary-glow:rgba(16,185,129,0.12);
+            --secondary:#fbbf24;--accent:#8b5cf6;--pink:#f472b6;
+            --text-dark:#1f2937;--text-light:#6b7280;--bg-light:#f0fdf4;
         }
+        body{font-family:'Inter','Segoe UI',system-ui,sans-serif;line-height:1.6;color:var(--text-dark);background:#f8fafc;overflow-x:hidden}
 
-        :root {
-            --primary: #10b981;
-            --primary-dark: #059669;
-            --secondary: #fbbf24;
-            --text-dark: #1f2937;
-            --text-light: #6b7280;
-            --bg-light: #f0fdf4;
-        }
+        /* ─── NAVBAR ─── */
+        .navbar{position:fixed;width:100%;top:0;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);padding:0.85rem 5%;display:flex;justify-content:space-between;align-items:center;z-index:1000;border-bottom:1px solid rgba(16,185,129,0.08);transition:all 0.3s}
+        .navbar.scrolled{box-shadow:0 4px 30px rgba(0,0,0,0.08)}
+        .logo{font-size:1.35rem;font-weight:800;color:var(--primary);display:flex;align-items:center;gap:0.5rem;text-decoration:none}
+        .logo-dot{width:10px;height:10px;background:var(--secondary);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+        @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.4);opacity:0.6}}
+        .nav-right{display:flex;align-items:center;gap:1rem}
+        .user-btn{display:flex;align-items:center;gap:0.6rem;background:white;padding:0.45rem 1rem 0.45rem 0.45rem;border-radius:50px;cursor:pointer;border:2px solid #e5e7eb;transition:all 0.3s;font-family:inherit;font-size:0.9rem;font-weight:600;color:var(--text-dark)}
+        .user-btn:hover{border-color:var(--primary);box-shadow:0 4px 15px var(--primary-glow)}
+        .user-avatar{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:0.85rem}
+        .dropdown{display:none;position:absolute;top:calc(100% + 8px);right:0;background:white;border-radius:16px;box-shadow:0 15px 50px rgba(0,0,0,0.12);min-width:210px;overflow:hidden;border:1px solid #f1f5f9;animation:dropIn 0.2s ease}
+        .dropdown.show{display:block}
+        @keyframes dropIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+        .dropdown a{display:flex;align-items:center;gap:0.7rem;padding:0.85rem 1.2rem;color:var(--text-dark);text-decoration:none;font-weight:500;font-size:0.9rem;transition:background 0.2s}
+        .dropdown a:hover{background:var(--bg-light)}
+        .user-menu{position:relative}
 
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background: #f9fafb;
-        }
+        /* ─── ANIMATIONS ─── */
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes slideInLeft{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes countUp{from{opacity:0;transform:scale(0.5)}to{opacity:1;transform:scale(1)}}
+        @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+        @keyframes sparkle{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1.2)}}
+        .anim-fade{opacity:0;animation:fadeInUp 0.6s ease-out forwards}
+        .anim-fade:nth-child(1){animation-delay:0.1s}
+        .anim-fade:nth-child(2){animation-delay:0.2s}
+        .anim-fade:nth-child(3){animation-delay:0.3s}
+        .anim-fade:nth-child(4){animation-delay:0.4s}
 
-        .navbar {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 20px rgba(16, 185, 129, 0.1);
-            z-index: 1000;
-        }
+        /* ─── CONTAINER ─── */
+        .container{margin-top:72px;padding:1.5rem 5%;max-width:1400px;margin-left:auto;margin-right:auto}
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
+        /* ─── WELCOME BANNER ─── */
+        .welcome{background:linear-gradient(135deg,#10b981,#059669,#047857,#10b981);background-size:300% 300%;animation:gradientShift 8s ease infinite;color:white;padding:2.5rem 3rem;border-radius:24px;margin-bottom:2rem;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden;box-shadow:0 10px 40px rgba(16,185,129,0.3)}
+        .welcome::before{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:rgba(255,255,255,0.08);border-radius:50%}
+        .welcome::after{content:'';position:absolute;bottom:-40%;left:10%;width:200px;height:200px;background:rgba(255,255,255,0.05);border-radius:50%}
+        .welcome h1{font-size:2.2rem;font-weight:800;margin-bottom:0.3rem;position:relative;z-index:1}
+        .welcome p{font-size:1.1rem;opacity:0.9;position:relative;z-index:1}
+        .welcome-art{position:relative;z-index:1}
+        .welcome-art svg{width:140px;height:140px}
 
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
+        /* ─── STATS ─── */
+        .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.25rem;margin-bottom:2rem}
+        .stat-card{background:white;padding:1.5rem;border-radius:18px;box-shadow:0 4px 20px rgba(0,0,0,0.05);border:1px solid #f1f5f9;transition:all 0.35s;position:relative;overflow:hidden;cursor:default}
+        .stat-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;border-radius:3px 3px 0 0;transition:height 0.3s}
+        .stat-card:nth-child(1)::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+        .stat-card:nth-child(2)::before{background:linear-gradient(90deg,#10b981,#34d399)}
+        .stat-card:nth-child(3)::before{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
+        .stat-card:nth-child(4)::before{background:linear-gradient(90deg,#f472b6,#fb7185)}
+        .stat-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(0,0,0,0.1)}
+        .stat-card:hover::before{height:4px}
+        .stat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem}
+        .stat-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+        .stat-icon.fire{background:linear-gradient(135deg,#fef3c7,#fde68a)}
+        .stat-icon.chart{background:linear-gradient(135deg,#ecfdf5,#d1fae5)}
+        .stat-icon.chat{background:linear-gradient(135deg,#ede9fe,#ddd6fe)}
+        .stat-icon.cal{background:linear-gradient(135deg,#fce7f3,#fbcfe8)}
+        .stat-badge{font-size:0.75rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:50px;background:var(--bg-light);color:var(--primary)}
+        .stat-value{font-size:2.2rem;font-weight:900;color:var(--text-dark);line-height:1}
+        .stat-label{font-size:0.88rem;color:var(--text-light);font-weight:500;margin-top:0.2rem}
 
-        .user-menu {
-            position: relative;
-        }
+        /* ─── GRID ─── */
+        .dash-grid{display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;margin-bottom:2rem}
+        .card{background:white;border-radius:20px;padding:2rem;box-shadow:0 4px 20px rgba(0,0,0,0.05);border:1px solid #f1f5f9;transition:box-shadow 0.3s}
+        .card:hover{box-shadow:0 8px 30px rgba(0,0,0,0.08)}
+        .card-title{font-size:1.3rem;font-weight:700;color:var(--text-dark);margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem}
 
-        .user-button {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--bg-light);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            border: 2px solid var(--primary);
-            transition: all 0.3s;
-        }
+        /* Quick Actions */
+        .actions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem}
+        .action-btn{display:flex;flex-direction:column;align-items:center;gap:0.5rem;padding:1.25rem 0.75rem;background:#f8fafc;border:2px solid #f1f5f9;border-radius:16px;text-decoration:none;color:var(--text-dark);transition:all 0.3s;cursor:pointer;position:relative;overflow:hidden}
+        .action-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(16,185,129,0.06),transparent);transition:left 0.5s}
+        .action-btn:hover::before{left:100%}
+        .action-btn:hover{border-color:var(--primary);background:var(--bg-light);transform:translateY(-4px);box-shadow:0 8px 25px var(--primary-glow)}
+        .action-icon{font-size:1.8rem;transition:transform 0.3s}
+        .action-btn:hover .action-icon{transform:scale(1.15)}
+        .action-label{font-size:0.82rem;font-weight:600}
 
-        .user-button:hover {
-            background: var(--primary);
-            color: white;
-        }
+        /* Recent Moods */
+        .moods-list{display:flex;flex-direction:column;gap:0.75rem}
+        .mood-row{display:flex;align-items:center;gap:1rem;padding:0.85rem 1rem;background:#f8fafc;border-radius:12px;border-left:3px solid var(--primary);transition:all 0.3s}
+        .mood-row:hover{background:var(--bg-light);transform:translateX(4px)}
+        .mood-emoji{font-size:1.6rem}
+        .mood-info{flex:1}
+        .mood-label{font-weight:600;font-size:0.92rem;text-transform:capitalize}
+        .mood-date{font-size:0.8rem;color:var(--text-light)}
+        .empty-state{text-align:center;padding:2rem;color:var(--text-light)}
+        .empty-icon{font-size:2.5rem;margin-bottom:0.5rem;opacity:0.5}
 
-        .user-avatar {
-            width: 35px;
-            height: 35px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-        }
+        /* Sidebar */
+        .sidebar{display:flex;flex-direction:column;gap:1.5rem}
 
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            margin-top: 0.5rem;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            min-width: 200px;
-            overflow: hidden;
-        }
+        /* Affirmation */
+        .affirmation{background:linear-gradient(135deg,var(--primary),#047857);color:white;border-radius:20px;padding:2rem;text-align:center;position:relative;overflow:hidden}
+        .affirmation::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,0.06);border-radius:50%}
+        .affirmation h3{font-size:1.1rem;margin-bottom:1rem}
+        .affirmation-text{font-size:1rem;line-height:1.7;font-style:italic;margin-bottom:1.2rem;opacity:0.95}
+        .refresh-btn{padding:0.6rem 1.4rem;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);color:white;border-radius:50px;cursor:pointer;font-weight:600;font-size:0.88rem;font-family:inherit;transition:all 0.3s}
+        .refresh-btn:hover{background:white;color:var(--primary)}
 
-        .dropdown-menu.show {
-            display: block;
-        }
+        /* Quick Links */
+        .links-list{display:flex;flex-direction:column;gap:0.5rem}
+        .link-item{display:flex;align-items:center;gap:0.7rem;padding:0.75rem;background:#f8fafc;border-radius:12px;text-decoration:none;color:var(--text-dark);font-weight:500;font-size:0.9rem;transition:all 0.3s;border:1px solid transparent}
+        .link-item:hover{background:var(--bg-light);border-color:var(--primary);transform:translateX(4px)}
 
-        .dropdown-item {
-            padding: 1rem 1.5rem;
-            cursor: pointer;
-            transition: background 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-            color: var(--text-dark);
-        }
+        /* Floating cartoon SVG decoration */
+        .dash-decor{position:fixed;bottom:0;left:0;width:220px;pointer-events:none;opacity:0.12;z-index:0}
 
-        .dropdown-item:hover {
-            background: var(--bg-light);
-        }
+        /* ─── SOS ─── */
+        .sos-float{position:fixed;bottom:2rem;right:2rem;z-index:9999}
+        .sos-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#ef4444,#dc2626);color:white;border:none;font-size:1.1rem;font-weight:800;cursor:pointer;box-shadow:0 6px 25px rgba(239,68,68,0.4);transition:all 0.3s;display:flex;align-items:center;justify-content:center;font-family:inherit;animation:sosPulse 3s ease-in-out infinite}
+        @keyframes sosPulse{0%,100%{box-shadow:0 6px 25px rgba(239,68,68,0.4)}50%{box-shadow:0 6px 35px rgba(239,68,68,0.6)}}
+        .sos-btn:hover{transform:scale(1.1)}
+        .sos-panel{display:none;position:absolute;bottom:70px;right:0;width:300px;background:white;border-radius:16px;box-shadow:0 15px 50px rgba(0,0,0,0.15);padding:1.5rem}
+        .sos-panel.open{display:block;animation:fadeInUp 0.25s ease}
+        .sos-panel h4{color:#ef4444;margin-bottom:0.75rem;font-size:1.05rem}
+        .sos-line{display:flex;align-items:center;gap:0.5rem;padding:0.5rem 0;border-bottom:1px solid #f3f4f6;font-size:0.88rem;color:var(--text-dark)}
+        .sos-line:last-child{border-bottom:none}
+        .sos-line a{color:#ef4444;font-weight:600;text-decoration:none}
+        .sos-note{font-size:0.8rem;color:var(--text-light);margin-top:0.75rem}
 
-        .container {
-            margin-top: 80px;
-            padding: 2rem 5%;
-            max-width: 1400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .welcome-section {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 3rem;
-            border-radius: 20px;
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .welcome-content h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .welcome-content p {
-            font-size: 1.2rem;
-            opacity: 0.95;
-        }
-
-        .welcome-emoji {
-            font-size: 5rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-            transition: all 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.15);
-        }
-
-        .stat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-label {
-            color: var(--text-light);
-            font-size: 0.95rem;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-        }
-
-        .card h2 {
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-
-        .action-button {
-            padding: 1.5rem;
-            background: var(--bg-light);
-            border: 2px solid transparent;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            color: var(--text-dark);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 0.5rem;
-        }
-
-        .action-button:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.3);
-        }
-
-        .action-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .action-label {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .recent-moods {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .mood-entry {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--bg-light);
-            border-radius: 10px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .mood-emoji-display {
-            font-size: 2rem;
-        }
-
-        .mood-info {
-            flex-grow: 1;
-        }
-
-        .mood-date {
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-
-        .mood-label {
-            font-weight: 600;
-            color: var(--text-dark);
-            text-transform: capitalize;
-        }
-
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .affirmation-widget {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 2rem;
-            border-radius: 20px;
-            text-align: center;
-        }
-
-        .affirmation-widget h3 {
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .affirmation-text {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            font-style: italic;
-            margin-bottom: 1rem;
-        }
-
-        .refresh-affirmation {
-            padding: 0.75rem 1.5rem;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid white;
-            color: white;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .refresh-affirmation:hover {
-            background: white;
-            color: var(--primary);
-        }
-
-        .resources-widget {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-        }
-
-        .resources-widget h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .resource-link {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            background: var(--bg-light);
-            border-radius: 10px;
-            margin-bottom: 0.75rem;
-            text-decoration: none;
-            color: var(--text-dark);
-            transition: all 0.3s;
-        }
-
-        .resource-link:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateX(5px);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-light);
-        }
-
-        .empty-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        @media (max-width: 1024px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .welcome-section {
-                flex-direction: column;
-                text-align: center;
-            }
-            .welcome-content h1 {
-                font-size: 2rem;
-            }
-            .quick-actions {
-                grid-template-columns: 1fr;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
+        @media(max-width:1024px){.dash-grid{grid-template-columns:1fr}}
+        @media(max-width:768px){
+            .welcome{flex-direction:column;text-align:center;padding:2rem 1.5rem}
+            .welcome h1{font-size:1.7rem}
+            .welcome-art{display:none}
+            .actions-grid{grid-template-columns:repeat(2,1fr)}
+            .stats{grid-template-columns:1fr 1fr}
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <a href="index.html" class="logo">
-            <span style="font-size: 2rem; color: var(--secondary);">🌟</span>
-            <span>Cheerly Live Up</span>
-        </a>
-        <div class="nav-right">
-            <div class="user-menu">
-                <div class="user-button" onclick="toggleDropdown()">
-                    <div class="user-avatar" id="userAvatar">U</div>
-                    <span id="userName">User</span>
-                    <span>▼</span>
-                </div>
-                <div class="dropdown-menu" id="dropdownMenu">
-                    <a href="settings.html" class="dropdown-item">
-                        ⚙️
-                        Settings
-                    </a>
-                    <a href="analytics.html" class="dropdown-item">
-                        📊
-                        Analytics
-                    </a>
-                    <a href="privacy.html" class="dropdown-item">
-                        🔒
-                        Privacy
-                    </a>
-                    <a href="terms.html" class="dropdown-item">
-                        📄
-                        Terms
-                    </a>
-                    <a href="#" class="dropdown-item" onclick="logout()">
-                        🚪
-                        Logout
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
 
-    <div class="container">
-        <div class="welcome-section">
-            <div class="welcome-content">
-                <h1>Welcome back, <span id="welcomeName">Friend</span>!</h1>
-                <p>Ready to continue your wellbeing journey?</p>
-            </div>
-            <div class="welcome-emoji">
-                🌟
-            </div>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div>
-                        <div class="stat-value" id="moodStreak">0</div>
-                        <div class="stat-label">Day Streak</div>
-                    </div>
-                    <div class="stat-icon">
-                        <span style="font-size: inherit;">🔥</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div>
-                        <div class="stat-value" id="totalCheckins">0</div>
-                        <div class="stat-label">Mood Check-ins</div>
-                    </div>
-                    <div class="stat-icon">
-                        <span style="font-size: inherit;">📊</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div>
-                        <div class="stat-value" id="chatSessions">12</div>
-                        <div class="stat-label">Chat Sessions</div>
-                    </div>
-                    <div class="stat-icon">
-                        <span style="font-size: inherit;">💬</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div>
-                        <div class="stat-value" id="memberDays">1</div>
-                        <div class="stat-label">Days as Member</div>
-                    </div>
-                    <div class="stat-icon">
-                        <span style="font-size: inherit;">📅</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="dashboard-grid">
-            <div class="main-content">
-                <div class="card">
-                    <h2>
-                        <span style="font-size: inherit;">🌟</span>
-                        Quick Actions
-                    </h2>
-                    <div class="quick-actions">
-                        <a href="chat.html" class="action-button">
-                            <div class="action-icon">
-                                <span style="font-size: inherit;">💬</span>
-                            </div>
-                            <div class="action-label">Start Chat</div>
-                        </a>
-                        <a href="mood-tracker.html" class="action-button">
-                            <div class="action-icon">
-                                <span style="font-size: inherit;">😊</span>
-                            </div>
-                            <div class="action-label">Log Mood</div>
-                        </a>
-                        <a href="day-planner.html" class="action-button">
-                            <div class="action-icon">
-                                <span style="font-size: inherit;">📅</span>
-                            </div>
-                            <div class="action-label">Day Planner</div>
-                        </a>
-                        <a href="analytics.html" class="action-button">
-                            <div class="action-icon">
-                                <span style="font-size: inherit;">📊</span>
-                            </div>
-                            <div class="action-label">View Analytics</div>
-                        </a>
-                        <a href="resources.html" class="action-button">
-                            <div class="action-icon">
-                                <span style="font-size: inherit;">📚</span>
-                            </div>
-                            <div class="action-label">Explore Resources</div>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h2>
-                        <span style="font-size: inherit;">📊</span>
-                        Recent Mood Entries
-                    </h2>
-                    <div class="recent-moods" id="recentMoods">
-                        <div class="empty-state">
-                            <div class="empty-icon">
-                                📄
-                            </div>
-                            <p>No mood entries yet. Start tracking your mood today!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sidebar">
-                <div class="affirmation-widget">
-                    <h3>
-                        <span style="font-size: inherit;">🌟</span>
-                        Daily Affirmation
-                    </h3>
-                    <div class="affirmation-text" id="affirmationText">
-                        "You are stronger than you think, braver than you believe, and more capable than you imagine."
-                    </div>
-                    <button class="refresh-affirmation" onclick="refreshAffirmation()">
-                        🌟
-                        New Affirmation
-                    </button>
-                </div>
-
-                <div class="resources-widget">
-                    <h3>
-                        <span style="font-size: inherit;">🌟</span>
-                        Quick Links
-                    </h3>
-                    <a href="about.html" class="resource-link">
-                        ℹ️
-                        About Cheerly
-                    </a>
-                    <a href="resources.html" class="resource-link">
-                        📚
-                        Mental Health Resources
-                    </a>
-                    <a href="privacy.html" class="resource-link">
-                        🔒
-                        Privacy & Security
-                    </a>
-                    <a href="contact.html" class="resource-link">
-                        💬
-                        Get Support
-                    </a>
-                </div>
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+    <a href="index.html" class="logo"><span class="logo-dot"></span> Cheerly Live Up</a>
+    <div class="nav-right">
+        <div class="user-menu">
+            <button class="user-btn" onclick="toggleDropdown()">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <span id="userName">User</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+            </button>
+            <div class="dropdown" id="dropdown">
+                <a href="settings.html">⚙️ Settings</a>
+                <a href="analytics.html">📊 Analytics</a>
+                <a href="privacy.html">🔒 Privacy</a>
+                <a href="terms.html">📄 Terms</a>
+                <a href="#" onclick="logout();return false">🚪 Logout</a>
             </div>
         </div>
     </div>
+</nav>
 
-    <script>
-        // Check if user is logged in
-        if (localStorage.getItem('isLoggedIn') !== 'true') {
-            window.location.href = 'login.html';
-        }
+<div class="container">
+    <!-- WELCOME -->
+    <div class="welcome anim-fade">
+        <div>
+            <h1>Welcome back, <span id="welcomeName">Friend</span> 👋</h1>
+            <p>Ready to continue your wellbeing journey?</p>
+        </div>
+        <div class="welcome-art">
+            <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+                <!-- Cute wellbeing scene -->
+                <circle cx="70" cy="70" r="65" fill="rgba(255,255,255,0.1)"/>
+                <!-- Person meditating -->
+                <circle cx="70" cy="48" r="14" fill="#f5d0a9"/>
+                <path d="M58,45 Q63,36 70,35 Q77,36 82,45" fill="#1f2937"/>
+                <circle cx="65" cy="47" r="2" fill="#1f2937"/><circle cx="75" cy="47" r="2" fill="#1f2937"/>
+                <path d="M66,53 Q70,57 74,53" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+                <ellipse cx="70" cy="76" rx="22" ry="18" fill="rgba(255,255,255,0.3)"/>
+                <!-- Crossed legs -->
+                <path d="M52,88 Q60,95 70,90 Q80,95 88,88" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+                <!-- Floating hearts -->
+                <g style="animation:float 3s ease-in-out infinite">
+                    <path d="M95,35 L98,30 Q102,24 106,30 L109,35 L102,42Z" fill="rgba(244,114,182,0.7)"/>
+                </g>
+                <g style="animation:float 3s ease-in-out infinite;animation-delay:1s">
+                    <path d="M30,40 L32,36 Q35,31 38,36 L40,40 L35,46Z" fill="rgba(251,191,36,0.7)"/>
+                </g>
+                <!-- Sparkles -->
+                <circle cx="45" cy="25" r="3" fill="rgba(255,255,255,0.6)"><animate attributeName="opacity" values="0.6;0.1;0.6" dur="2s" repeatCount="indefinite"/></circle>
+                <circle cx="100" cy="55" r="2.5" fill="rgba(255,255,255,0.5)"><animate attributeName="opacity" values="0.5;0.1;0.5" dur="2.5s" repeatCount="indefinite"/></circle>
+                <circle cx="55" cy="100" r="2" fill="rgba(255,255,255,0.4)"><animate attributeName="opacity" values="0.4;0.1;0.4" dur="1.8s" repeatCount="indefinite"/></circle>
+            </svg>
+        </div>
+    </div>
 
-        // Load user data
-        const userData = JSON.parse(localStorage.getItem('cheerlyUser') || '{}');
-        const userName = userData.fullName || userData.email?.split('@')[0] || 'Friend';
-        
-        document.getElementById('userName').textContent = userName;
-        document.getElementById('welcomeName').textContent = userName.split(' ')[0];
-        document.getElementById('userAvatar').textContent = userName.charAt(0).toUpperCase();
+    <!-- STATS -->
+    <div class="stats">
+        <div class="stat-card anim-fade">
+            <div class="stat-top">
+                <div class="stat-icon fire">🔥</div>
+                <span class="stat-badge">Daily</span>
+            </div>
+            <div class="stat-value" id="moodStreak">0</div>
+            <div class="stat-label">Day Streak</div>
+        </div>
+        <div class="stat-card anim-fade">
+            <div class="stat-top">
+                <div class="stat-icon chart">📊</div>
+                <span class="stat-badge">Total</span>
+            </div>
+            <div class="stat-value" id="totalCheckins">0</div>
+            <div class="stat-label">Mood Check-ins</div>
+        </div>
+        <div class="stat-card anim-fade">
+            <div class="stat-top">
+                <div class="stat-icon chat">💬</div>
+                <span class="stat-badge">Sessions</span>
+            </div>
+            <div class="stat-value" id="chatSessions">12</div>
+            <div class="stat-label">Chat Sessions</div>
+        </div>
+        <div class="stat-card anim-fade">
+            <div class="stat-top">
+                <div class="stat-icon cal">📅</div>
+                <span class="stat-badge">Member</span>
+            </div>
+            <div class="stat-value" id="memberDays">1</div>
+            <div class="stat-label">Days as Member</div>
+        </div>
+    </div>
 
-        // Calculate member days
-        if (userData.signupDate) {
-            const signupDate = new Date(userData.signupDate);
-            const today = new Date();
-            const daysDiff = Math.floor((today - signupDate) / (1000 * 60 * 60 * 24));
-            document.getElementById('memberDays').textContent = daysDiff || 1;
-        }
+    <!-- MAIN GRID -->
+    <div class="dash-grid">
+        <div style="display:flex;flex-direction:column;gap:1.5rem">
+            <!-- Quick Actions -->
+            <div class="card">
+                <div class="card-title">⚡ Quick Actions</div>
+                <div class="actions-grid">
+                    <a href="chat.html" class="action-btn"><span class="action-icon">💬</span><span class="action-label">Chat</span></a>
+                    <a href="mood-tracker.html" class="action-btn"><span class="action-icon">😊</span><span class="action-label">Log Mood</span></a>
+                    <a href="day-planner.html" class="action-btn"><span class="action-icon">📅</span><span class="action-label">Day Planner</span></a>
+                    <a href="analytics.html" class="action-btn"><span class="action-icon">📊</span><span class="action-label">Analytics</span></a>
+                    <a href="resources.html" class="action-btn"><span class="action-icon">📚</span><span class="action-label">Resources</span></a>
+                    <a href="eco-therapy.html" class="action-btn"><span class="action-icon">🌿</span><span class="action-label">Eco-Therapy</span></a>
+                    <a href="breathe.html" class="action-btn"><span class="action-icon">🌬️</span><span class="action-label">Breathe</span></a>
+                    <a href="gratitude.html" class="action-btn"><span class="action-icon">🌻</span><span class="action-label">Gratitude</span></a>
+                    <a href="self-care.html" class="action-btn"><span class="action-icon">🫧</span><span class="action-label">Self-Care</span></a>
+                </div>
+            </div>
 
-        // Load mood data
-        function loadMoodData() {
-            const moodHistory = JSON.parse(localStorage.getItem('moodHistory') || '[]');
-            
-            // Update stats
-            document.getElementById('totalCheckins').textContent = moodHistory.length;
-            document.getElementById('moodStreak').textContent = calculateStreak(moodHistory);
-
-            // Display recent moods
-            displayRecentMoods(moodHistory);
-        }
-
-        function calculateStreak(history) {
-            if (history.length === 0) return 0;
-            
-            let streak = 1;
-            for (let i = 0; i < history.length - 1; i++) {
-                const currentDate = new Date(history[i].date).setHours(0, 0, 0, 0);
-                const nextDate = new Date(history[i + 1].date).setHours(0, 0, 0, 0);
-                const dayDiff = (currentDate - nextDate) / (1000 * 60 * 60 * 24);
-                
-                if (dayDiff === 1) {
-                    streak++;
-                } else {
-                    break;
-                }
-            }
-            return streak;
-        }
-
-        function displayRecentMoods(history) {
-            const container = document.getElementById('recentMoods');
-            
-            if (history.length === 0) {
-                return;
-            }
-
-            const moodEmojis = {
-                amazing: '😊',
-                good: '🙂',
-                okay: '😐',
-                down: '😔',
-                struggling: '😢'
-            };
-
-            container.innerHTML = history.slice(0, 5).map(entry => {
-                const date = new Date(entry.date);
-                const formattedDate = date.toLocaleDateString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric'
-                });
-                
-                return `
-                    <div class="mood-entry">
-                        <div class="mood-emoji-display">${moodEmojis[entry.mood]}</div>
-                        <div class="mood-info">
-                            <div class="mood-label">${entry.mood}</div>
-                            <div class="mood-date">${formattedDate}</div>
-                        </div>
+            <!-- Recent Moods -->
+            <div class="card">
+                <div class="card-title">📊 Recent Mood Entries</div>
+                <div class="moods-list" id="recentMoods">
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <p>No mood entries yet. Start tracking your mood today!</p>
                     </div>
-                `;
-            }).join('');
-        }
+                </div>
+            </div>
+        </div>
 
-        // Affirmations
-        const affirmations = [
-            "You are stronger than you think, braver than you believe, and more capable than you imagine.",
-            "Every day is a new opportunity to grow and become the best version of yourself.",
-            "Your mental health matters. Taking care of yourself is not selfish—it's essential.",
-            "You are worthy of love, happiness, and all the good things life has to offer.",
-            "It's okay to not be okay. Healing is not linear, and you're doing great.",
-            "You have survived 100% of your worst days. You're stronger than you know.",
-            "Your story isn't over yet. Keep going, keep growing, keep shining.",
-            "You are enough, exactly as you are. You don't need to prove your worth.",
-            "Small steps forward are still progress. Be patient with yourself.",
-            "You are not alone in this journey. Support is always available when you need it."
-        ];
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="affirmation">
+                <h3>🌟 Daily Affirmation</h3>
+                <div class="affirmation-text" id="affirmationText">"You are stronger than you think, braver than you believe, and more capable than you imagine."</div>
+                <button class="refresh-btn" onclick="refreshAffirmation()">✨ New Affirmation</button>
+            </div>
 
-        function refreshAffirmation() {
-            const randomIndex = Math.floor(Math.random() * affirmations.length);
-            document.getElementById('affirmationText').textContent = affirmations[randomIndex];
-        }
+            <div class="card">
+                <div class="card-title">🔗 Quick Links</div>
+                <div class="links-list">
+                    <a href="about.html" class="link-item">ℹ️ About Cheerly</a>
+                    <a href="resources.html" class="link-item">📚 Mental Health Resources</a>
+                    <a href="privacy.html" class="link-item">🔒 Privacy & Security</a>
+                    <a href="contact.html" class="link-item">💬 Get Support</a>
+                </div>
+            </div>
 
-        function toggleDropdown() {
-            const dropdown = document.getElementById('dropdownMenu');
-            dropdown.classList.toggle('show');
-        }
+            <!-- Mini cartoon card -->
+            <div class="card" style="text-align:center;padding:1.5rem">
+                <svg viewBox="0 0 200 120" width="180" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="200" height="120" fill="#ecfdf5" rx="12"/>
+                    <!-- Tiny scene: person walking in nature -->
+                    <ellipse cx="100" cy="105" rx="90" ry="18" fill="#d1fae5"/>
+                    <!-- Sun -->
+                    <circle cx="160" cy="25" r="16" fill="#fbbf24" opacity="0.6"><animate attributeName="r" values="16;18;16" dur="3s" repeatCount="indefinite"/></circle>
+                    <!-- Tree -->
+                    <rect x="30" y="65" width="8" height="30" rx="3" fill="#92400e"/>
+                    <ellipse cx="34" cy="58" rx="20" ry="18" fill="#10b981"/>
+                    <ellipse cx="34" cy="50" rx="14" ry="12" fill="#059669"/>
+                    <!-- Walking person -->
+                    <circle cx="100" cy="72" r="8" fill="#f5d0a9"/>
+                    <path d="M95,70 Q98,65 100,66 Q102,65 105,70" fill="#374151"/>
+                    <ellipse cx="100" cy="84" rx="8" ry="10" fill="#8b5cf6"/>
+                    <line x1="96" y1="94" x2="93" y2="105" stroke="#374151" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="104" y1="94" x2="107" y2="105" stroke="#374151" stroke-width="3" stroke-linecap="round"/>
+                    <!-- Music notes -->
+                    <text x="115" y="65" font-size="12" fill="#f472b6" opacity="0.7">♪</text>
+                    <text x="125" y="58" font-size="10" fill="#fbbf24" opacity="0.5">♫</text>
+                    <!-- Bird -->
+                    <path d="M145,45 Q150,38 155,45" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-linecap="round">
+                        <animateTransform attributeName="transform" type="translate" values="0,0;8,-4;16,0" dur="3s" repeatCount="indefinite"/>
+                    </path>
+                </svg>
+                <p style="font-size:0.85rem;color:var(--text-light);margin-top:0.75rem;font-weight:500">Enjoy your day! 🌿</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                localStorage.removeItem('isLoggedIn');
-                window.location.href = 'index.html';
-            }
-        }
+<!-- SOS -->
+<div class="sos-float">
+    <div class="sos-panel" id="sosPanel">
+        <h4>Need help right now?</h4>
+        <div class="sos-line">📞 Emergency: <a href="tel:112">112</a> / <a href="tel:911">911</a></div>
+        <div class="sos-line">💬 Crisis Text Line: Text HELLO to local helpline</div>
+        <div class="sos-line">🌍 WHO: <a href="tel:+41227912111">+41 22 791 21 11</a></div>
+        <div class="sos-line">🔗 <a href="resources.html#crisis">More resources</a></div>
+        <div class="sos-note">You're not alone. Someone is ready to listen.</div>
+    </div>
+    <button class="sos-btn" onclick="document.getElementById('sosPanel').classList.toggle('open')" title="Crisis support">SOS</button>
+</div>
 
-        // Close dropdown when clicking outside
-        window.addEventListener('click', function(e) {
-            if (!e.target.matches('.user-button') && !e.target.closest('.user-button')) {
-                const dropdown = document.getElementById('dropdownMenu');
-                if (dropdown.classList.contains('show')) {
-                    dropdown.classList.remove('show');
-                }
-            }
-        });
+<script>
+// Navbar scroll
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>30));
 
-        // Load data on page load
-        loadMoodData();
-    </script>
+// Auth check
+if(localStorage.getItem('isLoggedIn')!=='true') window.location.href='login.html';
+
+// User data
+const userData=JSON.parse(localStorage.getItem('cheerlyUser')||'{}');
+const userName=userData.fullName||userData.email?.split('@')[0]||'Friend';
+document.getElementById('userName').textContent=userName;
+document.getElementById('welcomeName').textContent=userName.split(' ')[0];
+document.getElementById('userAvatar').textContent=userName.charAt(0).toUpperCase();
+
+// Member days
+if(userData.signupDate){
+    const diff=Math.floor((new Date()-new Date(userData.signupDate))/(1000*60*60*24));
+    document.getElementById('memberDays').textContent=diff||1;
+}
+
+// Animated stat counter
+function animateValue(el,target){
+    let current=0;const step=Math.max(1,Math.floor(target/40));
+    const timer=setInterval(()=>{current+=step;if(current>=target){current=target;clearInterval(timer)}el.textContent=current},35);
+}
+
+// Mood data
+function loadMoodData(){
+    const history=JSON.parse(localStorage.getItem('moodHistory')||'[]');
+    const total=history.length;
+    const streak=calcStreak(history);
+    animateValue(document.getElementById('totalCheckins'),total);
+    animateValue(document.getElementById('moodStreak'),streak);
+    displayMoods(history);
+}
+
+function calcStreak(h){
+    if(!h.length)return 0;let s=1;
+    for(let i=0;i<h.length-1;i++){
+        const d1=new Date(h[i].date).setHours(0,0,0,0);
+        const d2=new Date(h[i+1].date).setHours(0,0,0,0);
+        if((d1-d2)/(864e5)===1)s++;else break;
+    }return s;
+}
+
+function displayMoods(history){
+    const c=document.getElementById('recentMoods');
+    if(!history.length)return;
+    const emojis={amazing:'😊',good:'🙂',okay:'😐',down:'😔',struggling:'😢'};
+    c.innerHTML=history.slice(0,5).map(e=>{
+        const d=new Date(e.date).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        return`<div class="mood-row"><span class="mood-emoji">${emojis[e.mood]||'😊'}</span><div class="mood-info"><div class="mood-label">${e.mood}</div><div class="mood-date">${d}</div></div></div>`;
+    }).join('');
+}
+
+// Affirmations
+const affirmations=["You are stronger than you think, braver than you believe, and more capable than you imagine.","Every day is a new opportunity to grow and become the best version of yourself.","Your mental health matters. Taking care of yourself is not selfish—it's essential.","You are worthy of love, happiness, and all the good things life has to offer.","It's okay to not be okay. Healing is not linear, and you're doing great.","You have survived 100% of your worst days. You're stronger than you know.","Your story isn't over yet. Keep going, keep growing, keep shining.","You are enough, exactly as you are.","Small steps forward are still progress. Be patient with yourself.","You are not alone in this journey. Support is always available."];
+function refreshAffirmation(){
+    document.getElementById('affirmationText').textContent='"'+affirmations[Math.floor(Math.random()*affirmations.length)]+'"';
+}
+
+// Dropdown
+function toggleDropdown(){document.getElementById('dropdown').classList.toggle('show')}
+window.addEventListener('click',e=>{if(!e.target.closest('.user-menu'))document.getElementById('dropdown').classList.remove('show')});
+
+function logout(){if(confirm('Are you sure you want to logout?')){localStorage.removeItem('isLoggedIn');window.location.href='index.html'}}
+
+loadMoodData();
+</script>
 </body>
 </html>

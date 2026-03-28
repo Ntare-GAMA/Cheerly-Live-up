@@ -55,7 +55,7 @@
     - Features: Time range selector, mood distribution, timeline chart, insights
     - Requires: Login (redirects to login.html if not authenticated)
 
-13. **chat.html** - AI chatbot interface
+13. **chat.html** - Chat support interface
     - Links to: Home, About, Dashboard, Mood Tracker, Resources, Contact
     - Features: Message interface, typing indicator, demo responses
 
